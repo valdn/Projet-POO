@@ -1,8 +1,9 @@
 #include "Forme.hpp"
 #include "Rectangle.hpp"
+#include "Ellipse.hpp"
 
 void Forme::ecrire(std::ostream & os) const {
-	os << couleur << ' ' << ancre << ' ';
+	os << couleur << ' ' << ancre << ' ' << selected << ' ';
 }
 
 Forme::Forme() : couleur(NULL), ancre(NULL, NULL), selected(false) {};
@@ -19,11 +20,6 @@ Forme::Forme(std::istream &is) {
 
 Forme::~Forme() {}
 
-//bool Forme::isOver(uint x, uint y) const {
-//	return (getAncre().isOver(x,y));
-//}
-
-
 void Forme::dessiner(EZWindow & fenetre, bool active) const{
     fenetre.setColor(ez_black);
     ancre.dessiner(fenetre, active);
@@ -33,7 +29,10 @@ void Forme::dessiner(EZWindow & fenetre, bool active) const{
 Forme * Forme::charger(std::istream & is) {
 	std::string type;
 	is >> type;
+	std::cout << "type : " << type << std::endl;
 	if (type == "Rectangle") return new Rectangle(is);
+	else if (type == "Ellipse") return new Ellipse(is);
+	
 	throw std::range_error("Cette forme n'existe pas");
 }
 

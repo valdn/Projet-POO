@@ -26,9 +26,14 @@ void Point::dessiner(EZWindow &fenetre, bool active) const {
 }
 
 std::ostream & operator<<(std::ostream &os, const Point & p) {
+	os << p.getX() << ' ' << p.getY();
 	return os;
 }
 
 std::istream & operator>>(std::istream &is, Point & p) {
+	uint x, y;
+	is >> x;
+	is >> y;
+	p.setXY(x, y);
 	return is;
 }

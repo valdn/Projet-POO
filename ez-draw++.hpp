@@ -672,7 +672,7 @@ class EZPixel {
  friend class EZImage;
 };
 
-EZ;
+struct sEz_image;
 
 /// La classe EZImage permet de conserver une image en mémoire puis de la tracer à l'écran.
 /// Attention, il n'est pas permis de dériver cette classe par héritage.

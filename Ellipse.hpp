@@ -14,6 +14,9 @@ typedef unsigned int uint;
 class Ellipse : public Forme {
     uint demiLargeur, demiHauteur;
 
+	protected:
+		void ecrire(std::ostream & os) const override;
+
     public:
         Ellipse(ulong couleur, uint x, uint y, uint _demiLargeur, uint _demiHauteur);
         Ellipse(const Ellipse & ori);

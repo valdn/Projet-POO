@@ -1,9 +1,12 @@
-#include "libforme/ez-draw++.hpp"
-#include "libforme/Point.hpp"
-#include "libforme/Forme.hpp"
-#include "libforme/Rectangle.hpp"
-#include "libforme/Ellipse.hpp"
-#include "libforme/Formes.hpp"
+#include "ez-draw++.hpp"
+#include "Point.hpp"
+#include "Forme.hpp"
+#include "Rectangle.hpp"
+#include "Ellipse.hpp"
+#include "Formes.hpp"
+
+#include <iostream>
+#include <fstream>
 
 class MyWindow : public EZWindow
 {
@@ -60,8 +63,27 @@ int main(int , char * [])
 	Rectangle * r1 = new Rectangle(ez_red, 10, 10, 100, 50);
 	gestion.ajouter(r1);
 
-	Ellipse * e1 = new Ellipse(ez_black, 50, 50, 100, 40);
+	Ellipse * e1 = new Ellipse(ez_blue, 50, 50, 100, 40);
 	gestion.ajouter(e1);
+
+	//Sauvegarder un fichier avec les formes
+	std::filebuf fb;
+	fb.open("test.txt", std::ios::out);
+	std::ostream os(&fb);
+	gestion.sauver(os);
+	fb.close();
+
+	//Lire un fichier pour creer les formes
+	try {
+		if (fb.open("test2.txt", std::ios::in)) {
+			std::istream is(&fb);
+			gestion.charger(is);
+		}
+		else throw std::runtime_error("Le fichier est introuvable");
+
+	} catch(const std::exception &e) {
+		std::cerr << e.what();
+	}
 
 	MyWindow win1(400, 320, "TP3-Forme", &gestion);
 
