@@ -16,10 +16,11 @@ void Formes::ajouter(Forme * forme) {
 	else tab_formes[nb_formes++] = forme;
 }
 
-void Formes::dessiner(EZWindow &fenetre) const {
-	for (size_t i = 0; i < nb_formes; i++)
-		tab_formes[i]->dessiner(fenetre);
+void Formes::draw(sf::RenderTarget & target, sf::RenderStates states) const {
+	for (size_t i = 0; i < nb_formes; ++i)
+		target.draw(*tab_formes[i], states);
 }
+
 
 Forme * Formes::isOver(uint x, uint y) const {
 	for (size_t i = 0; i < nb_formes; i++) {
