@@ -1,93 +1,90 @@
-#include "ez-draw++.hpp"
-#include "Point.hpp"
-#include "Forme.hpp"
-#include "Rectangle.hpp"
-#include "Ellipse.hpp"
-#include "Formes.hpp"
-
+#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
 
-class MyWindow : public EZWindow
+#include "Formes.hpp"
+#include "Point.hpp"
+#include "EllipseShape.hpp"
+#include "Rectangle.hpp"
+#include <SFML/Graphics.hpp>
+
+int main()
 {
-	Formes * gestion;
-	Forme * selected_form;
-public:
-	MyWindow(int w, int h, const char *name, Formes * _gestion)
-		: EZWindow(w, h, name), gestion(_gestion)
-	{}
+	sf::RenderWindow window(sf::VideoMode(500, 500), "SFML à pas l'air si mal :D");
 
-	void expose() {
-		gestion->dessiner(*this);
-	}
+	Formes gestion(10);	//Creer un gestionnaire de forme
 
-	void keyPress(EZKeySym keysym)
-	{
-		switch (keysym)
-		{
-		case EZKeySym::Escape:
-		case EZKeySym::q:
-			EZDraw::quit();
-			break;
-		case EZKeySym::a:
-			sendExpose();	//Refresh
-			break;
-		default: // Dans tous les autres cas on ne fait rien (necessaire
-			break; // pour eviter un warning a la compilation).
-		}
-	}
+	Forme * selected_form = nullptr;;	//Sert a pointer sur une forme
+	uint dist_x, dist_y;	//Sert pour la distance entre l'ancre et la souris lors du clic sur une forme
 
-	void buttonPress(int x, int y, int button) {
-		selected_form = gestion->isOver(x, y);
-	}
+	EllipseShape ellipse(sf::Vector2f(120.f, 50.f));
+	ellipse.setPosition(sf::Vector2f(50.f, 50.f));
+	ellipse.setFillColor(sf::Color::Blue);
 
-	void motionNotify(int x, int y, int button) {
-		if (selected_form != nullptr) {
-			selected_form->setAncre(x, y);
-			sendExpose();
-		}
-	}
-
-	void buttonRelease(int x, int y, int button) {
-		selected_form = nullptr;
-	}
-};
-
-
-int main(int , char * [])
-{
-	EZDraw ezDraw;
-
-	Formes gestion(10);
-
-	Rectangle * r1 = new Rectangle(ez_red, 10, 10, 100, 50);
+	Rectangle *r1 = new Rectangle(sf::Color::Red.toInteger(), 10, 10, 100, 50);
 	gestion.ajouter(r1);
 
-	Ellipse * e1 = new Ellipse(ez_blue, 50, 50, 100, 40);
-	gestion.ajouter(e1);
 
-	//Sauvegarder un fichier avec les formes
-	std::filebuf fb;
-	fb.open("test.txt", std::ios::out);
-	std::ostream os(&fb);
-	gestion.sauver(os);
-	fb.close();
+	//ecrire un fichier
+	std::filebuf fb;	//Creer un buffer
+	fb.open("test.txt", std::ios::out);	//Ouvre le fichier en ecriture
+	std::ostream os(&fb);	//Creer un ostream avec ce buffer
+	gestion.sauver(os);		//Sauvegarde la fenetre dans le fichier
+	fb.close();	//Ferme le fichier
 
-	//Lire un fichier pour creer les formes
-	try {
-		if (fb.open("test2.txt", std::ios::in)) {
-			std::istream is(&fb);
-			gestion.charger(is);
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			switch (event.type) {
+				//Fenetre fermé
+				case sf::Event::Closed:
+					window.close();
+					break;
+
+				//fenetre resize
+				case sf::Event::Resized:
+					window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+					break;
+
+				//Clic enfoncé souris
+				case sf::Event::MouseButtonPressed:
+					if (event.mouseButton.button == sf::Mouse::Left) {
+						uint x = event.mouseButton.x;
+						uint y = event.mouseButton.y;
+						selected_form = gestion.isOver(x, y);	//Selection de la forme
+						if (selected_form != nullptr) {	//Si on clique sur une forme
+							dist_x = x - selected_form->getAncre().getX();	//Distance en x entre l'ancre de la forme et de la souris
+							dist_y = y - selected_form->getAncre().getY();	//Distance en y entre l'ancre de la forme et de la souris
+						}
+					}
+					break;
+
+				//Mouvement souris
+				case sf::Event::MouseMoved:
+					if (selected_form != nullptr) {	//Si on clic sur une forme
+						selected_form->setAncre(event.mouseMove.x - dist_x, event.mouseMove.y - dist_y);	//On bouge l'ancre en prenant en compte l'ecart entre la souris et l'ancre
+						selected_form->update();
+					}
+					break;
+
+				//Relachment bouton souris
+				case sf::Event::MouseButtonReleased:
+					if (event.mouseButton.button == sf::Mouse::Left) {
+						selected_form = nullptr;	//Quand on relache le boutton de la souris on déselectionne la forme
+					}
+
+				default:
+					break;
+			}
 		}
-		else throw std::runtime_error("Le fichier est introuvable");
 
-	} catch(const std::exception &e) {
-		std::cerr << e.what();
+
+		window.clear(sf::Color::White);
+		window.draw(gestion);
+		window.display();
 	}
-
-	MyWindow win1(400, 320, "TP3-Forme", &gestion);
-
-	ezDraw.mainLoop();
 
 	return 0;
 }

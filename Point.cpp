@@ -1,6 +1,6 @@
 #include "Point.hpp"
 
-Point::Point() : x(NULL), y(NULL) {}
+Point::Point() : x(0), y(0) {}
 
 Point::Point(uint _x, uint _y) : x(_x), y(_y) {}
 
@@ -19,10 +19,10 @@ bool Point::isOver(uint _x, uint _y) const {
 	return ((_x >= x - TAILLE) && (_x <= x + TAILLE) && (_y >= y - TAILLE) && (_y <= y + TAILLE));
 }
 
-void Point::dessiner(EZWindow &fenetre, bool active) const {
-	fenetre.setColor(ez_black);
-	fenetre.setThick(TAILLE);
-	fenetre.drawPoint(getX(), getY());
+void Point::dessiner(sf::RenderWindow &fenetre, bool active) const {
+	sf::CircleShape p(TAILLE);
+	p.setPosition(getX(), getY());
+	fenetre.draw(p);
 }
 
 std::ostream & operator<<(std::ostream &os, const Point & p) {

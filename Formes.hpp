@@ -3,13 +3,13 @@
 
 #include <iostream>
 
-#include "ez-draw++.hpp"
+#include "SFML/Graphics.hpp"
 #include "Forme.hpp"
 
 typedef unsigned long ulong;
 typedef unsigned int uint;
 
-class Formes {
+class Formes : public sf::Drawable {
 	size_t max_formes;
 	size_t nb_formes;
 	Forme **tab_formes;
@@ -18,7 +18,7 @@ class Formes {
 		Formes(size_t taille = 200);
 		~Formes();
 		void ajouter(Forme *forme);
-		void dessiner(EZWindow &fenetre)const ;
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		Forme * isOver(uint x, uint y) const;
 		void sauver(std::ostream &os) const;
 		void charger(std::istream & is);

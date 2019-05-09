@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "ez-draw++.hpp"
+#include "SFML/Graphics.hpp"
 
 typedef unsigned long ulong;
 typedef unsigned int uint;
@@ -22,7 +22,7 @@ class Point {
         inline uint getY() const {return y;}
         inline void setXY(uint _x, uint _y) {x=_x; y=_y;}
         bool isOver(uint _x, uint _y) const;
-        void dessiner(EZWindow &fenetre, bool active = false) const;
+        void dessiner(sf::RenderWindow &fenetre, bool active = false) const;
         friend std::ostream & operator<<(std::ostream &os, const Point & p);
         friend std::istream & operator>>(std::istream &is, Point & p);
 };
