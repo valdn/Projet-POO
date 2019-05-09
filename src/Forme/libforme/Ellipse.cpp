@@ -6,7 +6,10 @@ void Ellipse::ecrire(std::ostream &os) const {
 	os << demiLargeur << ' ' << demiHauteur;
 }
 
-Ellipse::Ellipse(uint couleur, uint x, uint y, uint _demiLargeur, uint _demiHauteur) : Forme(couleur, x, y), demiLargeur(_demiLargeur), demiHauteur(_demiHauteur) {
+Ellipse::Ellipse(uint couleur, uint x, uint y, uint _demiLargeur, uint _demiHauteur) : Forme(couleur, _demiLargeur+x, _demiHauteur+y), demiLargeur(_demiLargeur), demiHauteur(_demiHauteur) {
+	setFillColor(sf::Color::Color(getCouleur()));
+	setOutlineColor(sf::Color::Color(getCouleur()));
+	setPosition(0, 0);
 	update();
 }
 
@@ -19,39 +22,20 @@ Ellipse::Ellipse(std::istream &is) : Forme(is) {
 
 Ellipse::~Ellipse() {}
 
-void Ellipse::update() {
-	m_vertices.setPrimitiveType(sf::TriangleFan);
-	m_vertices.resize(getPointCount());
-
-	for (size_t i = 0; i < getPointCount(); ++i) {
-		m_vertices[i].position = getPoint(i);
-		m_vertices[i].color = sf::Color::Color(getCouleur());
-	}
+void Ellipse::reload() {
+	update();
 }
 
-void Ellipse::draw(sf::RenderTarget & target, sf::RenderStates states) const {
-	// on applique la transformation
-	states.transform *= Shape::getTransform();
-
-	// Utilise pas de texture
-	states.texture = NULL;
-
-	// et on dessine enfin le tableau de vertex
-	target.draw(m_vertices, states);
-}
-
+//Faut pas oublier que l'ancre est au centre
 bool Ellipse::isOver(uint _x, uint _y) const {
-	std::cout << ((_x >= getAncre().getX()) && (_x <= getAncre().getX() + demiLargeur) && (_y >= getAncre().getY()) && (_y <= getAncre().getY() + demiHauteur)) << std::endl;
-	return ((_x >= getAncre().getX()) && (_x <= getAncre().getX() + demiLargeur) && (_y >= getAncre().getY()) && (_y <= getAncre().getY() + demiHauteur));
+	return ((_x >= getAncre().getX() - demiLargeur) && (_x <= getAncre().getX() + demiLargeur) && (_y >= getAncre().getY() - demiHauteur) && (_y <= getAncre().getY() + demiHauteur));
 }
 
-std::size_t Ellipse::getPointCount() const
-{
-	return 30; // fixé, mais ça pourrait tout aussi bien être un attribut de la classe
+std::size_t Ellipse::getPointCount() const {
+	return 30; // fixï¿½, mais ï¿½a pourrait tout aussi bien ï¿½tre un attribut de la classe
 }
 
-sf::Vector2f Ellipse::getPoint(std::size_t index) const
-{
+sf::Vector2f Ellipse::getPoint(std::size_t index) const {
 	static const float pi = 3.141592654f;
 
 	float angle = index * 2 * pi / getPointCount() - pi / 2;

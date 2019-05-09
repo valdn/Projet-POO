@@ -5,7 +5,7 @@
 #include "Point.hpp"
 #include <SFML/Graphics.hpp>
 
-class Forme : public sf::Drawable, public sf::Shape {
+class Forme {
     uint couleur;
     Point ancre;
     bool selected;
@@ -24,16 +24,11 @@ class Forme : public sf::Drawable, public sf::Shape {
         inline void setAncre(uint x, uint y) {ancre.setXY(x,y);}
         virtual bool isOver(uint _x, uint _y) const = 0;	//Vituelle pure
         virtual double perimetre() const = 0;	//Vituelle pure
+				virtual void reload() = 0;
+				void dessiner(sf::RenderWindow & window);
         friend std::ostream & operator<<(std::ostream &os, const Forme &frome);
 
         static Forme * charger(std::istream &is);
-
-		/*virtual void updateCall();*/
-
-		//SFML Stuff
-		virtual std::size_t getPointCount() const = 0;	//Vituelle pure
-		virtual sf::Vector2f getPoint(std::size_t index) const = 0;	//Vituelle pure
-		virtual void update() = 0;	//Permet d'update la forme sur la fenetre
 };
 
 #endif

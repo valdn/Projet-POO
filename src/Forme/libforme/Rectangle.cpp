@@ -7,6 +7,9 @@ void Rectangle::ecrire(std::ostream &os) const {
 }
 
 Rectangle::Rectangle(uint couleur, uint x, uint y, uint _largeur, uint _hauteur) : Forme(couleur, x, y), largeur(_largeur), hauteur(_hauteur) {
+	setFillColor(sf::Color::Color(getCouleur()));
+	setOutlineColor(sf::Color::Color(getCouleur()));
+	setPosition(0, 0);
 	update();
 }
 
@@ -19,25 +22,8 @@ Rectangle::Rectangle(std::istream &is) : Forme(is) {
 
 Rectangle::~Rectangle() {}
 
-void Rectangle::update() {
-	m_vertices.setPrimitiveType(sf::Quads);
-	m_vertices.resize(getPointCount());
-
-	for (size_t i = 0; i < getPointCount(); ++i) {
-		m_vertices[i].position = getPoint(i);
-		m_vertices[i].color = sf::Color::Color(getCouleur());
-	}
-}
-
-void Rectangle::draw(sf::RenderTarget & target, sf::RenderStates states) const {
-	// on applique la transformation
-	states.transform *= Shape::getTransform();
-
-	// Utilise pas de texture
-	states.texture = NULL;
-
-	// et on dessine enfin le tableau de vertex
-	target.draw(m_vertices, states);
+void Rectangle::reload() {
+	update();
 }
 
 bool Rectangle::isOver(uint _x, uint _y) const {
@@ -56,9 +42,9 @@ sf::Vector2f Rectangle::getPoint(std::size_t index) const {
 
 	switch (index) {
 	default:
-	case 0: return sf::Vector2f(x, y);	//Premier point ancre coin supérieur gauche
-	case 1: return sf::Vector2f(x + largeurf, y);	//coin supérieur droit
-	case 2: return sf::Vector2f(x + largeurf, y + hauteur);	//coin inférieur droit
-	case 3: return sf::Vector2f(x, y + hauteurf);	//coin inférieur gauche
+	case 0: return sf::Vector2f(x, y);	//Premier point ancre coin supï¿½rieur gauche
+	case 1: return sf::Vector2f(largeurf + x, y);	//coin supï¿½rieur droit
+	case 2: return sf::Vector2f(largeurf + x, y + hauteur);	//coin infï¿½rieur droit
+	case 3: return sf::Vector2f(x, y + hauteurf);	//coin infï¿½rieur gauche
 	}
 }
