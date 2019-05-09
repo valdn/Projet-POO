@@ -4,7 +4,7 @@
 
 #include "Forme.hpp"
 
-class Rectangle : public Forme, public sf::Drawable, public sf::Transformable {
+class Rectangle : public Forme, public sf::Shape {
 	uint largeur, hauteur;
 	sf::VertexArray m_vertices;
 
@@ -16,8 +16,7 @@ class Rectangle : public Forme, public sf::Drawable, public sf::Transformable {
 		Rectangle(const Rectangle & ori);
 		Rectangle(std::istream & is);
 		~Rectangle() override;
-		virtual void update() override;
-		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+		void reload() override;
 		inline uint getLargeur() { return largeur; }
 		inline uint getHauteur() { return hauteur; }
 		inline void setLargeur(uint _largeur) { largeur = _largeur; }

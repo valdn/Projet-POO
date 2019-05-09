@@ -16,9 +16,9 @@ void Formes::ajouter(Forme * forme) {
 	else tab_formes[nb_formes++] = forme;
 }
 
-void Formes::draw(sf::RenderTarget & target, sf::RenderStates states) const {
+void Formes::dessiner(sf::RenderWindow & window) {
 	for (size_t i = 0; i < nb_formes; ++i)
-		target.draw(*tab_formes[i], states);
+		tab_formes[i]->dessiner(window);
 }
 
 

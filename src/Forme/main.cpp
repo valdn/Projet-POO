@@ -3,8 +3,8 @@
 #include <fstream>
 
 #include "libforme/Formes.hpp"
-#include "libforme/Point.hpp"
 #include "libforme/Rectangle.hpp"
+#include "libforme/Ellipse.hpp"
 
 int main()
 {
@@ -17,9 +17,11 @@ int main()
 	bool mouseIn = true; //Savoir si la souris est dans la fenetre ou non
 	bool focus = true;	//Savoir si la fenetre est focus
 
-	Rectangle *r1 = new Rectangle(sf::Color::Red.toInteger(), 10, 10, 100, 50);
-	gestion.ajouter(r1);
+	Rectangle *r = new Rectangle(sf::Color::Red.toInteger(), 10, 10, 100, 50);
+	gestion.ajouter(r);
 
+	Ellipse *e = new Ellipse(sf::Color::Blue.toInteger(), 10, 60, 50, 25);
+	gestion.ajouter(e);
 
 	//ecrire un fichier
 	std::filebuf fb;	//Creer un buffer
@@ -82,7 +84,7 @@ int main()
 							ny = 0;
 
 						select_shape->setAncre(nx, ny);	//Bouge l'ancre en prenant en compte l'ecart entre la souris et l'ancre
-						select_shape->update();
+						select_shape->reload();
 					}
 					break;
 
@@ -99,7 +101,7 @@ int main()
 
 
 		window.clear(sf::Color::White);
-		window.draw(gestion);
+		gestion.dessiner(window);
 		window.display();
 	}
 

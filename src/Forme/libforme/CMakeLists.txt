@@ -3,17 +3,19 @@ cmake_minimum_required(VERSION 3.1)
 project(libforme)
 
 set(SRCS
-	Forme.cpp
 	Formes.cpp
+	Forme.cpp
 	Point.cpp
 	Rectangle.cpp
+	Ellipse.cpp
 )
 
 set(HEADER
-	Forme.hpp
 	Formes.hpp
+	Forme.hpp
 	Point.hpp
 	Rectangle.hpp
+	Ellipse.hpp
 )
 
 find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
