@@ -1,7 +1,6 @@
 #include "Forme.hpp"
 #include "Rectangle.hpp"
 #include "Ellipse.hpp"
-#include "Carre.hpp"
 
 void Forme::ecrire(std::ostream & os) const {
 	os << couleur << ' ' << ancre << ' ' << selected << ' ';
@@ -32,7 +31,6 @@ Forme * Forme::charger(std::istream & is) {
 	is >> type;
 	std::cout << "type : " << type << std::endl;
 	if (type == "Rectangle") return new Rectangle(is);
-	else if (type == "Carre") return new Carre(is);
 	else if (type == "Ellipse") return new Ellipse(is);
 	
 	throw std::range_error("Cette forme n'existe pas");
