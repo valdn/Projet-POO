@@ -13,7 +13,7 @@ Rectangle::Rectangle(const Rectangle & ori) : Rectangle(ori.getCouleur(), ori.ge
 
 Rectangle::Rectangle(std::istream &is) : Forme(is) {
 	is >> largeur;
-	is >> hauteur;
+	is >> hauteur;;
 }
 
 Rectangle::~Rectangle() {}
