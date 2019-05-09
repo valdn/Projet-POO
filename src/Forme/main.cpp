@@ -13,7 +13,8 @@ int main()
 	Formes gestion(10);	//Creer un gestionnaire de forme
 
 	Forme * selected_form = nullptr;;	//Sert a pointer sur une forme
-	uint dist_x, dist_y;	//Sert pour la distance entre l'ancre et la souris lors du clic sur une forme
+	uint dist_x, dist_y = 0;	//Sert pour la distance entre l'ancre et la souris lors du clic sur une forme
+	bool MouseIn = false; //Savoir si la souris est dans la fenetre ou non
 
 	Rectangle *r1 = new Rectangle(sf::Color::Red.toInteger(), 10, 10, 100, 50);
 	gestion.ajouter(r1);
@@ -42,6 +43,13 @@ int main()
 					window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
 					break;
 
+				case sf::Event::MouseEntered:
+					MouseIn = true;
+					break;
+
+				case sf::Event::MouseLeft:
+					MouseIn = false;
+
 				//Clic enfoncé souris
 				case sf::Event::MouseButtonPressed:
 					if (event.mouseButton.button == sf::Mouse::Left) {
@@ -57,8 +65,8 @@ int main()
 
 				//Mouvement souris
 				case sf::Event::MouseMoved:
-					if (selected_form != nullptr) {	//Si on clic sur une forme
-						selected_form->setAncre(event.mouseMove.x - dist_x, event.mouseMove.y - dist_y);	//On bouge l'ancre en prenant en compte l'ecart entre la souris et l'ancre
+					if (selected_form != nullptr && MouseIn) {	//Si on clic sur une forme
+						selected_form->setAncre(event.mouseMove.x - dist_x, event.mouseMove.y - dist_y);	//Bouge l'ancre en prenant en compte l'ecart entre la souris et l'ancre
 						selected_form->update();
 					}
 					break;
