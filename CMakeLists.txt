@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 
 project(ShapEditor)
 
-set(SFML_DOC_DIR "${(ShapEditor)_SOURCE_DIR}/include/SFML/doc")
-set(SFML_DIR "${(ShapEditor)_SOURCE_DIR}/include/SFML/lib/cmake/SFML")
+set(SFML_DOC_DIR "${ShapEditor_SOURCE_DIR}/include/SFML/doc")
+set(SFML_DIR "${ShapEditor_SOURCE_DIR}/include/SFML/lib/cmake/SFML")
 
 add_subdirectory(src/forme/libforme)
 
