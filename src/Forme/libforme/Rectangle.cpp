@@ -31,7 +31,7 @@ void Rectangle::update() {
 
 void Rectangle::draw(sf::RenderTarget & target, sf::RenderStates states) const {
 	// on applique la transformation
-	states.transform *= getTransform();
+	states.transform *= Shape::getTransform();
 
 	// Utilise pas de texture
 	states.texture = NULL;
@@ -57,8 +57,8 @@ sf::Vector2f Rectangle::getPoint(std::size_t index) const {
 	switch (index) {
 	default:
 	case 0: return sf::Vector2f(x, y);	//Premier point ancre coin supérieur gauche
-	case 1: return sf::Vector2f(largeurf + x, y);	//coin supérieur droit
-	case 2: return sf::Vector2f(largeurf + x, y + hauteur);	//coin inférieur droit
+	case 1: return sf::Vector2f(x + largeurf, y);	//coin supérieur droit
+	case 2: return sf::Vector2f(x + largeurf, y + hauteur);	//coin inférieur droit
 	case 3: return sf::Vector2f(x, y + hauteurf);	//coin inférieur gauche
 	}
 }
