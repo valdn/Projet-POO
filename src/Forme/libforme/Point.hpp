@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include "SFML/Graphics.hpp"
-#include "SFML/Graphics.hpp"
 
 typedef unsigned long ulong;
 typedef unsigned int uint;

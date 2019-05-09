@@ -31,3 +31,8 @@ std::ostream & operator<<(std::ostream & os, const Forme &forme) {
 	forme.ecrire(os);
 	return os;
 }
+
+//void Forme::updateCall()
+//{
+//	Shape::updateOutline();
+//}
