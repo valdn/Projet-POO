@@ -4,7 +4,7 @@
 #include "EllipseDrawable.hpp"
 #include "CercleDrawable.hpp"
 
-FormeD::FormeD(uint couleur, uint x, uint y) : Forme(couleur,x,y) {}
+FormeD::FormeD(uint couleur, uint x, uint y) : Forme(couleur,x,y), pleine(true) {}
 
 FormeD::FormeD(const FormeD & ori) : FormeD(ori.getCouleur(), ori.getAncre().getX(), ori.getAncre().getY()) {}
 

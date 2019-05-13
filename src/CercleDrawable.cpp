@@ -6,6 +6,7 @@ CercleD::CercleD(sf::Color couleur, uint x, uint y, uint rayon)
 		FormeD(couleur.toInteger(), rayon+x, rayon+y) 
 {
 	setFillColor(sf::Color(getCouleur()));
+	setOutlineThickness(-1);
 	setOutlineColor(sf::Color(getCouleur()));
 	update();
 }
