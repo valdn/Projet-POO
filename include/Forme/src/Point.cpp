@@ -20,10 +20,6 @@ Point::~Point() {
 
 }
 
-bool Point::isOver(uint _x, uint _y) const {
-	return ((_x >= x - TAILLE) && (_x <= x + TAILLE) && (_y >= y - TAILLE) && (_y <= y + TAILLE));
-}
-
 std::ostream & operator<<(std::ostream &os, const Point & p) {
 	os << p.getX() << ' ' << p.getY();
 	return os;

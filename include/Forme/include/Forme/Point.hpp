@@ -23,7 +23,6 @@ class Point {
     inline void setX(uint _x) {x = _x;}
     inline void setY(uint _y) {y = _y;}
     inline void setXY(uint _x, uint _y) {x=_x; y=_y;}
-    bool isOver(uint _x, uint _y) const;
     friend std::ostream & operator<<(std::ostream &os, const Point & p);
     friend std::istream & operator>>(std::istream &is, Point & p);
 };
