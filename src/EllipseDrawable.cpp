@@ -1,9 +1,9 @@
 #include "EllipseDrawable.hpp"
 
 EllipseD::EllipseD(sf::Color couleur, uint x, uint y, uint demiLargeur, uint demiHauteur)
-	: Forme(couleur.toInteger(), demiLargeur + x, demiHauteur + y),
-		Ellipse(couleur.toInteger(), demiLargeur + x, demiHauteur + y, demiLargeur, demiHauteur),
-		FormeD(couleur.toInteger(), demiLargeur + x, demiHauteur + y)
+	: Forme(couleur.toInteger(), x, y),
+		Ellipse(couleur.toInteger(), x, y, demiLargeur, demiHauteur),
+		FormeD(couleur, x, y)
 {	
 	setFillColor(sf::Color(getCouleur()));
 	setOutlineThickness(-1);
@@ -23,14 +23,16 @@ EllipseD::~EllipseD() {}
 
 //Faut pas oublier que l'ancre est au centre
 bool EllipseD::isOver(uint _x, uint _y) const {
-	return (std::pow(((double)_x - (double)getAncre().getX()) / getDemiLargeur(), 2) + std::pow(((double)_y - (double)getAncre().getY()) / getDemiHauteur(), 2) < 1);
+	return (std::pow(((double)_x - (double)(getAncre().getX()+getDemiLargeur())) / getDemiLargeur(), 2) + std::pow(((double)_y - (double)(getAncre().getY()+getDemiHauteur())) / getDemiHauteur(), 2) < 1);
 }
 
 void EllipseD::dessiner(sf::RenderWindow & window) const {
 	window.draw(*this);
+	this->dessinerAncre(window);
 }
 
 inline void EllipseD::maj() {
+	this->updateAncre();
 	update();
 }
 
@@ -43,5 +45,5 @@ sf::Vector2f EllipseD::getPoint(std::size_t index) const {
 	float x = std::cos(angle) * getDemiLargeur();
 	float y = std::sin(angle) * getDemiHauteur();
 
-	return sf::Vector2f(x + getAncre().getX(), y + getAncre().getY());
+	return sf::Vector2f(x + getAncre().getX() + getDemiLargeur(), y + getAncre().getY()+getDemiHauteur());
 }

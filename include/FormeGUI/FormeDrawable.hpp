@@ -6,9 +6,14 @@
 
 class FormeD : public virtual fm::Forme, public sf::Shape {
 	bool pleine;
+	sf::CircleShape ancreD;
+
+	protected:
+		void dessinerAncre(sf::RenderWindow & window) const;
+		void updateAncre();
 
 	public:
-		FormeD(uint _couleur, uint x, uint y);
+		FormeD(sf::Color _couleur, uint x, uint y);
 		FormeD(const FormeD & ori);
 		FormeD(std::istream & is);
 		virtual ~FormeD();
