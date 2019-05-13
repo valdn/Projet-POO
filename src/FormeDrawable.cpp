@@ -16,7 +16,6 @@ FormeD::FormeD(sf::Color couleur, uint x, uint y) : Forme(couleur.toInteger(),x,
 	ancreD.setFillColor(sf::Color::Black);
 	ancreD.setRadius(getAncre().getTaille());
 	ancreD.setOrigin(ancreD.getRadius(), ancreD.getRadius());
-	std::cout << ancreD.getOrigin().x << " " << ancreD.getOrigin().y << std::endl;
 	updateAncre();
 }
 
