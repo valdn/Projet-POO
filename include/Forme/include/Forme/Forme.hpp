@@ -20,6 +20,7 @@ class Forme {
 
     protected:
         virtual void ecrire(std::ostream & os) const;
+				inline Point * getAncreMem() { return &ancre; }
 
     public:
         Forme(uint _couleur, uint x, uint y);

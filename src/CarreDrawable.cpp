@@ -3,7 +3,7 @@
 CarreD::CarreD(sf::Color couleur, uint x, uint y, uint cote) 
 	: Forme(couleur.toInteger(), x, y), 
 		Carre(couleur.toInteger(), x, y, cote),
-		FormeD(couleur.toInteger(), x, y) 
+		FormeD(couleur, x, y) 
 {
 	setFillColor(sf::Color(getCouleur()));
 	setOutlineThickness(-1);
@@ -27,9 +27,11 @@ bool CarreD::isOver(uint _x, uint _y) const {
 
 void CarreD::dessiner(sf::RenderWindow & window) const {
 	window.draw(*this);
+	this->dessinerAncre(window);
 }
 
 inline void CarreD::maj() {
+	this->updateAncre();
 	update();
 }
 
