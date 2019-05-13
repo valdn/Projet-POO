@@ -22,7 +22,7 @@ EllipseD::~EllipseD() {}
 
 //Faut pas oublier que l'ancre est au centre
 bool EllipseD::isOver(uint _x, uint _y) const {
-	return ((_x >= getAncre().getX() - getDemiLargeur()) && (_x <= getAncre().getX() + getDemiLargeur()) && (_y >= getAncre().getY() - getDemiHauteur()) && (_y <= getAncre().getY() + getDemiHauteur()));
+	return (std::pow(((double)_x - (double)getAncre().getX()) / getDemiLargeur(), 2) + std::pow(((double)_y - (double)getAncre().getY()) / getDemiHauteur(), 2) < 1);
 }
 
 void EllipseD::dessiner(sf::RenderWindow & window) const {
