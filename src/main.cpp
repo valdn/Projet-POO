@@ -31,6 +31,29 @@ void augmenterTrait(FormeD * shape) {
 		shape->setOutlineThickness(shape->getOutlineThickness() - 1);
 }
 
+void enregistrer(FormesD & gestion) {
+	std::filebuf fb;	//Creer un buffer
+	fb.open("test.txt", std::ios::out);	//Ouvre le fichier en ecriture
+	std::ostream os(&fb);	//Creer un ostream avec ce buffer
+	gestion.sauver(os);		//Sauvegarde la fenetre dans le fichier
+	fb.close();	//Ferme le fichier
+}
+
+void charger(FormesD & gestion) {
+	std::filebuf fb;	//Creer un buffer
+	try {
+		if (fb.open("test2.txt", std::ios::in)) {	//Ouvre le fichier en lecture
+			std::istream is(&fb);	//Crrer un istream avec ce buffer
+			gestion.charger(is);	//Creation du gestionnaire de forme a partir du fichier
+		}
+		else throw std::runtime_error("Le fichier est introuvable");	//Si le fichier est introuvable
+	}
+	catch (const std::exception &e) {
+		std::cerr << e.what() << std::endl;
+	}
+	fb.close();	//ferme le fichier
+}
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1000, 500), "SFML n'est pas si mal :D");
@@ -55,25 +78,8 @@ int main()
 	CercleD *ce = new CercleD(sf::Color::Yellow, 120, 70, 25);
 	gestion.ajouter(ce);
 
-	//ecrire un fichier
-	std::filebuf fb;	//Creer un buffer
-	fb.open("test.txt", std::ios::out);	//Ouvre le fichier en ecriture
-	std::ostream os(&fb);	//Creer un ostream avec ce buffer
-	gestion.sauver(os);		//Sauvegarde la fenetre dans le fichier
-	fb.close();	//Ferme le fichier
-
-	//Lire un fichier 
-	//try {
-	//	if (fb.open("test2.txt", std::ios::in)) {	//Ouvre le fichier en lecture
-	//		std::istream is(&fb);	//Crrer un istream avec ce buffer
-	//		gestion.charger(is);	//Creation du gestionnaire de forme a partir du fichier
-	//	}
-	//	else throw std::runtime_error("Le fichier est introuvable");	//Si le fichier est introuvable
-
-	//}
-	//catch (const std::exception &e) {
-	//	std::cerr << e.what() << std::endl;
-	//}
+	enregistrer(gestion);
+	charger(gestion);
 
 
 	//Boucle principale
