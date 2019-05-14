@@ -24,16 +24,16 @@ CercleD::~CercleD() {}
 //Faut pas oublier que l'ancre est au centre
 bool CercleD::isOver(uint _x, uint _y) const {
 	//retourne vrai si la distance entre le centre du cerlce et la souris est inférieur au rayon
-	return (std::sqrt(std::pow((double)_x - (double)(getAncre().getX() + getRayon()), 2) + std::pow((double)_y - (double)(getAncre().getY() + getRayon()), 2)) <= getRayon());
+	return (getAncreD().isOver(_x, _y) || ((std::pow((double)_x - (double)(getAncre().getX() + getRayon()), 2) + std::pow((double)_y - (double)(getAncre().getY() + getRayon()), 2)) <= std::pow(getRayon(),2)));
 }
 
 void CercleD::dessiner(sf::RenderWindow & window) const {
 	window.draw(*this);
-	this->dessinerAncre(window);
+	getAncreD().dessiner(window);
 }
 
 inline void CercleD::maj() {
-	this->updateAncre();
+	FormeD::maj();
 	update();
 }
 

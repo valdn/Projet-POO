@@ -8,16 +8,15 @@
 namespace fm {
 
 void Forme::ecrire(std::ostream & os) const {
-	os << couleur << ' ' << ancre << ' ' << selected << ' ';
+	os << ancre << ' ' << couleur << ' ' << selected << ' ';
 }
 
 Forme::Forme(uint _couleur, uint x, uint y) : couleur(_couleur), ancre(x, y), selected(false) {}
 
 Forme::Forme(const Forme &ori) : Forme(ori.couleur, ori.ancre.getX(), ori.ancre.getY()) {}
 
-Forme::Forme(std::istream &is) {
+Forme::Forme(std::istream &is) : ancre(is) {
 	is >> couleur;
-	is >> ancre;
 	is >> selected;
 }
 

@@ -4,26 +4,17 @@
 #include "EllipseDrawable.hpp"
 #include "CercleDrawable.hpp"
 
-void FormeD::dessinerAncre(sf::RenderWindow & window) const {
-	window.draw(ancreD);
-}
-
-void FormeD::updateAncre() {
-	ancreD.setPosition(getAncre().getX(), getAncre().getY());
-}
-
-FormeD::FormeD(sf::Color couleur, uint x, uint y) : Forme(couleur.toInteger(),x,y), pleine(true) {
-	ancreD.setFillColor(sf::Color::Black);
-	ancreD.setRadius(getAncre().getTaille());
-	ancreD.setOrigin(ancreD.getRadius(), ancreD.getRadius());
-	updateAncre();
-}
+FormeD::FormeD(sf::Color couleur, uint x, uint y) : Forme(couleur.toInteger(),x,y), pleine(true), ancreD(getAncreMem()) {}
 
 FormeD::FormeD(const FormeD & ori) : FormeD(sf::Color(ori.getCouleur()), ori.getAncre().getX(), ori.getAncre().getY()) {}
 
-FormeD::FormeD(std::istream & is) : Forme(is) {}
+FormeD::FormeD(std::istream & is) : Forme(is), ancreD(getAncreMem()) {}
 
 FormeD::~FormeD() {}
+
+void FormeD::maj() {
+	ancreD.update();
+}
 
 FormeD * FormeD::charger(std::istream & is) {
 	std::string type;

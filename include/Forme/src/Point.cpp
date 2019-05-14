@@ -2,11 +2,6 @@
 
 namespace fm {
 
-//A cause de du constructeur par istream, il est obligatoire de passer par un constructeur par defaut. Or on ne souhaite pas garder cet objet donc on le détruit instantanément
-Point::Point() {
-	this->~Point();
-}
-
 Point::Point(uint _x, uint _y) : x(_x), y(_y) {}
 
 Point::Point(const Point &ori) : Point(ori.x, ori.y) {}

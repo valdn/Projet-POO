@@ -22,16 +22,16 @@ CarreD::CarreD(std::istream & is) : Forme(is), Carre(is), FormeD(is) {
 CarreD::~CarreD() {}
 
 bool CarreD::isOver(uint _x, uint _y) const {
-	return ((_x >= getAncre().getX()) && (_x <= getAncre().getX() + getCote()) && (_y >= getAncre().getY()) && (_y <= getAncre().getY() + getCote()));
+	return (getAncreD().isOver(_x, _y) || ((_x >= getAncre().getX()) && (_x <= getAncre().getX() + getCote()) && (_y >= getAncre().getY()) && (_y <= getAncre().getY() + getCote())));
 }
 
 void CarreD::dessiner(sf::RenderWindow & window) const {
 	window.draw(*this);
-	this->dessinerAncre(window);
+	getAncreD().dessiner(window);
 }
 
 inline void CarreD::maj() {
-	this->updateAncre();
+	FormeD::maj();
 	update();
 }
 

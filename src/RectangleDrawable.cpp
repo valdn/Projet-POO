@@ -22,16 +22,16 @@ RectangleD::RectangleD(std::istream & is) : Forme(is), Rectangle(is), FormeD(is)
 RectangleD::~RectangleD() {}
 
 bool RectangleD::isOver(uint _x, uint _y) const {
-	return ((_x >= getAncre().getX()) && (_x <= getAncre().getX() + getLargeur()) && (_y >= getAncre().getY()) && (_y <= getAncre().getY() + getHauteur()));
+	return ( getAncreD().isOver(_x,_y) || ((_x >= getAncre().getX()) && (_x <= getAncre().getX() + getLargeur()) && (_y >= getAncre().getY()) && (_y <= getAncre().getY() + getHauteur())));
 }
 
 void RectangleD::dessiner(sf::RenderWindow & window) const {
 	window.draw(*this);
-	this->dessinerAncre(window);
+	getAncreD().dessiner(window);
 }
 
 inline void RectangleD::maj() {
-	this->updateAncre();
+	FormeD::maj();
 	update();
 }
 

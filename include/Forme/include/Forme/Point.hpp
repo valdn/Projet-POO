@@ -12,7 +12,6 @@ class Point {
     uint x,y;
 
 	public:
-		Point();
     Point(uint _x, uint _y);
     Point(const Point &ori);
     Point(std::istream &is);

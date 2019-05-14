@@ -3,14 +3,11 @@
 
 #include "SFML/Graphics.hpp"
 #include "Forme/Forme.hpp"
+#include "PointDrawable.hpp"
 
 class FormeD : public virtual fm::Forme, public sf::Shape {
 	bool pleine;
-	sf::CircleShape ancreD;
-
-	protected:
-		void dessinerAncre(sf::RenderWindow & window) const;
-		void updateAncre();
+	PointD ancreD;
 
 	public:
 		FormeD(sf::Color _couleur, uint x, uint y);
@@ -19,8 +16,9 @@ class FormeD : public virtual fm::Forme, public sf::Shape {
 		virtual ~FormeD();
 		inline bool isPleine() { return pleine;	}
 		inline void togglePleine() { pleine = !pleine; }
+		inline const PointD & getAncreD() const { return ancreD; }
 		virtual bool isOver(uint _x, uint _y) const = 0;
-		virtual void maj() = 0;
+		virtual void maj();
 		virtual void dessiner(sf::RenderWindow & window) const = 0;
 		static FormeD* charger(std::istream & is);
 };
