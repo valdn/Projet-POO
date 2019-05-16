@@ -29,7 +29,7 @@ class Rectangle : public virtual Forme {
 		void ecrire(std::ostream & os) const override;
 
 	public:
-		Rectangle(uint couleur, uint x, uint y, uint _largeur, uint _hauteur);
+		Rectangle(uint couleur, int x, int y, uint _largeur, uint _hauteur);
 		Rectangle(const Rectangle & ori);
 		Rectangle(std::istream & is);
 		~Rectangle() override;

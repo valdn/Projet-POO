@@ -6,8 +6,6 @@
 #include "FormeDrawable.hpp"
 #include "SFML/Graphics.hpp"
 
-typedef unsigned int uint;
-
 class FormesD {
 	size_t max_formes, nb_drawable;
 	FormeD** tab_drawable;
@@ -16,10 +14,13 @@ class FormesD {
 		FormesD(size_t taille = 200);
 		~FormesD();
 		void ajouter(FormeD *shape);
-		FormeD * isOver(uint x, uint y) const;
+		FormeD * isOver(int x, int y) const;
 		void sauver(std::ostream &os) const;
 		void charger(std::istream & is);
 		void dessiner(sf::RenderWindow &window) const;
+		void update() const;
+
+		inline size_t getnbFormes() { return nb_drawable; }
 };
 
 #endif FORMESD_HPP

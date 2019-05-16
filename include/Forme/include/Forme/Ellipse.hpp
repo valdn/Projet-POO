@@ -30,7 +30,7 @@ protected:
 	void ecrire(std::ostream & os) const override;
 
 public:
-	Ellipse(uint couleur, uint x, uint y, uint _demiLargeur, uint _demiHauteur);
+	Ellipse(uint couleur, int x, int y, uint _demiLargeur, uint _demiHauteur);
 	Ellipse(const Ellipse & ori);
 	Ellipse(std::istream & is);
 	~Ellipse() override;

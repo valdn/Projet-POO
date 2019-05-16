@@ -23,17 +23,18 @@ class Forme {
 				inline Point * getAncreMem() { return &ancre; }
 
     public:
-        Forme(uint _couleur, uint x, uint y);
+        Forme(uint _couleur, int x, int y);
         Forme(const Forme &ori);
         Forme(std::istream &is);
         virtual ~Forme();
         inline uint getCouleur() const {return couleur;}
         inline void setCouleur(uint _couleur) {couleur = _couleur;}
         inline const Point & getAncre() const {return ancre;}
-        inline void setAncre(uint x, uint y) {ancre.setXY(x,y);}
+        inline void setAncre(int x, int y) {ancre.setXY(x,y);}
 				inline bool getSelected() const { return selected; }
 				inline void setSelected(bool _selected) {selected = _selected;}
         virtual double perimetre() const = 0;	//Vituelle pure
+				double getLonSeg(const Point p1, const Point p2) const;
 				friend std::ostream & operator<<(std::ostream &os, const Forme &forme);
         static Forme * charger(std::istream &is);
 };

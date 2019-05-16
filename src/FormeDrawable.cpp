@@ -3,8 +3,9 @@
 #include "CarreDrawable.hpp"
 #include "EllipseDrawable.hpp"
 #include "CercleDrawable.hpp"
+#include "TriangleDrawable.hpp"
 
-FormeD::FormeD(sf::Color couleur, uint x, uint y) : Forme(couleur.toInteger(),x,y), pleine(true), ancreD(getAncreMem()) {}
+FormeD::FormeD(sf::Color couleur, int x, int y) : Forme(couleur.toInteger(),x,y), pleine(true), ancreD(getAncreMem(), sf::Color::Magenta) {}
 
 FormeD::FormeD(const FormeD & ori) : FormeD(sf::Color(ori.getCouleur()), ori.getAncre().getX(), ori.getAncre().getY()) {}
 
@@ -16,6 +17,10 @@ void FormeD::maj() {
 	ancreD.update();
 }
 
+sf::Vector2f FormeD::getDistance(const fm::Point p1, const fm::Point p2) {
+	return sf::Vector2f((p2.getX() - p1.getX()), (p2.getY() - p1.getY()));
+}
+
 FormeD * FormeD::charger(std::istream & is) {
 	std::string type;
 	is >> type;
@@ -24,6 +29,7 @@ FormeD * FormeD::charger(std::istream & is) {
 	else if (type == "Carre") return new CarreD(is);
 	else if (type == "Ellipse") return new EllipseD(is);
 	else if (type == "Cercle") return new CercleD(is);
+	else if (type == "Triangle") return new TriangleD(is);
 
 	throw std::range_error("Cette forme n'existe pas");
 }

@@ -7,13 +7,14 @@
 
 class CarreD : public fm::Carre, public FormeD {
 	public:
-		CarreD(sf::Color couleur, uint x, uint y, uint _cote);
+		CarreD(sf::Color couleur, int x, int y, uint _cote);
 		CarreD(const Carre & ori);
 		CarreD(std::istream & is);
 		~CarreD() override;
-		bool isOver(uint _x, uint _y) const override;
+		bool isOver(int _x, int _y) const override;
 		void dessiner(sf::RenderWindow & window) const override;
 		void maj() override;
+		void recalculate() override;
 
 		//SFML Stuff
 		std::size_t getPointCount() const override;

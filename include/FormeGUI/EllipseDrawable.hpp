@@ -8,13 +8,14 @@
 
 class EllipseD : public fm::Ellipse, public FormeD {
 	public:
-		EllipseD(sf::Color couleur, uint x, uint y, uint demiLargeur, uint demiHauteur);
+		EllipseD(sf::Color couleur, int x, int y, uint demiLargeur, uint demiHauteur);
 		EllipseD(const EllipseD & ori);
 		EllipseD(std::istream & is);
 		~EllipseD() override;
-		bool isOver(uint _x, uint _y) const override;
+		bool isOver(int _x, int _y) const override;
 		void dessiner(sf::RenderWindow & window) const override;
 		void maj() override;
+		void recalculate() override;
 
 		//SFML Stuff
 		std::size_t getPointCount() const override;

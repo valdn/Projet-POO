@@ -8,7 +8,7 @@ void Rectangle::ecrire(std::ostream &os) const {
 	os << largeur << ' ' << hauteur;
 }
 
-Rectangle::Rectangle(uint couleur, uint x, uint y, uint _largeur, uint _hauteur) : Forme(couleur, x, y), largeur(_largeur), hauteur(_hauteur) {}
+Rectangle::Rectangle(uint couleur, int x, int y, uint _largeur, uint _hauteur) : Forme(couleur, x, y), largeur(_largeur), hauteur(_hauteur) {}
 
 Rectangle::Rectangle(const Rectangle & ori) : Rectangle(ori.getCouleur(), ori.getAncre().getX(), ori.getAncre().getY(), ori.largeur, ori.hauteur) {}
 

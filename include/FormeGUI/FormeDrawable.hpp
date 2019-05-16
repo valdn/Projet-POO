@@ -10,15 +10,17 @@ class FormeD : public virtual fm::Forme, public sf::Shape {
 	PointD ancreD;
 
 	public:
-		FormeD(sf::Color _couleur, uint x, uint y);
+		FormeD(sf::Color _couleur, int x, int y);
 		FormeD(const FormeD & ori);
 		FormeD(std::istream & is);
 		virtual ~FormeD();
 		inline bool isPleine() { return pleine;	}
 		inline void togglePleine() { pleine = !pleine; }
 		inline const PointD & getAncreD() const { return ancreD; }
-		virtual bool isOver(uint _x, uint _y) const = 0;
+		virtual bool isOver(int _x, int _y) const = 0;
 		virtual void maj();
+		virtual void recalculate() = 0;
+		sf::Vector2f getDistance(const fm::Point p1, const fm::Point p2);
 		virtual void dessiner(sf::RenderWindow & window) const = 0;
 		static FormeD* charger(std::istream & is);
 };

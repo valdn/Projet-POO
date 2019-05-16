@@ -8,7 +8,7 @@ void Cercle::ecrire(std::ostream &os) const {
 	os << rayon << ' ';
 }
 
-Cercle::Cercle(uint couleur, uint x, uint y, uint _rayon) : Forme(couleur, x, y), rayon(_rayon) {}
+Cercle::Cercle(uint couleur, int x, int y, uint _rayon) : Forme(couleur, x, y), rayon(_rayon) {}
 
 Cercle::Cercle(const Cercle & ori) : Cercle(ori.getCouleur(), ori.getAncre().getX(), ori.getAncre().getY(), ori.rayon) {}
 

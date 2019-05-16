@@ -7,13 +7,14 @@
 
 class RectangleD : public fm::Rectangle, public FormeD {
 public:
-	RectangleD(sf::Color couleur, uint x, uint y, uint largeur, uint hauteur);
+	RectangleD(sf::Color couleur, int x, int y, uint largeur, uint hauteur);
 	RectangleD(const RectangleD & ori);
 	RectangleD(std::istream & is);
 	~RectangleD() override;
-	bool isOver(uint _x, uint _y) const override;
+	bool isOver(int _x, int _y) const override;
 	void dessiner(sf::RenderWindow & window) const override;
 	void maj() override;
+	void recalculate() override;
 
 	//SFML Stuff
 	std::size_t getPointCount() const override;

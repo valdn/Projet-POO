@@ -8,7 +8,7 @@ void Carre::ecrire(std::ostream &os) const {
 	os << cote << ' ';
 }
 
-Carre::Carre(uint couleur, uint x, uint y, uint _cote) : Forme(couleur, x, y), cote(_cote) {}
+Carre::Carre(uint couleur, int x, int y, uint _cote) : Forme(couleur, x, y), cote(_cote) {}
 
 Carre::Carre(const Carre & ori) : Carre(ori.getCouleur(), ori.getAncre().getX(), ori.getAncre().getY(), ori.cote) {}
 

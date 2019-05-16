@@ -2,7 +2,7 @@
 
 namespace fm {
 
-Point::Point(uint _x, uint _y) : x(_x), y(_y) {}
+Point::Point(int _x, int _y) : x(_x), y(_y) {}
 
 Point::Point(const Point &ori) : Point(ori.x, ori.y) {}
 

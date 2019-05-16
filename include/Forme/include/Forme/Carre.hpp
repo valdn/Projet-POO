@@ -30,7 +30,7 @@ class Carre : virtual public Forme {
 		void ecrire(std::ostream & os) const override;
 
 	public:
-		Carre(uint couleur, uint x, uint y, uint _cote);
+		Carre(uint couleur, int x, int y, uint _cote);
 		Carre(const Carre & ori);
 		Carre(std::istream & is);
 		~Carre() override;
