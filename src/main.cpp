@@ -9,6 +9,7 @@
 #include "CercleDrawable.hpp"
 #include "TriangleDrawable.hpp"
 #include "GestionnairePoints.hpp"
+#include "ImageDrawable.hpp"
 
 void viderForme(FormeD * shape) {
 	shape->setFillColor(sf::Color::Transparent);
@@ -30,6 +31,22 @@ void diminuerTrait(FormeD * shape) {
 void augmenterTrait(FormeD * shape) {
 	if (shape->getOutlineThickness() >= -10)
 		shape->setOutlineThickness(shape->getOutlineThickness() - 1);
+}
+
+void dimTransparence(FormeD * shape) {
+	if (shape->getTrsp() > 1) {
+		uint i = shape->getTrsp() - 2;
+		shape->setFillColor(sf::Color(255, 255, 255, i));
+		shape->setTrsp(i);
+	}
+}
+
+void augTransparence(FormeD * shape) {
+	if (shape->getTrsp() < 255) {
+		uint i = shape->getTrsp() + 2;
+		shape->setFillColor(sf::Color(255, 255, 255, i));
+		shape->setTrsp(i);
+	}
 }
 
 void enregistrer(FormesD & gestion) {
@@ -77,18 +94,17 @@ int main()
 	gestionF.ajouter(new CarreD(sf::Color::Green, 120, 10, 50));
 	gestionF.ajouter(new CercleD(sf::Color::Yellow, 120, 70, 25));
 
-	//Le code en dessous fonctionne mais faudra faire un gestionnaire de points similaire au gestionnaire de formes.
-	/*fm::Point *p1 = new fm::Point(150, 150);
-	PointD *pd1 = new PointD(p1);
-	fm::Point *p2 = new fm::Point(450, 300);
-	PointD *pd2 = new PointD(p2);*/
+	
+
 
 	gestionP.ajouter(new PointD(200, 200));
 	gestionP.ajouter(new PointD(100, 150));
 	gestionP.ajouter(new PointD(400, 200));
+	gestionP.ajouter(new PointD(400, 400));
 
 	gestionF.ajouter(new TriangleD(sf::Color::Cyan, 100, 300, gestionP.getPointAt(0), gestionP.getPointAt(1)));
 	gestionF.ajouter(new TriangleD(sf::Color::Black, 300, 100, gestionP.getPointAt(2), gestionP.getPointAt(1)));
+	gestionF.ajouter(new ImageD("download.png", 200, 200, gestionP.getPointAt(3)));
 
 
 	enregistrer(gestionF);
@@ -182,15 +198,23 @@ int main()
 
 				case sf::Event::KeyPressed:
 					if (select_shape != nullptr) {
-						if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-							if (select_shape->isPleine())
-								viderForme(select_shape);
-							else
-								remplirForme(select_shape);
-						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-							diminuerTrait(select_shape);
-						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
-							augmenterTrait(select_shape);
+						if (dynamic_cast<ImageD*> (select_shape) != nullptr) {//permet de récupérer uniquement les images
+							if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+								dimTransparence(select_shape);
+							else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+								augTransparence(select_shape);
+						}
+						else {
+							if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+								if (select_shape->isPleine())
+									viderForme(select_shape);
+								else
+									remplirForme(select_shape);
+							else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+								diminuerTrait(select_shape);
+							else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+								augmenterTrait(select_shape);
+						}
 					}
 					break;
 

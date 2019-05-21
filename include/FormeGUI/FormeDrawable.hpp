@@ -8,6 +8,7 @@
 class FormeD : public virtual fm::Forme, public sf::Shape {
 	bool pleine;
 	PointD ancreD;
+	uint trsp = 255;
 
 	public:
 		FormeD(sf::Color _couleur, int x, int y);
@@ -23,6 +24,8 @@ class FormeD : public virtual fm::Forme, public sf::Shape {
 		sf::Vector2f getDistance(const fm::Point p1, const fm::Point p2);
 		virtual void dessiner(sf::RenderWindow & window) const = 0;
 		static FormeD* charger(std::istream & is);
+		inline int getTrsp() const { return trsp; }
+		inline void setTrsp(int i) { trsp = i; }
 };
 
 #endif FORME_DRAWABLE_HPP 
