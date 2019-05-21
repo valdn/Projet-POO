@@ -1,14 +1,14 @@
 #include "RectangleDrawable.hpp"
 
-RectangleD::RectangleD(sf::Color couleur, uint x, uint y, uint largeur, uint hauteur)
+RectangleD::RectangleD(sf::Color couleur, int x, int y, uint largeur, uint hauteur)
 	: Forme(couleur.toInteger(), x, y),
 		Rectangle(couleur.toInteger(), x, y, largeur, hauteur), 
-		FormeD(couleur.toInteger(), x, y) 
+		FormeD(couleur, x, y) 
 {
 	setFillColor(sf::Color(getCouleur()));
 	setOutlineThickness(-1);
 	setOutlineColor(sf::Color(getCouleur()));
-	update();
+	recalculate();
 }
 
 RectangleD::RectangleD(const RectangleD & ori) : RectangleD(sf::Color(ori.Rectangle::getCouleur()), ori.Rectangle::getAncre().getX(), ori.Rectangle::getAncre().getX(), ori.getLargeur(), ori.getHauteur()) {}
@@ -16,21 +16,27 @@ RectangleD::RectangleD(const RectangleD & ori) : RectangleD(sf::Color(ori.Rectan
 RectangleD::RectangleD(std::istream & is) : Forme(is), Rectangle(is), FormeD(is) {
 	setFillColor(sf::Color(getCouleur()));
 	setOutlineColor(sf::Color(getCouleur()));
-	update();
+	recalculate();
 }
 
 RectangleD::~RectangleD() {}
 
-bool RectangleD::isOver(uint _x, uint _y) const {
-	return ((_x >= getAncre().getX()) && (_x <= getAncre().getX() + getLargeur()) && (_y >= getAncre().getY()) && (_y <= getAncre().getY() + getHauteur()));
+bool RectangleD::isOver(int _x, int _y) const {
+	return ( getAncreD().isOver(_x,_y) || ((_x >= getAncre().getX()) && (_x <= getAncre().getX() + getLargeur()) && (_y >= getAncre().getY()) && (_y <= getAncre().getY() + getHauteur())));
 }
 
 void RectangleD::dessiner(sf::RenderWindow & window) const {
 	window.draw(*this);
+	getAncreD().dessiner(window);
 }
 
 inline void RectangleD::maj() {
-	update();
+	FormeD::maj();
+	recalculate();
+}
+
+void RectangleD::recalculate() {
+	Shape::update();
 }
 
 std::size_t RectangleD::getPointCount() const {
@@ -38,8 +44,8 @@ std::size_t RectangleD::getPointCount() const {
 }
 
 sf::Vector2f RectangleD::getPoint(std::size_t index) const {
-	float x = Rectangle::getAncre().getX();
-	float y = Rectangle::getAncre().getY();
+	float x = getAncre().getX();
+	float y = getAncre().getY();
 	float largeur = float(getLargeur());
 	float hauteur = float(getHauteur());
 

@@ -7,7 +7,9 @@
 #include "CarreDrawable.hpp"
 #include "EllipseDrawable.hpp"
 #include "CercleDrawable.hpp"
-
+#include "TriangleDrawable.hpp"
+#include "GestionnairePoints.hpp"
+#include "ImageDrawable.hpp"
 
 void viderForme(FormeD * shape) {
 	shape->setFillColor(sf::Color::Transparent);
@@ -31,49 +33,82 @@ void augmenterTrait(FormeD * shape) {
 		shape->setOutlineThickness(shape->getOutlineThickness() - 1);
 }
 
-int main()
-{
-	sf::RenderWindow window(sf::VideoMode(1000, 500), "SFML n'est pas si mal :D");
+void dimTransparence(FormeD * shape) {
+	if (shape->getTrsp() > 1) {
+		uint i = shape->getTrsp() - 2;
+		shape->setFillColor(sf::Color(255, 255, 255, i));
+		shape->setTrsp(i);
+	}
+}
 
-	FormesD gestion(10);	//Creer un gestionnaire de forme
+void augTransparence(FormeD * shape) {
+	if (shape->getTrsp() < 255) {
+		uint i = shape->getTrsp() + 2;
+		shape->setFillColor(sf::Color(255, 255, 255, i));
+		shape->setTrsp(i);
+	}
+}
 
-	FormeD * select_shape = nullptr;	//Sert a pointer sur une forme
-	FormeD * select_shape_move = nullptr;
-	uint dist_x, dist_y = 0;	//Sert pour la distance entre l'ancre et la souris lors du clic sur une forme
-	bool mouseIn = true; //Savoir si la souris est dans la fenetre ou non
-	bool focus = true;	//Savoir si la fenetre est focus
-
-	RectangleD *r = new RectangleD(sf::Color::Red, 10, 10, 100, 50);
-	gestion.ajouter(r);
-
-	EllipseD *e = new EllipseD(sf::Color::Blue, 10, 70, 50, 25);
-	gestion.ajouter(e);
-
-	CarreD *c = new CarreD(sf::Color::Green, 120, 10, 50);
-	gestion.ajouter(c);
-
-	CercleD *ce = new CercleD(sf::Color::Yellow, 120, 70, 25);
-	gestion.ajouter(ce);
-
-	//ecrire un fichier
+void enregistrer(FormesD & gestion) {
 	std::filebuf fb;	//Creer un buffer
 	fb.open("test.txt", std::ios::out);	//Ouvre le fichier en ecriture
 	std::ostream os(&fb);	//Creer un ostream avec ce buffer
 	gestion.sauver(os);		//Sauvegarde la fenetre dans le fichier
 	fb.close();	//Ferme le fichier
+}
 
-	//Lire un fichier 
-	//try {
-	//	if (fb.open("test2.txt", std::ios::in)) {	//Ouvre le fichier en lecture
-	//		std::istream is(&fb);	//Crrer un istream avec ce buffer
-	//		gestion.charger(is);	//Creation du gestionnaire de forme a partir du fichier
-	//	}
-	//	else throw std::runtime_error("Le fichier est introuvable");	//Si le fichier est introuvable
+void charger(FormesD & gestion) {
+	std::filebuf fb;	//Creer un buffer
+	try {
+		if (fb.open("test2.txt", std::ios::in)) {	//Ouvre le fichier en lecture
+			std::istream is(&fb);	//Crrer un istream avec ce buffer
+			gestion.charger(is);	//Creation du gestionnaire de forme a partir du fichier
+		}
+		else throw std::runtime_error("Le fichier est introuvable");	//Si le fichier est introuvable
+	}
+	catch (const std::exception &e) {
+		std::cerr << e.what() << std::endl;
+	}
+	fb.close();	//ferme le fichier
+}
 
-	//}
-	//catch (const std::exception &e) {
-	//	std::cerr << e.what() << std::endl;
-	//}
+int main()
+{
+	sf::RenderWindow window(sf::VideoMode(1000, 500), "SFML n'est pas si mal :D");
+	//sf::RenderWindow test(sf::VideoMode(50, 200), sf::Style::None, "test");
+
+	FormesD gestionF(10);	//Creer un gestionnaire de formes
+	PointsD gestionP(10); //Creer un gestionnaire de points
+
+	FormeD * select_shape = nullptr;	//Sert a pointer sur une forme
+	FormeD * select_shape_move = nullptr;
+	PointD * select_point = nullptr;
+
+	uint dist_x, dist_y = 0;	//Sert pour la distance entre l'ancre et la souris lors du clic sur une forme
+	bool mouseIn = true; //Savoir si la souris est dans la fenetre ou non
+	bool focus = true;	//Savoir si la fenetre est focus
+	bool need_update = false;
+
+	gestionF.ajouter(new RectangleD(sf::Color::Red, 10, 10, 100, 50));
+	gestionF.ajouter(new EllipseD(sf::Color::Blue, 10, 70, 50, 25));
+	gestionF.ajouter(new CarreD(sf::Color::Green, 120, 10, 50));
+	gestionF.ajouter(new CercleD(sf::Color::Yellow, 120, 70, 25));
+
+	
+
+
+	gestionP.ajouter(new PointD(200, 200));
+	gestionP.ajouter(new PointD(100, 150));
+	gestionP.ajouter(new PointD(400, 200));
+	gestionP.ajouter(new PointD(400, 400));
+
+	gestionF.ajouter(new TriangleD(sf::Color::Cyan, 100, 300, gestionP.getPointAt(0), gestionP.getPointAt(1)));
+	gestionF.ajouter(new TriangleD(sf::Color::Black, 300, 100, gestionP.getPointAt(2), gestionP.getPointAt(1)));
+	gestionF.ajouter(new ImageD("download.png", 200, 200, gestionP.getPointAt(3)));
+
+
+	enregistrer(gestionF);
+	//charger(gestion);
 
 
 	//Boucle principale
@@ -116,29 +151,40 @@ int main()
 				//Clic enfoncé souris
 				case sf::Event::MouseButtonPressed:
 					if (event.mouseButton.button == sf::Mouse::Left) {
-						uint x = event.mouseButton.x;
-						uint y = event.mouseButton.y;
-						select_shape = gestion.isOver(x, y);	//Selection de la forme
-						select_shape_move = gestion.isOver(x, y);
-						if (select_shape != nullptr) {	//Si on clique sur une forme
-							dist_x = x - select_shape->getAncre().getX();	//Distance en x entre l'ancre de la forme et de la souris
-							dist_y = y - select_shape->getAncre().getY();	//Distance en y entre l'ancre de la forme et de la souris
+						int x = event.mouseButton.x;
+						int y = event.mouseButton.y;
+						select_point = gestionP.isOver(x, y); //Selection d'un point
+						if (select_point == nullptr) {
+
+							select_shape = gestionF.isOver(x, y);	//Selection de la forme
+							select_shape_move = gestionF.isOver(x, y);
+							if (select_shape != nullptr) {	//Si on clique sur une forme
+								dist_x = x - select_shape->getAncre().getX();	//Distance en x entre l'ancre de la forme et de la souris
+								dist_y = y - select_shape->getAncre().getY();	//Distance en y entre l'ancre de la forme et de la souris
+							}
+						}
+						else {
+							dist_x = x - select_point->getX();	//Distance en x entre l'ancre de la forme et de la souris
+							dist_y = y - select_point->getY();	//Distance en y entre l'ancre de la forme et de la souris
 						}
 					}
 					break;
 
 				//Mouvement souris
 				case sf::Event::MouseMoved:
-					if ((select_shape_move != nullptr)) {	//Si une forme est selectionné, que la souris est dans la fenetre et que la fenetre est focus
-						uint nx = event.mouseMove.x - dist_x;	//new x pos
-						uint ny = event.mouseMove.y - dist_y;	//new y pos
-						if (nx > window.getSize().x)	//Empeche l'ancre d'etre négative en x
-							nx = 0;
-						if (ny > window.getSize().y)	//Empche l'ancre d'etre négative en y
-							ny = 0;
-
-						select_shape_move->setAncre(nx, ny);	//Bouge l'ancre en prenant en compte l'ecart entre la souris et l'ancre
-						select_shape_move->maj();
+					if ((select_point != nullptr) && (mouseIn)) {
+						select_point->setPos((event.mouseMove.x - dist_x), (event.mouseMove.y - dist_y));
+						select_point->update();
+						need_update = true;
+					}
+					else if ((select_shape_move != nullptr) && (mouseIn)) {	//Si une forme est selectionné, que la souris est dans la fenetre et que la fenetre est focus
+						select_shape_move->setAncre((event.mouseMove.x - dist_x), (event.mouseMove.y - dist_y));	//Bouge l'ancre en prenant en compte l'ecart entre la souris et l'ancre
+						select_shape_move->maj();	//Update la forme
+						need_update = true;
+					}
+					if (need_update) {
+						gestionF.update();
+						need_update = false;
 					}
 					break;
 
@@ -146,19 +192,29 @@ int main()
 				case sf::Event::MouseButtonReleased:
 					if (event.mouseButton.button == sf::Mouse::Left) {
 						select_shape_move = nullptr;	//Quand on relache le boutton de la souris on déselectionne la forme
+						select_point = nullptr;
 					}
+					break;
 
 				case sf::Event::KeyPressed:
 					if (select_shape != nullptr) {
-						if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-							if (select_shape->isPleine())
-								viderForme(select_shape);
-							else
-								remplirForme(select_shape);
-						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-							diminuerTrait(select_shape);
-						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
-							augmenterTrait(select_shape);
+						if (dynamic_cast<ImageD*> (select_shape) != nullptr) {//permet de récupérer uniquement les images
+							if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+								dimTransparence(select_shape);
+							else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+								augTransparence(select_shape);
+						}
+						else {
+							if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+								if (select_shape->isPleine())
+									viderForme(select_shape);
+								else
+									remplirForme(select_shape);
+							else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+								diminuerTrait(select_shape);
+							else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+								augmenterTrait(select_shape);
+						}
 					}
 					break;
 
@@ -171,7 +227,9 @@ int main()
 		window.clear(sf::Color::White);
 
 		//Dessine tous les objet de gestion
-		gestion.dessiner(window);
+		gestionF.dessiner(window);
+
+		//p->dessiner(window);
 
 		//Affiche les modificiation faites
 		window.display();

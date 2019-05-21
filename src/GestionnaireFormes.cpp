@@ -20,7 +20,11 @@ void FormesD::dessiner(sf::RenderWindow & window) const {
 	for (size_t i = 0; i < nb_drawable; i++) tab_drawable[i]->dessiner(window);
 }
 
-FormeD * FormesD::isOver(uint x, uint y) const {
+void FormesD::update() const {
+	for (size_t i = 0; i < nb_drawable; i++) tab_drawable[i]->recalculate();
+}
+
+FormeD * FormesD::isOver(int x, int y) const {
 	for (size_t i = 0; i < nb_drawable; i++) {
 		if (tab_drawable[i]->isOver(x, y)) return tab_drawable[i];
 	}

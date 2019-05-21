@@ -1,36 +1,43 @@
 ﻿#include "CarreDrawable.hpp"
 
-CarreD::CarreD(sf::Color couleur, uint x, uint y, uint cote) 
+CarreD::CarreD(sf::Color couleur, int x, int y, uint cote) 
 	: Forme(couleur.toInteger(), x, y), 
 		Carre(couleur.toInteger(), x, y, cote),
-		FormeD(couleur.toInteger(), x, y) 
+		FormeD(couleur, x, y) 
 {
 	setFillColor(sf::Color(getCouleur()));
 	setOutlineThickness(-1);
 	setOutlineColor(sf::Color(getCouleur()));
-	update();
+	recalculate();
 }
 
 CarreD::CarreD(const Carre & ori) : CarreD(sf::Color(ori.getCouleur()), ori.getAncre().getX(), ori.getAncre().getX(), ori.getCote()) {}
 
 CarreD::CarreD(std::istream & is) : Forme(is), Carre(is), FormeD(is) {
 	setFillColor(sf::Color(getCouleur()));
+	setOutlineThickness(-1);
 	setOutlineColor(sf::Color(getCouleur()));
-	update();
+	recalculate();
 }
 
 CarreD::~CarreD() {}
 
-bool CarreD::isOver(uint _x, uint _y) const {
-	return ((_x >= getAncre().getX()) && (_x <= getAncre().getX() + getCote()) && (_y >= getAncre().getY()) && (_y <= getAncre().getY() + getCote()));
+bool CarreD::isOver(int _x, int _y) const {
+	return (getAncreD().isOver(_x, _y) || ((_x >= getAncre().getX()) && (_x <= getAncre().getX() + getCote()) && (_y >= getAncre().getY()) && (_y <= getAncre().getY() + getCote())));
 }
 
 void CarreD::dessiner(sf::RenderWindow & window) const {
 	window.draw(*this);
+	getAncreD().dessiner(window);
 }
 
 inline void CarreD::maj() {
-	update();
+	FormeD::maj();
+	recalculate();
+}
+
+void CarreD::recalculate() {
+	Shape::update();
 }
 
 std::size_t CarreD::getPointCount() const {
