@@ -165,13 +165,27 @@ endif()
 # Altough we could use PUBLIC here instead of PRIVATE, it causes the files in lib/cmake/TGUI to
 # hardcode the SFML directories, making it harder to distribute them with the precompiled libs.
 # You will thus have to link to SFML yourself, but you were likely to already do this anyway.
-if(DEFINED SFML_LIBRARIES)
-    # SFML found via FindSFML.cmake
-    target_include_directories(tgui PRIVATE ${SFML_INCLUDE_DIR})
-    target_link_libraries(tgui PRIVATE ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
-else()
-    # SFML found via SFMLConfig.cmake
-    target_link_libraries(tgui PRIVATE sfml-graphics)
+# if(DEFINED SFML_LIBRARIES)
+#     # SFML found via FindSFML.cmake
+#     target_include_directories(tgui PRIVATE ${SFML_INCLUDE_DIR})
+#     target_link_libraries(tgui PRIVATE ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+# else()
+#     # SFML found via SFMLConfig.cmake
+#     target_link_libraries(tgui PRIVATE sfml-graphics)
+# endif()
+
+#Inclusion SFML
+include_directories(${ShapEditor_SOURCE_DIR}/include/SFML/include/)
+
+#On lie les bibliothèque SFML avec le projet en focntion du type de build
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+	target_link_libraries(tgui sfml-graphics)
+	target_link_libraries(tgui sfml-system)
+	target_link_libraries(tgui sfml-window)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	target_link_libraries(tgui sfml-graphics-d)
+	target_link_libraries(tgui sfml-system-d)
+	target_link_libraries(tgui sfml-window-d)
 endif()
 
 # define TGUI_USE_CPP17 if requested

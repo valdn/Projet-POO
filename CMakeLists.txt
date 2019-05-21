@@ -24,18 +24,24 @@ include_directories(include/FormeGUI)
 include_directories(include/SFML/include/)
 add_subdirectory(include/SFML)
 
-#On lie les bibliothèque SFML avec le projet en focntion du type de build
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-	target_link_libraries(shapeditor sfml-graphics)
-	target_link_libraries(shapeditor sfml-system)
-	target_link_libraries(shapeditor sfml-window)
-elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
-	target_link_libraries(shapeditor sfml-graphics-d)
-	target_link_libraries(shapeditor sfml-system-d)
-	target_link_libraries(shapeditor sfml-window-d)
-endif()
-
 #Inclusion de la libraire Forme
 include_directories(include/Forme/include/)
 add_subdirectory(include/Forme)
 target_link_libraries(shapeditor Forme)
+
+#Inclusion TGUI
+include_directories(include/TGUI/include/)
+add_subdirectory(include/TGUI)
+
+#On lie les bibliothèque dynamique de SFML et TGUI avec le projet en fonction du type de build
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+	target_link_libraries(shapeditor sfml-graphics)
+	target_link_libraries(shapeditor sfml-system)
+	target_link_libraries(shapeditor sfml-window)
+	target_link_libraries(shapeditor tgui)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	target_link_libraries(shapeditor sfml-graphics-d)
+	target_link_libraries(shapeditor sfml-system-d)
+	target_link_libraries(shapeditor sfml-window-d)
+	target_link_libraries(shapeditor tgui-d)
+endif()

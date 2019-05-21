@@ -11,6 +11,8 @@
 #include "GestionnairePoints.hpp"
 #include "ImageDrawable.hpp"
 
+#include "TGUI/TGUI.hpp"
+
 void viderForme(FormeD * shape) {
 	shape->setFillColor(sf::Color::Transparent);
 	shape->togglePleine();
@@ -75,7 +77,10 @@ void charger(FormesD & gestion) {
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1000, 500), "SFML n'est pas si mal :D");
-	//sf::RenderWindow test(sf::VideoMode(50, 200), sf::Style::None, "test");
+
+	tgui::Gui gui(window);
+	tgui::Button::Ptr button = tgui::Button::create("Salut");
+	gui.add(button);
 
 	FormesD gestionF(10);	//Creer un gestionnaire de formes
 	PointsD gestionP(10); //Creer un gestionnaire de points
@@ -217,15 +222,18 @@ int main()
 				default:
 					break;
 			}
+
+			gui.handleEvent(event); // Pass the event to the widgets
 		}
 
 		//Vide la fenetre et peint en blanc
 		window.clear(sf::Color::White);
 
-		//Dessine tous les objet de gestion
+		//Dessine tous les objet du gestionnaire de formes
 		gestionF.dessiner(window);
 
-		//p->dessiner(window);
+		//Dessine le gui
+		gui.draw();
 
 		//Affiche les modificiation faites
 		window.display();
