@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.1)
 
+#nom du projet
 project(ShapEditor)
 
-set(SFML_DIR "${ShapEditor_SOURCE_DIR}/include/SFML/lib/cmake/SFML")
-set(SFML_DOC_DIR "${ShapEditor_SOURCE_DIR}/include/SFML/doc")
+#Repertoire de sortie
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin CACHE
+    PATH "Directory where .exe and .dll files are dumped." FORCE)
 
-set(EXECUTABLE_OUTPUT_PATH ${ShapEditor_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE})
-
+#Tous les fichiers de l'executable
 file(
         GLOB_RECURSE
         source_files
@@ -14,41 +15,27 @@ file(
 		include/FormeGUI/*
 )
 
+#creation executable de l'application
 add_executable(shapeditor ${source_files})
+#On inclut le repertoire qui contient les drawables
+include_directories(include/FormeGUI)
 
-#Cherche SFML v 2.5 au moins
-find_package(SFML 2.5 COMPONENTS graphics REQUIRED)
+#Inclusion SFML
+include_directories(include/SFML/include/)
+add_subdirectory(include/SFML)
+
+#On lie les bibliothèque SFML avec le projet en focntion du type de build
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
+	target_link_libraries(shapeditor sfml-graphics)
+	target_link_libraries(shapeditor sfml-system)
+	target_link_libraries(shapeditor sfml-window)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	target_link_libraries(shapeditor sfml-graphics-d)
+	target_link_libraries(shapeditor sfml-system-d)
+	target_link_libraries(shapeditor sfml-window-d)
+endif()
 
 #Inclusion de la libraire Forme
 include_directories(include/Forme/include/)
 add_subdirectory(include/Forme)
 target_link_libraries(shapeditor Forme)
-
-include_directories(include/FormeGUI)
-
-#link la librairie graphic de sfml au projet
-target_link_libraries(shapeditor sfml-graphics)
-
-
-#Copie les .dll nécessaire dans le répertoire de sortie
-message(STATUS "Copying SFML binaries")
-
-#debug version
-if(NOT EXISTS ${ShapEditor_SOURCE_DIR}/bin/Debug)
-	execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${ShapEditor_SOURCE_DIR}/bin/Debug)
-endif()
-if(TARGET sfml-graphics)
-	execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SFML_DIR}/../../../bin/sfml-graphics-d-2.dll	${ShapEditor_SOURCE_DIR}/bin/Debug)
-	execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SFML_DIR}/../../../bin/sfml-system-d-2.dll		${ShapEditor_SOURCE_DIR}/bin/Debug)
-	execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SFML_DIR}/../../../bin/sfml-window-d-2.dll		${ShapEditor_SOURCE_DIR}/bin/Debug)
-endif()
-
-#Release version
-if(NOT EXISTS ${ShapEditor_SOURCE_DIR}/bin/Release)
-	execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${ShapEditor_SOURCE_DIR}/bin/Release)
-endif()
-if(TARGET sfml-graphics)
-	execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SFML_DIR}/../../../bin/sfml-graphics-2.dll	${ShapEditor_SOURCE_DIR}/bin/Release)
-	execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SFML_DIR}/../../../bin/sfml-system-2.dll	${ShapEditor_SOURCE_DIR}/bin/Release)
-	execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${SFML_DIR}/../../../bin/sfml-window-2.dll	${ShapEditor_SOURCE_DIR}/bin/Release)
-endif()
