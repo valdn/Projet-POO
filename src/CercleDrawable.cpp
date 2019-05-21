@@ -23,7 +23,7 @@ CercleD::~CercleD() {}
 
 //Faut pas oublier que l'ancre est au centre
 bool CercleD::isOver(int _x, int _y) const {
-	//retourne vrai si la distance entre le centre du cerlce et la souris est inférieur au rayon
+	//retourne vrai si la distance entre le centre du cerlce et la souris est infï¿½rieur au rayon
 	return (getAncreD().isOver(_x, _y) || ((std::pow((double)_x - (getAncre().getX() + (int)getRayon()), 2) + std::pow((double)_y - (getAncre().getY() + (int)getRayon()), 2)) <= std::pow((int)getRayon(),2)));
 }
 
@@ -42,7 +42,7 @@ void CercleD::recalculate() {
 }
 
 std::size_t CercleD::getPointCount() const {
-	return 30;	//Fixé mais pas obligé. Retourne 30 points qui vont définir la forme
+	return 30;	//Fixï¿½ mais pas obligï¿½. Retourne 30 points qui vont dï¿½finir la forme
 }
 
 sf::Vector2f CercleD::getPoint(std::size_t index) const {

@@ -41,7 +41,7 @@ void EllipseD::recalculate() {
 }
 
 std::size_t EllipseD::getPointCount() const {
-	return 30;	//Fixé mais pas obligé. Retourne 30 points qui vont définir la forme
+	return 30;	//Fixï¿½ mais pas obligï¿½. Retourne 30 points qui vont dï¿½finir la forme
 }
 
 sf::Vector2f EllipseD::getPoint(std::size_t index) const {
