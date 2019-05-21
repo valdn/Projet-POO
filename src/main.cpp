@@ -163,17 +163,13 @@ int main()
 								dist_y = y - select_shape->getAncre().getY();	//Distance en y entre l'ancre de la forme et de la souris
 							}
 						}
-						else {
-							dist_x = x - select_point->getX();	//Distance en x entre l'ancre de la forme et de la souris
-							dist_y = y - select_point->getY();	//Distance en y entre l'ancre de la forme et de la souris
-						}
 					}
 					break;
 
 				//Mouvement souris
 				case sf::Event::MouseMoved:
 					if ((select_point != nullptr) && (mouseIn)) {
-						select_point->setPos((event.mouseMove.x - dist_x), (event.mouseMove.y - dist_y));
+						select_point->setPos((event.mouseMove.x), (event.mouseMove.y));
 						select_point->update();
 						need_update = true;
 					}
