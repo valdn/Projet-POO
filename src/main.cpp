@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #include "GestionnaireFormes.hpp"
 #include "RectangleDrawable.hpp"
@@ -10,6 +11,7 @@
 #include "TriangleDrawable.hpp"
 #include "GestionnairePoints.hpp"
 #include "ImageDrawable.hpp"
+#include "PolygoneDrawable.hpp"
 
 #include "TGUI/TGUI.hpp"
 
@@ -36,7 +38,7 @@ void augmenterTrait(FormeD * shape) {
 }
 
 void dimTransparence(FormeD * shape) {
-	if (shape->getTrsp() > 1) {
+	if (shape->getTrsp() > 5) {
 		uint i = shape->getTrsp() - 2;
 		shape->setFillColor(sf::Color(255, 255, 255, i));
 		shape->setTrsp(i);
@@ -74,13 +76,26 @@ void charger(FormesD & gestion) {
 	fb.close();	//ferme le fichier
 }
 
+void ajouterRectangle(FormesD * gestion) {
+	try {
+		gestion->ajouter(new RectangleD(sf::Color::Black, 400, 10, 100, 200));
+	} catch (const std::exception & e ) {
+		std::cerr << e.what() << std::endl;
+	}
+}
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1000, 500), "SFML n'est pas si mal :D");
+	sf::RenderWindow mainW(sf::VideoMode(1000, 500), "SFML n'est pas si mal :D");
+	sf::RenderWindow menuW(sf::VideoMode(200, 700), "Menu window", sf::Style::Close | sf::Style::Titlebar);
 
-	tgui::Gui gui(window);
-	tgui::Button::Ptr button = tgui::Button::create("Salut");
-	gui.add(button);
+	//Creation du menu dans la fenetre menuW
+	tgui::Gui gui(menuW);
+	tgui::Button::Ptr addRecButton = tgui::Button::create();
+	addRecButton->setText("Ajouter rectangle");
+	gui.add(addRecButton, "addRecButton");
+
+	
 
 	FormesD gestionF(10);	//Creer un gestionnaire de formes
 	PointsD gestionP(10); //Creer un gestionnaire de points
@@ -106,32 +121,45 @@ int main()
 	gestionP.ajouter(new PointD(100, 150));
 	gestionP.ajouter(new PointD(400, 200));
 	gestionP.ajouter(new PointD(400, 400));
+	gestionP.ajouter(new PointD(300, 300));
+	gestionP.ajouter(new PointD(500, 300));
+	gestionP.ajouter(new PointD(600, 300));
+	gestionP.ajouter(new PointD(600, 350));
 
 	gestionF.ajouter(new TriangleD(sf::Color::Cyan, 100, 300, gestionP.getPointAt(0), gestionP.getPointAt(1)));
 	gestionF.ajouter(new TriangleD(sf::Color::Black, 300, 100, gestionP.getPointAt(2), gestionP.getPointAt(1)));
-	gestionF.ajouter(new ImageD("download.png", 200, 200, gestionP.getPointAt(3)));
+
+	std::vector<PointD*> * tableau_de_pointD = new std::vector<PointD*>;
+	tableau_de_pointD->push_back(gestionP.getPointAt(5));
+	tableau_de_pointD->push_back(gestionP.getPointAt(6));
+	tableau_de_pointD->push_back(gestionP.getPointAt(7));
+	gestionF.ajouter(new PolygoneD(sf::Color::Cyan, 500, 400, tableau_de_pointD));
 
 
 	enregistrer(gestionF);
 	//charger(gestion);
 
+	//Connect tous les boutons avec leur fonction associé
+	addRecButton->connect("pressed", ajouterRectangle, &gestionF);
+
 
 	//Boucle principale
-	while (window.isOpen())
+	while (mainW.isOpen())
 	{
 		//Boucle d'evenement
 		sf::Event event;
-		while (window.pollEvent(event))
+		while (mainW.pollEvent(event))
 		{
 			switch (event.type) {
 				//Fenetre fermé
 				case sf::Event::Closed:
-					window.close();
+					mainW.close();
+					menuW.close();
 					break;
 
 				//fenetre resize
 				case sf::Event::Resized:
-					window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+					mainW.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
 					break;
 
 				//La fenetre est selectionné
@@ -222,21 +250,40 @@ int main()
 				default:
 					break;
 			}
+		}
+
+		while (menuW.pollEvent(event)) {
+			switch (event.type) {
+				//Fenetre fermé
+			case sf::Event::Closed:
+				menuW.close();
+				break;
+
+				//fenetre resize
+			case sf::Event::Resized:
+				menuW.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+				gui.setView(menuW.getView());
+				break;
+			default:
+				break;
+			}
 
 			gui.handleEvent(event); // Pass the event to the widgets
 		}
 
 		//Vide la fenetre et peint en blanc
-		window.clear(sf::Color::White);
+		mainW.clear(sf::Color::White);
+		menuW.clear(sf::Color::White);
 
 		//Dessine tous les objet du gestionnaire de formes
-		gestionF.dessiner(window);
+		gestionF.dessiner(mainW);
 
 		//Dessine le gui
 		gui.draw();
 
 		//Affiche les modificiation faites
-		window.display();
+		mainW.display();
+		menuW.display();
 	}
 
 	return 0;

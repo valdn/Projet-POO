@@ -2,8 +2,8 @@
 
 RectangleD::RectangleD(sf::Color couleur, int x, int y, uint largeur, uint hauteur)
 	: Forme(couleur.toInteger(), x, y),
-		Rectangle(couleur.toInteger(), x, y, largeur, hauteur), 
-		FormeD(couleur, x, y) 
+		Rectangle(couleur.toInteger(), x, y, largeur, hauteur),
+		FormeD(couleur, x, y)
 {
 	setFillColor(sf::Color(getCouleur()));
 	setOutlineThickness(-1);
