@@ -24,6 +24,14 @@ void FormesD::update() const {
 	for (size_t i = 0; i < nb_drawable; i++) tab_drawable[i]->recalculate();
 }
 
+ImageD * FormesD::getImageByPoint(PointD * p1) const {
+	for (size_t i = 0; i < nb_drawable; i++) {
+		ImageD * test = dynamic_cast<ImageD*> (tab_drawable[i]);
+		if (test != nullptr && test->getPointD() == p1) return test;
+	}
+	return nullptr;
+}
+
 FormeD * FormesD::isOver(int x, int y) const {
 	for (size_t i = 0; i < nb_drawable; i++) {
 		if (tab_drawable[i]->isOver(x, y)) return tab_drawable[i];

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 
+
+
 #include "GestionnaireFormes.hpp"
 #include "RectangleDrawable.hpp"
 #include "CarreDrawable.hpp"
@@ -10,8 +12,6 @@
 #include "TriangleDrawable.hpp"
 #include "GestionnairePoints.hpp"
 #include "ImageDrawable.hpp"
-
-#include "TGUI/TGUI.hpp"
 
 void viderForme(FormeD * shape) {
 	shape->setFillColor(sf::Color::Transparent);
@@ -77,10 +77,10 @@ void charger(FormesD & gestion) {
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1000, 500), "SFML n'est pas si mal :D");
+	window.setFramerateLimit(60);
 
-	tgui::Gui gui(window);
-	tgui::Button::Ptr button = tgui::Button::create("Salut");
-	gui.add(button);
+	int change = 0;
+	int i = 0;
 
 	FormesD gestionF(10);	//Creer un gestionnaire de formes
 	PointsD gestionP(10); //Creer un gestionnaire de points
@@ -106,6 +106,7 @@ int main()
 	gestionP.ajouter(new PointD(100, 150));
 	gestionP.ajouter(new PointD(400, 200));
 	gestionP.ajouter(new PointD(400, 400));
+	gestionP.ajouter(new PointD(400, 400));
 
 	gestionF.ajouter(new TriangleD(sf::Color::Cyan, 100, 300, gestionP.getPointAt(0), gestionP.getPointAt(1)));
 	gestionF.ajouter(new TriangleD(sf::Color::Black, 300, 100, gestionP.getPointAt(2), gestionP.getPointAt(1)));
@@ -119,111 +120,124 @@ int main()
 	//Boucle principale
 	while (window.isOpen())
 	{
-		//Boucle d'evenement
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
 			switch (event.type) {
 				//Fenetre fermé
-				case sf::Event::Closed:
-					window.close();
-					break;
+			case sf::Event::Closed:
+				window.close();
+				break;
 
 				//fenetre resize
-				case sf::Event::Resized:
-					window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
-					break;
+			case sf::Event::Resized:
+				window.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+				break;
 
 				//La fenetre est selectionné
-				case sf::Event::GainedFocus:
-					focus = true;
-					break;
+			case sf::Event::GainedFocus:
+				focus = true;
+				break;
 
 				//La fenetre n'est pas selectionné
-				case sf::Event::LostFocus:
-					focus = false;
-					break;
+			case sf::Event::LostFocus:
+				focus = false;
+				break;
 
 				//La souris entre dans la fenetre
-				case sf::Event::MouseEntered:
-					mouseIn = true;
-					break;
+			case sf::Event::MouseEntered:
+				mouseIn = true;
+				break;
 
 				//La souris quitte la fenetre
-				case sf::Event::MouseLeft:
-					mouseIn = false;
+			case sf::Event::MouseLeft:
+				mouseIn = false;
 
 				//Clic enfoncé souris
-				case sf::Event::MouseButtonPressed:
-					if (event.mouseButton.button == sf::Mouse::Left) {
-						int x = event.mouseButton.x;
-						int y = event.mouseButton.y;
-						select_point = gestionP.isOver(x, y); //Selection d'un point
-						if (select_point == nullptr) {
+			case sf::Event::MouseButtonPressed:
+				if (event.mouseButton.button == sf::Mouse::Left) {
+					int x = event.mouseButton.x;
+					int y = event.mouseButton.y;
+					select_point = gestionP.isOver(x, y); //Selection d'un point
+					if (select_point == nullptr) {
 
-							select_shape = gestionF.isOver(x, y);	//Selection de la forme
-							select_shape_move = gestionF.isOver(x, y);
-							if (select_shape != nullptr) {	//Si on clique sur une forme
-								dist_x = x - select_shape->getAncre().getX();	//Distance en x entre l'ancre de la forme et de la souris
-								dist_y = y - select_shape->getAncre().getY();	//Distance en y entre l'ancre de la forme et de la souris
-							}
+						select_shape = gestionF.isOver(x, y);	//Selection de la forme
+						select_shape_move = gestionF.isOver(x, y);
+						if (select_shape != nullptr) {	//Si on clique sur une forme
+							dist_x = x - select_shape->getAncre().getX();	//Distance en x entre l'ancre de la forme et de la souris
+							dist_y = y - select_shape->getAncre().getY();	//Distance en y entre l'ancre de la forme et de la souris
 						}
 					}
-					break;
+				}
+				break;
 
 				//Mouvement souris
-				case sf::Event::MouseMoved:
-					if ((select_point != nullptr) && (mouseIn)) {
+			case sf::Event::MouseMoved:
+				if ((select_point != nullptr) && (mouseIn)) {
+					ImageD * img = gestionF.getImageByPoint(select_point);
+					if (img != nullptr && img->getActiveRatio()) {	//Si le point appartient à une image
+						if (select_point->getX() - select_shape->getAncre().getX())
+							select_point->setPos((event.mouseMove.x), ((event.mouseMove.x)*((select_point->getY() - select_shape->getAncre().getY()) / (select_point->getX() - select_shape->getAncre().getX()))));
+					}
+					else {
 						select_point->setPos((event.mouseMove.x), (event.mouseMove.y));
-						select_point->update();
-						need_update = true;
 					}
-					else if ((select_shape_move != nullptr) && (mouseIn)) {	//Si une forme est selectionné, que la souris est dans la fenetre et que la fenetre est focus
-						select_shape_move->setAncre((event.mouseMove.x - dist_x), (event.mouseMove.y - dist_y));	//Bouge l'ancre en prenant en compte l'ecart entre la souris et l'ancre
-						select_shape_move->maj();	//Update la forme
-						need_update = true;
-					}
-					if (need_update) {
-						gestionF.update();
-						need_update = false;
-					}
-					break;
+					select_point->update();
+					need_update = true;
+				}
+				else if ((select_shape_move != nullptr) && (mouseIn)) {	//Si une forme est selectionné, que la souris est dans la fenetre et que la fenetre est focus
+					select_shape_move->setAncre((event.mouseMove.x - dist_x), (event.mouseMove.y - dist_y));	//Bouge l'ancre en prenant en compte l'ecart entre la souris et l'ancre
+					select_shape_move->maj();	//Update la forme
+					need_update = true;
+				}
+				if (need_update) {
+					gestionF.update();
+					need_update = false;
+				}
+				break;
 
 				//Relachment bouton souris
-				case sf::Event::MouseButtonReleased:
-					if (event.mouseButton.button == sf::Mouse::Left) {
-						select_shape_move = nullptr;	//Quand on relache le boutton de la souris on déselectionne la forme
-						select_point = nullptr;
-					}
-					break;
+			case sf::Event::MouseButtonReleased:
+				if (event.mouseButton.button == sf::Mouse::Left) {
+					select_shape_move = nullptr;	//Quand on relache le boutton de la souris on déselectionne la forme
+					select_point = nullptr;
+				}
+				break;
 
-				case sf::Event::KeyPressed:
-					if (select_shape != nullptr) {
-						if (dynamic_cast<ImageD*> (select_shape) != nullptr) {//permet de récupérer uniquement les images
-							if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-								dimTransparence(select_shape);
-							else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
-								augTransparence(select_shape);
-						}
-						else {
-							if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-								if (select_shape->isPleine())
-									viderForme(select_shape);
-								else
-									remplirForme(select_shape);
-							else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-								diminuerTrait(select_shape);
-							else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
-								augmenterTrait(select_shape);
-						}
+			case sf::Event::KeyPressed:
+				if (select_shape != nullptr) {
+					if (dynamic_cast<ImageD*> (select_shape) != nullptr) {//permet de récupérer uniquement les images
+						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+							dimTransparence(select_shape);
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+							augTransparence(select_shape);
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+							dynamic_cast<ImageD*> (select_shape)->ToggleActiveRatio();
 					}
-					break;
+					else {
+						if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
+							if (select_shape->isPleine())
+								viderForme(select_shape);
+							else
+								remplirForme(select_shape);
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+							diminuerTrait(select_shape);
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+							augmenterTrait(select_shape);
+					}
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+						change = 1;
+				}
+				break;
 
-				default:
-					break;
+			default:
+				break;
 			}
 
-			gui.handleEvent(event); // Pass the event to the widgets
+		}
+		if (change == 1) {
+			i +=1 ;
+			select_shape->rotate(i);
 		}
 
 		//Vide la fenetre et peint en blanc
@@ -231,9 +245,6 @@ int main()
 
 		//Dessine tous les objet du gestionnaire de formes
 		gestionF.dessiner(window);
-
-		//Dessine le gui
-		gui.draw();
 
 		//Affiche les modificiation faites
 		window.display();

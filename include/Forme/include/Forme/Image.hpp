@@ -27,6 +27,7 @@ namespace fm {
 class Image : virtual public Forme {
 	Point *p1;
 	std::string img;
+	bool activeRatio;
 
 
 	protected:
@@ -43,6 +44,8 @@ class Image : virtual public Forme {
 		inline const Point & getP1() const { return *p1; }
 		inline void setP1(int x, int y) { p1->setXY(x,y); }
 		inline std::string getImg() const { return img ; }
+		inline bool getActiveRatio() const { return activeRatio; }
+		inline void ToggleActiveRatio() { activeRatio = !activeRatio; }
 
 		//Longueur des trois cotés
 		inline double perimetre() const override { return (2 * (getP1().getX() - getAncre().getX()) + 2* (getP1().getY() - getAncre().getY())); }

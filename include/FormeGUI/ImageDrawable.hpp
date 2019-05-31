@@ -23,7 +23,7 @@ public:
 	inline void setTaille(float x, float y) { largeur = x, hauteur = y; }
 	inline uint getLargeur() const { return largeur; }
 	inline uint getHauteur() const { return hauteur; }
-
+	inline const PointD* getPointD() const { return p1; }
 
 	//SFML Stuff
 	std::size_t getPointCount() const override;

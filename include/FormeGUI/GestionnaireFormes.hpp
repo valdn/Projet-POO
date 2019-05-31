@@ -5,6 +5,7 @@
 
 #include "FormeDrawable.hpp"
 #include "SFML/Graphics.hpp"
+#include "ImageDrawable.hpp"
 
 class FormesD {
 	size_t max_formes, nb_drawable;
@@ -19,6 +20,7 @@ class FormesD {
 		void charger(std::istream & is);
 		void dessiner(sf::RenderWindow &window) const;
 		void update() const;
+		ImageD* getImageByPoint(PointD* p1) const;
 
 		inline size_t getnbFormes() { return nb_drawable; }
 };
