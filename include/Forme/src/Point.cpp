@@ -16,7 +16,7 @@ Point::~Point() {
 }
 
 std::ostream & operator<<(std::ostream &os, const Point & p) {
-	os << p.getX() << ' ' << p.getY();
+	os << p.getX() << ' ' << p.getY() << ' ';
 	return os;
 }
 

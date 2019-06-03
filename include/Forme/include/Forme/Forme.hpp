@@ -16,7 +16,6 @@ namespace fm {
 class Forme {
     uint couleur;
     Point ancre;
-    bool selected;
 
     protected:
         virtual void ecrire(std::ostream & os) const;
@@ -31,8 +30,6 @@ class Forme {
         inline void setCouleur(uint _couleur) {couleur = _couleur;}
         inline const Point & getAncre() const {return ancre;}
         inline void setAncre(int x, int y) {ancre.setXY(x,y);}
-				inline bool getSelected() const { return selected; }
-				inline void setSelected(bool _selected) {selected = _selected;}
         virtual double perimetre() const = 0;	//Vituelle pure
 				double getLonSeg(const Point p1, const Point p2) const;
 				friend std::ostream & operator<<(std::ostream &os, const Forme &forme);

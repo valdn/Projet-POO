@@ -14,7 +14,7 @@ PointD::PointD(int x, int y, sf::Color _couleur) : point(new fm::Point(x,y)), co
 	update();
 }
 
-PointD::PointD(const PointD & ori) : PointD(&fm::Point(ori.getPoint()),ori.couleur) {}
+PointD::PointD(const PointD & ori) : PointD(&fm::Point(ori.getPoint()), ori.couleur) {}
 
 PointD::~PointD() {
 	point = nullptr;

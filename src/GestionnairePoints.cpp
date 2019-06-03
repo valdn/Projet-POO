@@ -29,7 +29,7 @@ PointD * PointsD::isOver(int x, int y) const {
 
 void PointsD::sauver(std::ostream &os) const {
 	os << max_points << std::endl << nb_points << std::endl;
-	for (size_t i = 0; i < nb_points; i++) os << (*tab_points[i]) << std::endl;
+	for (size_t i = 0; i < nb_points; i++) os << i << ' ' << (*tab_points[i]) << std::endl;
 }
 
 void PointsD::charger(std::istream &is) {

@@ -3,9 +3,10 @@
 namespace fm {
 
 void Polygone::ecrire(std::ostream &os) const {
-	os << "Triangle ";
+	os << "Polygone ";
 	Forme::ecrire(os);
-	//os << p1 << ' ' << p2 << ' ';
+	for (size_t i = 0; i < tabPoint->size(); i++)
+		os << tabPoint->at(i) << ' ';
 }
 
 Polygone::Polygone(uint couleur, int x, int y, std::vector<Point*>* _tabPoint) : Forme(couleur, x, y), tabPoint(_tabPoint), taille_tab(0) {

@@ -15,6 +15,8 @@
 #include "ImageDrawable.hpp"
 #include "PolygoneDrawable.hpp"
 
+#include "TGUI/TGUI.hpp"
+
 void viderForme(FormeD * shape) {
 	shape->setFillColor(sf::Color::Transparent);
 	shape->togglePleine();
@@ -53,20 +55,25 @@ void augTransparence(FormeD * shape) {
 	}
 }
 
-void enregistrer(FormesD & gestion) {
+void enregistrer(FormesD & gestionF, PointsD & gestionP) {
 	std::filebuf fb;	//Creer un buffer
 	fb.open("test.txt", std::ios::out);	//Ouvre le fichier en ecriture
 	std::ostream os(&fb);	//Creer un ostream avec ce buffer
-	gestion.sauver(os);		//Sauvegarde la fenetre dans le fichier
+
+	gestionP.sauver(os);		//Sauvegarde les points
+	gestionF.sauver(os);		//Sauvegarde les formes
+
 	fb.close();	//Ferme le fichier
 }
 
-void charger(FormesD & gestion) {
+void charger(FormesD & gestionF, PointsD & gestionP) {
 	std::filebuf fb;	//Creer un buffer
 	try {
 		if (fb.open("test2.txt", std::ios::in)) {	//Ouvre le fichier en lecture
 			std::istream is(&fb);	//Crrer un istream avec ce buffer
-			gestion.charger(is);	//Creation du gestionnaire de forme a partir du fichier
+
+			gestionP.charger(is);	//Charge les points
+			gestionF.charger(is);	//Charge les formes
 		}
 		else throw std::runtime_error("Le fichier est introuvable");	//Si le fichier est introuvable
 	}
@@ -94,7 +101,6 @@ int main()
 	tgui::Button::Ptr addRecButton = tgui::Button::create();
 	addRecButton->setText("Ajouter rectangle");
 	gui.add(addRecButton, "addRecButton");
-
 	
 
 	FormesD gestionF(10);	//Creer un gestionnaire de formes
@@ -113,8 +119,6 @@ int main()
 	gestionF.ajouter(new EllipseD(sf::Color::Blue, 10, 70, 50, 25));
 	gestionF.ajouter(new CarreD(sf::Color::Green, 120, 10, 50));
 	gestionF.ajouter(new CercleD(sf::Color::Yellow, 120, 70, 25));
-
-	
 
 
 	gestionP.ajouter(new PointD(200, 200));
@@ -135,9 +139,11 @@ int main()
 	tableau_de_pointD->push_back(gestionP.getPointAt(7));
 	gestionF.ajouter(new PolygoneD(sf::Color::Cyan, 500, 400, tableau_de_pointD));
 
+	gestionF.ajouter(new ImageD("download.png", 200, 200, gestionP.getPointAt(3)));
 
-	enregistrer(gestionF);
-	//charger(gestion);
+
+	enregistrer(gestionF, gestionP);
+	//charger(gestionF, gestionP);
 
 	//Connect tous les boutons avec leur fonction associé
 	addRecButton->connect("pressed", ajouterRectangle, &gestionF);
@@ -203,8 +209,7 @@ int main()
 				if ((select_point != nullptr) && (mouseIn)) {
 					ImageD * img = gestionF.getImageByPoint(select_point);
 					if (img != nullptr && img->getActiveRatio()) {	//Si le point appartient à une image
-						if (select_point->getX() - select_shape->getAncre().getX())
-							select_point->setPos((event.mouseMove.x), ((event.mouseMove.x)*((select_point->getY() - select_shape->getAncre().getY()) / (select_point->getX() - select_shape->getAncre().getX()))));
+						select_point->setPos(event.mouseMove.x, select_point->getY() + event.mouseMove.x - select_point->getX());
 					}
 					else {
 						select_point->setPos((event.mouseMove.x), (event.mouseMove.y));
@@ -252,8 +257,6 @@ int main()
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
 							augmenterTrait(select_shape);
 					}
-					if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
-						change = 1;
 				}
 				break;
 
@@ -277,11 +280,7 @@ int main()
 			default:
 				break;
 			}
-
-		}
-		if (change == 1) {
-			i +=1 ;
-			select_shape->rotate(i);
+			gui.handleEvent(event); // Pass the event to the widgets
 		}
 
 		//Vide la fenetre et peint en blanc
@@ -290,6 +289,9 @@ int main()
 
 		//Dessine tous les objet du gestionnaire de formes
 		gestionF.dessiner(mainW);
+
+		//Dessine le gui
+		gui.draw();
 
 		//Affiche les modificiation faites
 		mainW.display();

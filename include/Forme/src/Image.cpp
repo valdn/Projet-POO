@@ -3,7 +3,7 @@
 namespace fm {
 
 void Image::ecrire(std::ostream &os) const {
-	os << "Triangle ";
+	os << "Image ";
 	Forme::ecrire(os);
 	os << p1 << ' ';
 }

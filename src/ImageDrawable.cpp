@@ -7,10 +7,7 @@ ImageD::ImageD(std::string img, int x1, int y1, PointD* _p1)
 {
 	setFillColor(sf::Color::White);
 	sf::Texture * texture = new sf::Texture();
-	if (!texture->loadFromFile(img))
-	{
-		std::cout << "non" << std::endl;
-	}
+	if (!texture->loadFromFile(img)) std::cerr << "Texture introuvable" << std::endl;
 	texture->setSmooth(true);
 	setTexture(texture);
 	setTaille(texture->getSize().x, texture->getSize().y);
@@ -24,10 +21,7 @@ ImageD::ImageD(const ImageD & ori) : ImageD(ori.Image::getImg(), ori.Image::getA
 ImageD::ImageD(std::istream & is) : Forme(is), Image(is), FormeD(is) {
 	setFillColor(sf::Color::White);
 	sf::Texture * texture = new sf::Texture();
-	if (!texture->loadFromFile(getImg()))
-	{
-		std::cout << "non" << std::endl;
-	}
+	if (!texture->loadFromFile(getImg())) std::cerr << "Texture introuvable" << std::endl;
 	texture->setSmooth(true);
 	setTexture(texture);
 	setTaille(texture->getSize().x, texture->getSize().y);
