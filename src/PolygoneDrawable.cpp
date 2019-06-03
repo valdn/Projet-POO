@@ -26,10 +26,10 @@ PolygoneD::PolygoneD(sf::Color couleur, int x1, int y1, std::vector<PointD*> * _
 PolygoneD::PolygoneD(const PolygoneD & ori) : PolygoneD(sf::Color(ori.getCouleur()), getAncre().getX(), getAncre().getY(), ori.tabPointD) {}
 
 PolygoneD::PolygoneD(std::istream & is) : fm::Forme(is), fm::Polygone(is), FormeD(is) {
-	setFillColor(sf::Color(getCouleur()));
-	setOutlineThickness(-1);
-	setOutlineColor(sf::Color(getCouleur()));
-	recalculate();
+	std::string str;
+	std::getline(is, str);
+
+	throw std::range_error("il est impossible de charger cette forme");
 }
 
 PolygoneD::~PolygoneD() {}

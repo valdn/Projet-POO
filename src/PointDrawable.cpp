@@ -16,6 +16,13 @@ PointD::PointD(int x, int y, sf::Color _couleur) : point(new fm::Point(x,y)), co
 
 PointD::PointD(const PointD & ori) : PointD(&fm::Point(ori.getPoint()), ori.couleur) {}
 
+PointD::PointD(std::istream & is) : point(new fm::Point(is)) {
+	int ucolor;
+	is >> ucolor;
+
+	couleur = sf::Color(ucolor);
+}
+
 PointD::~PointD() {
 	point = nullptr;
 }
@@ -34,11 +41,10 @@ bool PointD::isOver(int x, int y) const {
 }
 
 PointD * PointD::charger(std::istream & is) {
-	return new PointD(new fm::Point(is));
+	return new PointD(is);
 }
 
 std::ostream & operator<<(std::ostream & os, const PointD & p) {
-	os << p.getPoint();
-	os << p.couleur.toInteger();
+	os << p.getPoint() << p.couleur.toInteger();
 	return os;
 }

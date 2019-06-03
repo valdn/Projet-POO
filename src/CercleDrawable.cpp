@@ -42,7 +42,7 @@ void CercleD::recalculate() {
 }
 
 std::size_t CercleD::getPointCount() const {
-	return 30;	//Fix� mais pas oblig�. Retourne 30 points qui vont d�finir la forme
+	return 30;	//Fixé mais pas obligé. Retourne 30 points qui vont définir la forme
 }
 
 sf::Vector2f CercleD::getPoint(std::size_t index) const {

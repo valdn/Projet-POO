@@ -4,6 +4,8 @@
 #include "EllipseDrawable.hpp"
 #include "CercleDrawable.hpp"
 #include "TriangleDrawable.hpp"
+#include "PolygoneDrawable.hpp"
+#include "ImageDrawable.hpp"
 
 FormeD::FormeD(sf::Color couleur, int x, int y) : Forme(couleur.toInteger(),x,y), pleine(true), ancreD(getAncreMem(), sf::Color::Magenta) {}
 
@@ -30,6 +32,8 @@ FormeD * FormeD::charger(std::istream & is) {
 	else if (type == "Ellipse") return new EllipseD(is);
 	else if (type == "Cercle") return new CercleD(is);
 	else if (type == "Triangle") return new TriangleD(is);
+	else if (type == "Polygone") return new PolygoneD(is);
+	else if (type == "Image") return new ImageD(is);
 
 	throw std::range_error("Cette forme n'existe pas");
 }

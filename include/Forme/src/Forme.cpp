@@ -3,12 +3,14 @@
 #include "Forme/Carre.hpp"
 #include "Forme/Ellipse.hpp"
 #include "Forme/Cercle.hpp"
+#include "Forme/Triangle.hpp"
+#include "Forme/Polygone.hpp"
 
 
 namespace fm {
 
 void Forme::ecrire(std::ostream & os) const {
-	os << ancre << ' ' << couleur << ' ';
+	os << ancre << couleur << ' ';
 }
 
 Forme::Forme(uint _couleur, int x, int y) : couleur(_couleur), ancre(x, y) {}
@@ -33,6 +35,8 @@ Forme * Forme::charger(std::istream & is) {
 	else if (type == "Carre") return new Carre(is);
 	else if (type == "Ellipse") return new Ellipse(is);
 	else if (type == "Cercle") return new Cercle(is);
+	else if (type == "Triangle") return new Triangle(is);
+	else if (type == "Polygone") return new Polygone(is);
 
 	throw std::range_error("Cette forme n'existe pas");
 }

@@ -12,7 +12,9 @@ Triangle::Triangle(uint couleur, int x, int y, Point * _p1, Point * _p2) : Forme
 
 Triangle::Triangle(const Triangle & ori) : Triangle(ori.getCouleur(), ori.getAncre().getX(), ori.getAncre().getY(), &Point(ori.getP1()), &Point(ori.getP2())) {}
 
-Triangle::Triangle(std::istream &is) : Forme(is), p1(&Point(is)), p2(&Point(is)) {}
+Triangle::Triangle(std::istream &is) : Forme(is) {
+	//TODO
+}
 
 Triangle::~Triangle() {}
 

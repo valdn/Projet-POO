@@ -3,17 +3,14 @@
 #include <fstream>
 #include <vector>
 
-
-
-#include "GestionnaireFormes.hpp"
 #include "RectangleDrawable.hpp"
 #include "CarreDrawable.hpp"
 #include "EllipseDrawable.hpp"
 #include "CercleDrawable.hpp"
 #include "TriangleDrawable.hpp"
-#include "GestionnairePoints.hpp"
 #include "ImageDrawable.hpp"
 #include "PolygoneDrawable.hpp"
+#include "Gestionnaire.hpp"
 
 #include "TGUI/TGUI.hpp"
 
@@ -55,25 +52,23 @@ void augTransparence(FormeD * shape) {
 	}
 }
 
-void enregistrer(FormesD & gestionF, PointsD & gestionP) {
+void enregistrer(Gestionnaire &gestion) {
 	std::filebuf fb;	//Creer un buffer
 	fb.open("test.txt", std::ios::out);	//Ouvre le fichier en ecriture
 	std::ostream os(&fb);	//Creer un ostream avec ce buffer
 
-	gestionP.sauver(os);		//Sauvegarde les points
-	gestionF.sauver(os);		//Sauvegarde les formes
+	gestion.sauver(os);		//Sauvegarde les points
 
 	fb.close();	//Ferme le fichier
 }
 
-void charger(FormesD & gestionF, PointsD & gestionP) {
+void charger(Gestionnaire &gestion) {
 	std::filebuf fb;	//Creer un buffer
 	try {
 		if (fb.open("test2.txt", std::ios::in)) {	//Ouvre le fichier en lecture
 			std::istream is(&fb);	//Crrer un istream avec ce buffer
 
-			gestionP.charger(is);	//Charge les points
-			gestionF.charger(is);	//Charge les formes
+			gestion.charger(is);	//Charge les points
 		}
 		else throw std::runtime_error("Le fichier est introuvable");	//Si le fichier est introuvable
 	}
@@ -83,7 +78,7 @@ void charger(FormesD & gestionF, PointsD & gestionP) {
 	fb.close();	//ferme le fichier
 }
 
-void ajouterRectangle(FormesD * gestion) {
+void ajouterRectangle(Gestionnaire * gestion) {
 	try {
 		gestion->ajouter(new RectangleD(sf::Color::Black, 400, 10, 100, 200));
 	} catch (const std::exception & e ) {
@@ -103,8 +98,7 @@ int main()
 	gui.add(addRecButton, "addRecButton");
 	
 
-	FormesD gestionF(10);	//Creer un gestionnaire de formes
-	PointsD gestionP(10); //Creer un gestionnaire de points
+	Gestionnaire gestion = Gestionnaire(); //Creer un gestionnaire
 
 	FormeD * select_shape = nullptr;	//Sert a pointer sur une forme
 	FormeD * select_shape_move = nullptr;
@@ -115,38 +109,39 @@ int main()
 	bool focus = true;	//Savoir si la fenetre est focus
 	bool need_update = false;
 
-	gestionF.ajouter(new RectangleD(sf::Color::Red, 10, 10, 100, 50));
-	gestionF.ajouter(new EllipseD(sf::Color::Blue, 10, 70, 50, 25));
-	gestionF.ajouter(new CarreD(sf::Color::Green, 120, 10, 50));
-	gestionF.ajouter(new CercleD(sf::Color::Yellow, 120, 70, 25));
+	gestion.ajouter(new Calque());	//Creer un deuxieme calque
+
+	gestion.ajouter(new PointD(200, 200), 1);	//Ajoute un point sur le second calque
+	gestion.ajouter(new PointD(100, 150), 1);
+	gestion.ajouter(new PointD(400, 200), 1);
+	gestion.ajouter(new PointD(400, 400), 1);
+	gestion.ajouter(new PointD(300, 300), 1);
+	gestion.ajouter(new PointD(500, 300), 1);
+	gestion.ajouter(new PointD(600, 300), 1);
+	gestion.ajouter(new PointD(600, 350), 1);
 
 
-	gestionP.ajouter(new PointD(200, 200));
-	gestionP.ajouter(new PointD(100, 150));
-	gestionP.ajouter(new PointD(400, 200));
-	gestionP.ajouter(new PointD(400, 400));
-	gestionP.ajouter(new PointD(300, 300));
-	gestionP.ajouter(new PointD(500, 300));
-	gestionP.ajouter(new PointD(600, 300));
-	gestionP.ajouter(new PointD(600, 350));
-
-	gestionF.ajouter(new TriangleD(sf::Color::Cyan, 100, 300, gestionP.getPointAt(0), gestionP.getPointAt(1)));
-	gestionF.ajouter(new TriangleD(sf::Color::Black, 300, 100, gestionP.getPointAt(2), gestionP.getPointAt(1)));
+	gestion.ajouter(new RectangleD(sf::Color::Red, 10, 10, 100, 50));	//Ajoute une forme au calque de base
+	gestion.ajouter(new EllipseD(sf::Color::Blue, 10, 70, 50, 25));
+	gestion.ajouter(new CarreD(sf::Color::Green, 120, 10, 50));
+	gestion.ajouter(new CercleD(sf::Color::Yellow, 120, 70, 25));
+	gestion.ajouter(new TriangleD(sf::Color::Cyan, 100, 300, gestion.getPointAt(0), gestion.getPointAt(1)), 1);	//Ajoute une forme au deuxieme calque
+	gestion.ajouter(new TriangleD(sf::Color::Black, 300, 100, gestion.getPointAt(2), gestion.getPointAt(1)), 1);
 
 	std::vector<PointD*> * tableau_de_pointD = new std::vector<PointD*>;
-	tableau_de_pointD->push_back(gestionP.getPointAt(5));
-	tableau_de_pointD->push_back(gestionP.getPointAt(6));
-	tableau_de_pointD->push_back(gestionP.getPointAt(7));
-	gestionF.ajouter(new PolygoneD(sf::Color::Cyan, 500, 400, tableau_de_pointD));
+	tableau_de_pointD->push_back(gestion.getPointAt(5));
+	tableau_de_pointD->push_back(gestion.getPointAt(6));
+	tableau_de_pointD->push_back(gestion.getPointAt(7));
+	gestion.ajouter(new PolygoneD(sf::Color::Cyan, 500, 400, tableau_de_pointD), 1);
 
-	gestionF.ajouter(new ImageD("download.png", 200, 200, gestionP.getPointAt(3)));
+	gestion.ajouter(new ImageD("download.png", 200, 200, gestion.getPointAt(3)), 1);
 
 
-	enregistrer(gestionF, gestionP);
+	enregistrer(gestion);
 	//charger(gestionF, gestionP);
 
 	//Connect tous les boutons avec leur fonction associé
-	addRecButton->connect("pressed", ajouterRectangle, &gestionF);
+	addRecButton->connect("pressed", ajouterRectangle, &gestion);
 
 
 	//Boucle principale
@@ -191,11 +186,11 @@ int main()
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					int x = event.mouseButton.x;
 					int y = event.mouseButton.y;
-					select_point = gestionP.isOver(x, y); //Selection d'un point
+					select_point = gestion.isOverPoint(x, y); //Selection d'un point
 					if (select_point == nullptr) {
 
-						select_shape = gestionF.isOver(x, y);	//Selection de la forme
-						select_shape_move = gestionF.isOver(x, y);
+						select_shape = gestion.isOverForme(x,y);	//Selection de la forme
+						select_shape_move = select_shape;
 						if (select_shape != nullptr) {	//Si on clique sur une forme
 							dist_x = x - select_shape->getAncre().getX();	//Distance en x entre l'ancre de la forme et de la souris
 							dist_y = y - select_shape->getAncre().getY();	//Distance en y entre l'ancre de la forme et de la souris
@@ -207,7 +202,7 @@ int main()
 				//Mouvement souris
 			case sf::Event::MouseMoved:
 				if ((select_point != nullptr) && (mouseIn)) {
-					ImageD * img = gestionF.getImageByPoint(select_point);
+					ImageD * img = gestion.getImageByPoint(select_point);
 					if (img != nullptr && img->getActiveRatio()) {	//Si le point appartient à une image
 						select_point->setPos(event.mouseMove.x, select_point->getY() + event.mouseMove.x - select_point->getX());
 					}
@@ -223,7 +218,7 @@ int main()
 					need_update = true;
 				}
 				if (need_update) {
-					gestionF.update();
+					gestion.update();
 					need_update = false;
 				}
 				break;
@@ -258,6 +253,10 @@ int main()
 							augmenterTrait(select_shape);
 					}
 				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+					gestion.getCalqueAt(1)->toggleActive();
+				}
+
 				break;
 
 			default:
@@ -288,7 +287,7 @@ int main()
 		menuW.clear(sf::Color::White);
 
 		//Dessine tous les objet du gestionnaire de formes
-		gestionF.dessiner(mainW);
+		gestion.dessiner(mainW);
 
 		//Dessine le gui
 		gui.draw();

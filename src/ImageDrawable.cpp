@@ -19,15 +19,10 @@ ImageD::ImageD(std::string img, int x1, int y1, PointD* _p1)
 ImageD::ImageD(const ImageD & ori) : ImageD(ori.Image::getImg(), ori.Image::getAncre().getX(), ori.Image::getAncre().getY(), ori.p1) {}
 
 ImageD::ImageD(std::istream & is) : Forme(is), Image(is), FormeD(is) {
-	setFillColor(sf::Color::White);
-	sf::Texture * texture = new sf::Texture();
-	if (!texture->loadFromFile(getImg())) std::cerr << "Texture introuvable" << std::endl;
-	texture->setSmooth(true);
-	setTexture(texture);
-	setTaille(texture->getSize().x, texture->getSize().y);
-	p1->getPtrPoint()->setXY(getAncre().getX() + getLargeur(), getAncre().getY() + getHauteur());
-	dist1 = getDistance(getAncre(), p1->getPoint());
-	recalculate();
+	std::string str;
+	std::getline(is, str);
+
+	throw std::range_error("il est impossible de charger cette forme");
 }
 
 ImageD::~ImageD() {}

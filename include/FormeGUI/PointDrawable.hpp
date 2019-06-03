@@ -13,6 +13,7 @@ class PointD {
 		PointD(fm::Point * point, sf::Color couleur = sf::Color::Black);
 		PointD(int x, int y, sf::Color couleur = sf::Color::Black);
 		PointD(const PointD & ori);
+		PointD(std::istream & is);
 		~PointD();
 		inline fm::Point & getPoint() const { return *point; }
 		inline fm::Point * getPtrPoint() { return point; }
