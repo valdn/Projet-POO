@@ -136,6 +136,13 @@ void Gestionnaire::dessiner(sf::RenderWindow & window) const {
 	}
 }
 
+void Gestionnaire::addToGroup(Groupe * g1, Groupe * g2) {
+	for (size_t i = 0; i < g1->getNbFormes();) {
+		g2->ajouter(g1->getFormeAt(i));
+		g1->supprimer(g1->getFormeAt(i));
+	}
+}
+
 ImageD * Gestionnaire::getImageByPoint(PointD * p1) const {
 	for (size_t i = 0; i < tab_forme.size(); i++) {
 		ImageD * test = dynamic_cast<ImageD*> (tab_forme[i]);
@@ -163,7 +170,7 @@ PointD * Gestionnaire::isOverPoint(int x, int y) const {
 }
 
 
-Groupe * Gestionnaire::inGroupe(FormeD * shape) const
+Groupe * Gestionnaire::getGroupe(FormeD * shape) const
 {
 	for (size_t i = 0; i  < tab_groupe.size(); i++) {
 		if (tab_groupe[i]->inTab(shape)) return tab_groupe[i];

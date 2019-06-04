@@ -28,11 +28,12 @@ class Gestionnaire {
 		void charger(std::istream & is);
 		void update() const;
 		void dessiner(sf::RenderWindow &window) const;
+		void addToGroup(Groupe* g1, Groupe* g2);
 
 		ImageD * getImageByPoint(PointD* p1) const;
 		FormeD * isOverForme(int x, int y) const;
 		PointD * isOverPoint(int x, int y) const;
-		Groupe * inGroupe(FormeD* shape) const;
+		Groupe * getGroupe(FormeD* shape) const;
 
 		inline size_t getNbFormes() const { return tab_forme.size(); }
 		inline FormeD* getFormeAt(size_t i) const { return tab_forme.at(i); }

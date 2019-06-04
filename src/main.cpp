@@ -1,7 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
-#include <vector>
 
 #include "RectangleDrawable.hpp"
 #include "CarreDrawable.hpp"
@@ -37,7 +36,7 @@ void augmenterTrait(FormeD * shape) {
 }
 
 void dimTransparence(FormeD * shape) {
-	if (shape->getTrsp() > 5) {
+	if (shape->getTrsp() > 2) {
 		uint i = shape->getTrsp() - 2;
 		shape->setFillColor(sf::Color(255, 255, 255, i));
 		shape->setTrsp(i);
@@ -86,6 +85,17 @@ void ajouterRectangle(Gestionnaire * gestion) {
 	}
 }
 
+void manageGroupe(Gestionnaire & gestion, FormeD* forme, size_t index) {
+	if (gestion.getGroupe(forme) != nullptr) {	//Si la forme est dans un groupe
+		if (gestion.getGroupeAt(index)->inTab(forme))	//Si la forme appartient au groupe a l'index
+			gestion.getGroupeAt(index)->supprimer(forme);	//On la supprime
+		else
+			gestion.addToGroup(gestion.getGroupe(forme), gestion.getGroupeAt(index));	//Sinon on ajoute toutes les formes du groupe de la forme au groupe à l'index 
+	}
+	else
+		gestion.getGroupeAt(index)->ajouter(forme);	//Sinon on ajoute la forme au groupe index
+}
+
 int main()
 {
 	sf::RenderWindow mainW(sf::VideoMode(1000, 500), "ShapEditor");
@@ -111,6 +121,9 @@ int main()
 	bool need_update = false;
 
 	gestion.ajouter(new Calque());	//Creer un deuxieme calque
+
+	gestion.ajouter(new Groupe());	//Creer un groupe
+	gestion.ajouter(new Groupe());	//Creer un groupe
 	gestion.ajouter(new Groupe());	//Creer un groupe
 
 	gestion.ajouter(new PointD(200, 200), 1);	//Ajoute un point sur le second calque
@@ -215,7 +228,7 @@ int main()
 					need_update = true;
 				}
 				else if ((select_shape_move != nullptr) && (mouseIn)) {	//Si une forme est selectionné, que la souris est dans la fenetre et que la fenetre est focus
-					g = gestion.inGroupe(select_shape_move);
+					g = gestion.getGroupe(select_shape_move);
 					if (g != nullptr)
 						g->deplacer((event.mouseMove.x - dist_x - select_shape->getAncre().getX()), (event.mouseMove.y - dist_y - select_shape->getAncre().getY()));
 					else {
@@ -265,10 +278,13 @@ int main()
 					gestion.getCalqueAt(1)->toggleActive();
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
-					if (gestion.getGroupeAt(0)->inTab(select_shape))
-						gestion.getGroupeAt(0)->supprimer(select_shape);
-					else
-						gestion.getGroupeAt(0)->ajouter(select_shape);
+					manageGroupe(gestion, select_shape, 0);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::H)) {
+					manageGroupe(gestion, select_shape, 1);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
+					manageGroupe(gestion, select_shape, 2);
 				}
 
 				break;
