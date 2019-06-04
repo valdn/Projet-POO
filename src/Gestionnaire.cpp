@@ -22,10 +22,16 @@ Gestionnaire::~Gestionnaire() {
 		delete tab_calque[i];
 	}
 	tab_calque.clear();
+
+	//Détruit tous les groupes
+	for (size_t i = 0; i < tab_groupe.size(); i++) {
+		delete tab_groupe[i];
+	}
+	tab_groupe.clear();
 }
 
 void Gestionnaire::ajouter(FormeD * forme, size_t num_calque) {
-	if (tab_forme.size() >= tab_forme.max_size()) throw std::runtime_error("Vecteur complet");
+	if (tab_forme.size() >= tab_forme.max_size()) throw std::runtime_error("Vecteur de forme complet");
 	else {
 		tab_forme.push_back(forme);
 		try {
@@ -38,7 +44,7 @@ void Gestionnaire::ajouter(FormeD * forme, size_t num_calque) {
 }
 
 void Gestionnaire::ajouter(PointD * point, size_t num_calque) {
-	if (tab_point.size() >= tab_point.max_size()) throw std::runtime_error("Vecteur complet");
+	if (tab_point.size() >= tab_point.max_size()) throw std::runtime_error("Vecteur de point complet");
 	else {
 		tab_point.push_back(point);
 		try {
@@ -50,8 +56,13 @@ void Gestionnaire::ajouter(PointD * point, size_t num_calque) {
 }
 
 void Gestionnaire::ajouter(Calque * calque) {
-	if (tab_calque.size() >= tab_calque.max_size()) throw std::runtime_error("Vecteur complet");
+	if (tab_calque.size() >= tab_calque.max_size()) throw std::runtime_error("Vecteur de calque complet");
 	else tab_calque.push_back(calque);
+}
+
+void Gestionnaire::ajouter(Groupe * groupe) {
+	if (tab_groupe.size() >= tab_groupe.max_size()) throw std::runtime_error("Vecteur de groupe complet");
+	else tab_groupe.push_back(groupe);
 }
 
 void Gestionnaire::sauver(std::ostream & os) const {
@@ -147,6 +158,15 @@ PointD * Gestionnaire::isOverPoint(int x, int y) const {
 		PointD * point = tab_calque[i]->isOverPoint(x, y);
 		if (point != nullptr)
 			return point;
+	}
+	return nullptr;
+}
+
+
+Groupe * Gestionnaire::inGroupe(FormeD * shape) const
+{
+	for (size_t i = 0; i  < tab_groupe.size(); i++) {
+		if (tab_groupe[i]->inTab(shape)) return tab_groupe[i];
 	}
 	return nullptr;
 }

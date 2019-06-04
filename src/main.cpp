@@ -88,8 +88,8 @@ void ajouterRectangle(Gestionnaire * gestion) {
 
 int main()
 {
-	sf::RenderWindow mainW(sf::VideoMode(1000, 500), "SFML n'est pas si mal :D");
-	sf::RenderWindow menuW(sf::VideoMode(200, 700), "Menu window", sf::Style::Close | sf::Style::Titlebar);
+	sf::RenderWindow mainW(sf::VideoMode(1000, 500), "ShapEditor");
+	sf::RenderWindow menuW(sf::VideoMode(250, 700), "Menu window", sf::Style::Close);
 
 	//Creation du menu dans la fenetre menuW
 	tgui::Gui gui(menuW);
@@ -103,6 +103,7 @@ int main()
 	FormeD * select_shape = nullptr;	//Sert a pointer sur une forme
 	FormeD * select_shape_move = nullptr;
 	PointD * select_point = nullptr;
+	Groupe * g = nullptr;
 
 	uint dist_x, dist_y = 0;	//Sert pour la distance entre l'ancre et la souris lors du clic sur une forme
 	bool mouseIn = true; //Savoir si la souris est dans la fenetre ou non
@@ -110,6 +111,7 @@ int main()
 	bool need_update = false;
 
 	gestion.ajouter(new Calque());	//Creer un deuxieme calque
+	gestion.ajouter(new Groupe());	//Creer un groupe
 
 	gestion.ajouter(new PointD(200, 200), 1);	//Ajoute un point sur le second calque
 	gestion.ajouter(new PointD(100, 150), 1);
@@ -213,8 +215,13 @@ int main()
 					need_update = true;
 				}
 				else if ((select_shape_move != nullptr) && (mouseIn)) {	//Si une forme est selectionné, que la souris est dans la fenetre et que la fenetre est focus
-					select_shape_move->setAncre((event.mouseMove.x - dist_x), (event.mouseMove.y - dist_y));	//Bouge l'ancre en prenant en compte l'ecart entre la souris et l'ancre
-					select_shape_move->maj();	//Update la forme
+					g = gestion.inGroupe(select_shape_move);
+					if (g != nullptr)
+						g->deplacer((event.mouseMove.x - dist_x - select_shape->getAncre().getX()), (event.mouseMove.y - dist_y - select_shape->getAncre().getY()));
+					else {
+						select_shape_move->setAncre((event.mouseMove.x - dist_x), (event.mouseMove.y - dist_y));	//Bouge l'ancre en prenant en compte l'ecart entre la souris et l'ancre
+						select_shape_move->maj();	//Update la forme
+					}
 					need_update = true;
 				}
 				if (need_update) {
@@ -253,8 +260,15 @@ int main()
 							augmenterTrait(select_shape);
 					}
 				}
+
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
 					gestion.getCalqueAt(1)->toggleActive();
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
+					if (gestion.getGroupeAt(0)->inTab(select_shape))
+						gestion.getGroupeAt(0)->supprimer(select_shape);
+					else
+						gestion.getGroupeAt(0)->ajouter(select_shape);
 				}
 
 				break;
