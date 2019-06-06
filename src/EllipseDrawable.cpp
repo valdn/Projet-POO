@@ -1,8 +1,8 @@
 #include "EllipseDrawable.hpp"
 
-EllipseD::EllipseD(sf::Color couleur, int x, int y, uint demiLargeur, uint demiHauteur)
+EllipseD::EllipseD(sf::Color couleur, int x, int y, uint largeur, uint hauteur)
 	: Forme(couleur.toInteger(), x, y),
-		Ellipse(couleur.toInteger(), x, y, demiLargeur, demiHauteur),
+		Ellipse(couleur.toInteger(), x, y, largeur/2, hauteur/2),
 		FormeD(couleur, x, y)
 {	
 	setFillColor(sf::Color(getCouleur()));

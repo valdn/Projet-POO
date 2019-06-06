@@ -10,8 +10,7 @@
 #include "ImageDrawable.hpp"
 #include "PolygoneDrawable.hpp"
 #include "Gestionnaire.hpp"
-
-#include "TGUI/TGUI.hpp"
+#include "menuTGUI.hpp"
 
 void viderForme(FormeD * shape) {
 	shape->setFillColor(sf::Color::Transparent);
@@ -99,13 +98,7 @@ void manageGroupe(Gestionnaire & gestion, FormeD* forme, size_t index) {
 int main()
 {
 	sf::RenderWindow mainW(sf::VideoMode(1000, 500), "ShapEditor");
-	sf::RenderWindow menuW(sf::VideoMode(250, 700), "Menu window", sf::Style::Close);
-
-	//Creation du menu dans la fenetre menuW
-	tgui::Gui gui(menuW);
-	tgui::Button::Ptr addRecButton = tgui::Button::create();
-	addRecButton->setText("Ajouter rectangle");
-	gui.add(addRecButton, "addRecButton");
+	Menu menuW(sf::VideoMode(250, 700), "Menu window", sf::Style::Close);
 	
 
 	Gestionnaire gestion = Gestionnaire(); //Creer un gestionnaire
@@ -136,10 +129,10 @@ int main()
 	gestion.ajouter(new PointD(600, 350), 1);
 
 
-	gestion.ajouter(new RectangleD(sf::Color::Red, 10, 10, 100, 50));	//Ajoute une forme au calque de base
-	gestion.ajouter(new EllipseD(sf::Color::Blue, 10, 70, 50, 25));
-	gestion.ajouter(new CarreD(sf::Color::Green, 120, 10, 50));
-	gestion.ajouter(new CercleD(sf::Color::Yellow, 120, 70, 25));
+	gestion.ajouter(new RectangleD(sf::Color::Red, 10, 10, 100, 50));	//Ajoute un rectangle au calque de base
+	gestion.ajouter(new EllipseD(sf::Color::Blue, 10, 70, 100, 50));	//Ajoute une ellipse au calque de base
+	gestion.ajouter(new CarreD(sf::Color::Green, 120, 10, 50));				//Ajoute un carré au calque de base
+	gestion.ajouter(new CercleD(sf::Color::Yellow, 120, 70, 25));			//Ajoute un cercle au calque de base
 	gestion.ajouter(new TriangleD(sf::Color::Cyan, 100, 300, gestion.getPointAt(0), gestion.getPointAt(1)), 1);	//Ajoute une forme au deuxieme calque
 	gestion.ajouter(new TriangleD(sf::Color::Black, 300, 100, gestion.getPointAt(2), gestion.getPointAt(1)), 1);
 
@@ -154,9 +147,6 @@ int main()
 
 	enregistrer(gestion);
 	//charger(gestionF, gestionP);
-
-	//Connect tous les boutons avec leur fonction associé
-	addRecButton->connect("pressed", ajouterRectangle, &gestion);
 
 
 	//Boucle principale
@@ -295,21 +285,7 @@ int main()
 		}
 
 		while (menuW.pollEvent(event)) {
-			switch (event.type) {
-				//Fenetre fermé
-			case sf::Event::Closed:
-				menuW.close();
-				break;
-
-				//fenetre resize
-			case sf::Event::Resized:
-				menuW.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
-				gui.setView(menuW.getView());
-				break;
-			default:
-				break;
-			}
-			gui.handleEvent(event); // Pass the event to the widgets
+			menuW.passEvent(event); // Pass the event to the gui
 		}
 
 		//Vide la fenetre et peint en blanc
@@ -320,7 +296,7 @@ int main()
 		gestion.dessiner(mainW);
 
 		//Dessine le gui
-		gui.draw();
+		menuW.drawGui();
 
 		//Affiche les modificiation faites
 		mainW.display();
