@@ -177,3 +177,17 @@ Groupe * Gestionnaire::getGroupe(FormeD * shape) const
 	}
 	return nullptr;
 }
+
+size_t Gestionnaire::getIndex(FormeD * forme) const {
+	for (size_t i = 0; i < tab_forme.size(); i++) {
+		if (tab_forme[i] == forme) return i;
+	}
+	throw std::domain_error("La forme n'existe pas");
+}
+
+size_t Gestionnaire::getIndex(PointD * point) const {
+	for (size_t i = 0; i < tab_point.size(); i++) {
+		if (tab_point[i] == point) return i;
+	}
+	throw std::domain_error("Le point n'existe pas");
+}

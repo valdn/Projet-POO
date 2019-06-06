@@ -11,7 +11,7 @@ FormeD::FormeD(sf::Color couleur, int x, int y) : Forme(couleur.toInteger(),x,y)
 
 FormeD::FormeD(const FormeD & ori) : FormeD(sf::Color(ori.getCouleur()), ori.getAncre().getX(), ori.getAncre().getY()) {}
 
-FormeD::FormeD(std::istream & is) : Forme(is), ancreD(getAncreMem()) {}
+FormeD::FormeD(std::istream & is) : Forme(is), ancreD(getAncreMem(), sf::Color::Magenta) {}
 
 FormeD::~FormeD() {}
 

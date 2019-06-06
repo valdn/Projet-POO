@@ -8,7 +8,7 @@
 
 class EllipseD : public fm::Ellipse, public FormeD {
 	public:
-		EllipseD(sf::Color couleur, int x, int y, uint demiLargeur, uint demiHauteur);
+		EllipseD(sf::Color couleur, int x, int y, uint largeur, uint hauteur);
 		EllipseD(const EllipseD & ori);
 		EllipseD(std::istream & is);
 		~EllipseD() override;

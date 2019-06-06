@@ -24,23 +24,31 @@ class Gestionnaire {
 		void ajouter(Calque * calque);
 		void ajouter(Groupe * groupe);
 
+
 		void sauver(std::ostream &os) const;
 		void charger(std::istream & is);
 		void update() const;
 		void dessiner(sf::RenderWindow &window) const;
 		void addToGroup(Groupe* g1, Groupe* g2);
 
+
 		ImageD * getImageByPoint(PointD* p1) const;
 		FormeD * isOverForme(int x, int y) const;
 		PointD * isOverPoint(int x, int y) const;
 		Groupe * getGroupe(FormeD* shape) const;
 
+
 		inline size_t getNbFormes() const { return tab_forme.size(); }
 		inline FormeD* getFormeAt(size_t i) const { return tab_forme.at(i); }
+		size_t getIndex(FormeD* forme) const;
+
 		inline size_t getNbPoints() const { return tab_point.size(); }
 		inline PointD* getPointAt(size_t i) const { return tab_point.at(i); }
+		size_t getIndex(PointD* point) const;
+
 		inline size_t getNbCalques() const { return tab_calque.size(); }
 		inline Calque* getCalqueAt(size_t i) const { return tab_calque.at(i); }
+
 		inline size_t getNbGroupes() const { return tab_groupe.size(); }
 		inline Groupe* getGroupeAt(size_t i) const { return tab_groupe.at(i); }
 };
