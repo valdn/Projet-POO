@@ -1,7 +1,7 @@
 #include "MenuTGUI.hpp"
 
-Menu::Menu(sf::VideoMode mode, const sf::String & title, sf::Uint32 style, const sf::ContextSettings & settings) 
-	: sf::RenderWindow(mode, title, style, settings)
+Menu::Menu(MyApp * _myApp, sf::VideoMode mode, const sf::String & title, sf::Uint32 style, const sf::ContextSettings & settings)
+	: sf::RenderWindow(mode, title, style, settings), myApp(_myApp)
 {
 	gui = new tgui::Gui(*this);
 
@@ -31,11 +31,20 @@ void Menu::passEvent(sf::Event event) {
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) {	//Active le bouton createShapeButton
 				createShapeButton->setFocused(true);
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::BackSpace) || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {	//Active le bouton closeAddShapeButton
+			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {	//Active le bouton closeAddShapeButton
 				closeAddShapeButton->setFocused(true);	//Focus le bouton close
 				sf::Event::KeyEvent data;	//Creer un evenement d'une touche du clavier
 				data.code = sf::Keyboard::Enter;	//Met la touche du clavier sur enter
 				closeAddShapeButton->keyPressed(data);	//Active le bouton
+			}
+
+			if (colorEb->isFocused()) {
+				try {
+					colorEb->getRenderer()->setBackgroundColor(sf::Color(std::stoi((std::string) colorEb->getText())));
+				}
+				catch (std::invalid_argument) {
+					std::cerr << "yo";
+				}
 			}
 
 			break;
@@ -103,6 +112,7 @@ void Menu::initialiseDisplay() {
 	widthEb->setPosition("5%", "widthLabel.bottom");
 	widthEb->setSize("90%", "30");
 	widthEb->setDefaultText("Nombre");
+	widthEb->setInputValidator(tgui::EditBox::Validator::UInt);
 	widthEb->setVisible(false);
 	gui->add(widthLabel, "widthLabel");
 	gui->add(widthEb, "widthEb");
@@ -115,6 +125,7 @@ void Menu::initialiseDisplay() {
 	heightEb->setPosition("5%", "heightLabel.bottom");
 	heightEb->setSize("90%", "30");
 	heightEb->setDefaultText("Nombre");
+	heightEb->setInputValidator(tgui::EditBox::Validator::UInt);
 	heightEb->setVisible(false);
 	gui->add(heightLabel, "heightLabel");
 	gui->add(heightEb, "heightEb");
@@ -127,9 +138,23 @@ void Menu::initialiseDisplay() {
 	singleEb->setPosition("5%", "singleLabel.bottom");
 	singleEb->setSize("90%", "30");
 	singleEb->setDefaultText("Nombre");
+	singleEb->setInputValidator(tgui::EditBox::Validator::All);
 	singleEb->setVisible(false);
 	gui->add(singleLabel, "singleLabel");
 	gui->add(singleEb, "singleEb");
+
+	colorLabel = tgui::Label::create("Couleur");
+	colorLabel->setSize("90%", "20");
+	colorLabel->setPosition("5%", "heightEb.bottom + 5");
+	colorLabel->setVisible(false);
+	colorEb = tgui::EditBox::create();
+	colorEb->setPosition("5%", "colorLabel.bottom");
+	colorEb->setSize("90%", "30");
+	colorEb->setDefaultText("0-255 0-255 0-255");
+	colorEb->setInputValidator(tgui::EditBox::Validator::UInt);
+	colorEb->setVisible(false);
+	gui->add(colorLabel, "colorLabel");
+	gui->add(colorEb, "colorEb");
 
 	ancreLabel = tgui::Label::create("Position de l'ancre :");
 	ancreLabel->setSize("80%", "20");
@@ -145,6 +170,7 @@ void Menu::initialiseDisplay() {
 	posXEb->setPosition("5%", "posXLabel.bottom");
 	posXEb->setSize("40%", "30");
 	posXEb->setDefaultText("Nombre");
+	posXEb->setInputValidator(tgui::EditBox::Validator::UInt);
 	posXEb->setVisible(false);
 	gui->add(posXLabel, "posXLabel");
 	gui->add(posXEb, "posXEb");
@@ -157,6 +183,7 @@ void Menu::initialiseDisplay() {
 	posYEb->setPosition("posXEb.right + 10%", "posYLabel.bottom");
 	posYEb->setSize("40%", "30");
 	posYEb->setDefaultText("Nombre");
+	posYEb->setInputValidator(tgui::EditBox::Validator::UInt);
 	posYEb->setVisible(false);
 	gui->add(posYLabel, "posYLabel");
 	gui->add(posYEb, "posYEb");
@@ -216,7 +243,11 @@ void Menu::display2ValuesConstructor(std::string type) {
 	heightLabel->setVisible(true);
 	heightEb->setVisible(true);
 
-	ancreLabel->setPosition("5%", "heightEb.bottom + 10");
+	colorLabel->setPosition("5%", "heightEb.bottom + 5");
+	colorLabel->setVisible(true);
+	colorEb->setVisible(true);
+
+	ancreLabel->setPosition("5%", "colorEb.bottom + 10");
 	ancreLabel->setVisible(true);
 
 	if (type == "rectangle") createShapeButton->connect("pressed", &Menu::createRectangle, this);
@@ -227,9 +258,14 @@ void Menu::display1ValueConstructor(std::string type) {
 	displayDefault();
 
 	singleLabel->setVisible(true);
+	singleEb->setInputValidator(tgui::EditBox::Validator::UInt);
 	singleEb->setVisible(true);
 
-	ancreLabel->setPosition("5%", "singleEb.bottom + 10");
+	colorLabel->setPosition("5%", "singleEb.bottom + 5");
+	colorLabel->setVisible(true);
+	colorEb->setVisible(true);
+
+	ancreLabel->setPosition("5%", "colorEb.bottom + 10");
 	ancreLabel->setVisible(true);
 
 	if (type == "cercle") {
@@ -248,6 +284,10 @@ void Menu::display1ValueConstructor(std::string type) {
 		singleLabel->setText("Chemin vers l'image");
 		singleEb->setDefaultText("chemin\\vers\\votre\\image.png");
 		singleEb->setText("");
+		colorLabel->setVisible(false);
+		colorEb->setVisible(false);
+		ancreLabel->setPosition("5%", "singleEb.bottom + 10");
+		singleEb->setInputValidator(tgui::EditBox::Validator::All);
 		createShapeButton->connect("pressed", &Menu::createImage, this);
 	}
 }
@@ -257,6 +297,7 @@ void Menu::hiddingAddShape() {
 	widthLabel->setVisible(false);
 	heightLabel->setVisible(false);
 	singleLabel->setVisible(false);
+	colorLabel->setVisible(false);
 	ancreLabel->setVisible(false);
 	posXLabel->setVisible(false);
 	posYLabel->setVisible(false);
@@ -267,12 +308,15 @@ void Menu::hiddingAddShape() {
 	heightEb->setText("");
 	singleEb->setVisible(false);
 	singleEb->setText("");
+	colorEb->setVisible(false);
+	colorEb->setText("");
 	posXEb->setVisible(false);
 	posXEb->setText("");
 	posYEb->setVisible(false);
 	posYEb->setText("");
 
 	closeAddShapeButton->setVisible(false);
+	createShapeButton->disconnectAll();
 	createShapeButton->setVisible(false);
 }
 
@@ -284,7 +328,7 @@ void Menu::createPoint() {
 	getXYValues(&x, &y);
 
 	if (x != NULL && y != NULL) {
-		std::cout << "x : " << x << ", y :" << y << std::endl;
+		std::cout << "x : " << x << ", y : " << y << std::endl;
 	}
 }
 
@@ -293,12 +337,14 @@ void Menu::createRectangle() {
 	int y = NULL;
 	int largeur = NULL;
 	int hauteur = NULL;
+	int couleur = NULL;
 
 	getXYValues(&x, &y);
-	get2Values(&largeur, &hauteur);
+	getValues(&largeur, &hauteur, &couleur);
 
 	if (x != NULL && y != NULL && largeur != NULL && hauteur != NULL) {
-		std::cout << "x : " << x << ", y :" << y << "largeur : " << largeur << ", hauteur :" << hauteur << std::endl;
+		std::cout << "Rectangle : x : " << x << ", y : " << y << ", largeur : " << largeur << ", hauteur :" << hauteur << ", couleur :" << couleur <<  std::endl;
+		myApp->addRectangle(sf::Color::Red, x, y, largeur, hauteur);
 	}
 }
 
@@ -307,12 +353,13 @@ void Menu::createEllipse() {
 	int y = NULL;
 	int largeur = NULL;
 	int hauteur = NULL;
+	int color = NULL;
 
 	getXYValues(&x, &y);
-	get2Values(&largeur, &hauteur);
+	getValues(&largeur, &hauteur, &color);
 
 	if (x != NULL && y != NULL && largeur != NULL && hauteur != NULL) {
-		std::cout << "x : " << x << ", y :" << y << "largeur : " << largeur << ", hauteur :" << hauteur << std::endl;
+		std::cout << "Ellipse : x : " << x << ", y : " << y << ", largeur : " << largeur << ", hauteur :" << hauteur << std::endl;
 	}
 }
 
@@ -322,10 +369,10 @@ void Menu::createCarre() {
 	int cote = NULL;
 
 	getXYValues(&x, &y);
-	get1Value(&cote);
+	getValue(&cote);
 
 	if (x != NULL && y != NULL && cote != NULL) {
-		std::cout << "x : " << x << ", y :" << y << "cote : " << cote << std::endl;
+		std::cout << "Carre : x : " << x << ", y : " << y << ", cote : " << cote << std::endl;
 	}
 }
 
@@ -335,10 +382,10 @@ void Menu::createCercle() {
 	int rayon = NULL;
 
 	getXYValues(&x, &y);
-	get1Value(&rayon);
+	getValue(&rayon);
 
 	if (x != NULL && y != NULL && rayon != NULL) {
-		std::cout << "x : " << x << ", y :" << y << "rayon : " << rayon << std::endl;
+		std::cout << "Cercle : x : " << x << ", y : " << y << ", rayon : " << rayon << std::endl;
 	}
 }
 
@@ -359,24 +406,11 @@ void Menu::getXYValues(int * x, int * y) {
 		posYEb->setFocused(true);
 	}
 
-	try {
-		*y = std::stoi((std::string) posYEb->getText());
-	}
-	catch (std::invalid_argument) {
-		posYEb->getRenderer()->setBorderColor(sf::Color::Red);
-		posYEb->setFocused(true);
-	}
-
-	try {
-		*x = std::stoi((std::string) posXEb->getText());
-	}
-	catch (std::invalid_argument) {
-		posXEb->getRenderer()->setBorderColor(sf::Color::Red);
-		posXEb->setFocused(true);
-	}
+	*y = std::stoi((std::string) posYEb->getText());	//PAs besoin de try car on ne peut recevoir que des chiffre
+	*x = std::stoi((std::string) posXEb->getText());
 }
 
-void Menu::get2Values(int * largeur, int * hauteur) {
+void Menu::getValues(int * largeur, int * hauteur, int * couleur) {
 	if (widthEb->getText().isEmpty()) {
 		widthEb->getRenderer()->setBorderColor(sf::Color::Red);
 		widthEb->setFocused(true);
@@ -386,25 +420,13 @@ void Menu::get2Values(int * largeur, int * hauteur) {
 		heightEb->setFocused(true);
 	}
 
-	try {
-		*hauteur = std::stoi((std::string) heightEb->getText());
-	}
-	catch (std::invalid_argument) {
-		heightEb->getRenderer()->setBorderColor(sf::Color::Red);
-		heightEb->setFocused(true);
-	}
-
-	try {
-		*largeur = std::stoi((std::string) widthEb->getText());
-	}
-	catch (std::invalid_argument) {
-		widthEb->getRenderer()->setBorderColor(sf::Color::Red);
-		widthEb->setFocused(true);
-	}
+	*hauteur = std::stoi((std::string) heightEb->getText());
+	*largeur = std::stoi((std::string) widthEb->getText());
+	*couleur = std::stoi((std::string) widthEb->getText());
 }
 
 
-void Menu::get1Value(int * single) {
+void Menu::getValue(int * single) {
 	if (singleEb->getText().isEmpty()) {
 		singleEb->getRenderer()->setBorderColor(sf::Color::Red);
 		singleEb->setFocused(true);

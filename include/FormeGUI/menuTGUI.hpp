@@ -6,8 +6,11 @@
 #include <string>
 #include <iostream>
 
+#include "MyApplication.hpp"
+
 class Menu : public sf::RenderWindow {
 	tgui::Gui * gui;
+	MyApp * myApp;
 
 	tgui::Button::Ptr addPointButton;
 	tgui::Button::Ptr addRectangleButton;
@@ -23,6 +26,7 @@ class Menu : public sf::RenderWindow {
 	tgui::Label::Ptr widthLabel;
 	tgui::Label::Ptr heightLabel;
 	tgui::Label::Ptr singleLabel;
+	tgui::Label::Ptr colorLabel;
 	tgui::Label::Ptr ancreLabel;
 	tgui::Label::Ptr posXLabel;
 	tgui::Label::Ptr posYLabel;
@@ -30,11 +34,12 @@ class Menu : public sf::RenderWindow {
 	tgui::EditBox::Ptr widthEb;
 	tgui::EditBox::Ptr heightEb;
 	tgui::EditBox::Ptr singleEb;
+	tgui::EditBox::Ptr colorEb;
 	tgui::EditBox::Ptr posXEb;
 	tgui::EditBox::Ptr posYEb;
 
 public:
-	Menu(sf::VideoMode mode, const sf::String& title, sf::Uint32 style = sf::Style::Default, const sf::ContextSettings& settings = sf::ContextSettings());
+	Menu(MyApp * myApp, sf::VideoMode mode, const sf::String& title, sf::Uint32 style = sf::Style::Default, const sf::ContextSettings& settings = sf::ContextSettings());
 	~Menu();
 
 	void setView(const sf::View &view);
@@ -59,8 +64,8 @@ private:
 	void createImage();
 
 	void getXYValues(int * x, int * y);
-	void get2Values(int * largeur, int * hauteur);
-	void get1Value(int * single);
+	void getValues(int * largeur, int * hauteur, int * couleur);
+	void getValue(int * single);
 };
 
 #endif // !TGUI_MENU_HPP
