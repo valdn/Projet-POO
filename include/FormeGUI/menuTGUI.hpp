@@ -12,6 +12,11 @@ class Menu : public sf::RenderWindow {
 	tgui::Gui * gui;
 	MyApp * myApp;
 
+	tgui::ComboBox::Ptr layerListCb;
+	tgui::ComboBox::Ptr groupListCb;
+
+	tgui::Button::Ptr addLayerButton;
+	tgui::Button::Ptr addGroupButton;
 	tgui::Button::Ptr addPointButton;
 	tgui::Button::Ptr addRectangleButton;
 	tgui::Button::Ptr addEllipseButton;
@@ -43,8 +48,11 @@ public:
 	~Menu();
 
 	void setView(const sf::View &view);
-	inline void drawGui() { gui->draw(); }
+	inline void drawGui() const { gui->draw(); }
 	void passEvent(sf::Event event);
+
+	inline size_t getSelectedCalque() const { return layerListCb->getSelectedItemIndex(); }
+	inline size_t getSelectedGroupe() const { return groupListCb->getSelectedItemIndex(); }
 
 private:
 	void initialiseDisplay();
@@ -54,6 +62,8 @@ private:
 	void display1ValueConstructor(std::string type);
 	void hiddingAddShape();
 
+	void createCalque();
+	void createGroupe();
 	void createPoint();
 	void createRectangle();
 	void createEllipse();
@@ -65,7 +75,7 @@ private:
 
 	void getXYValues(int * x, int * y);
 	void getValues(int * largeur, int * hauteur, int * couleur);
-	void getValue(int * single);
+	void getValues(int * single, int * couleur);
 };
 
 #endif // !TGUI_MENU_HPP

@@ -9,8 +9,7 @@ public:
 	MyApp();
 	~MyApp();
 
-	MyApp* getMyApp() { return this; }
-	void addRectangle(sf::Color color, int x, int y, uint largeur, uint hauteur);
+	void addRectangle(sf::Color color, int x, int y, uint largeur, uint hauteur, size_t calque);
 };
 
 #endif // !MY_APPLICATION_HPP

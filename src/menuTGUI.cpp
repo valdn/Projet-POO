@@ -57,8 +57,36 @@ void Menu::passEvent(sf::Event event) {
 
 
 void Menu::initialiseDisplay() {
+	layerListCb = tgui::ComboBox::create();
+	for (size_t i = 0; i < myApp->getNbCalques(); ++i)
+		layerListCb->addItem("Calque " + std::to_string(i+1));
+	layerListCb->setPosition("5%", "5");
+	layerListCb->setSize("42.5%", "25");
+	layerListCb->setSelectedItemByIndex(0);
+	gui->add(layerListCb, "layerListCb");
+
+	addLayerButton = tgui::Button::create();
+	addLayerButton->setPosition("5%", "layerListCb.bottom+5");
+	addLayerButton->setSize("42.5%", "25");
+	addLayerButton->setText("Creer Calque");
+	gui->add(addLayerButton, "addLayerButton");
+
+	groupListCb = tgui::ComboBox::create();
+	for (size_t i = 0; i < myApp->getNbGroupes(); ++i)
+		groupListCb->addItem("Groupe " + std::to_string(i + 1));
+	groupListCb->setPosition("layerListCb.right + 5%", "5");
+	groupListCb->setSize("42.5%", "25");
+	groupListCb->setSelectedItemByIndex(0);
+	gui->add(groupListCb, "groupListCb");
+
+	addGroupButton = tgui::Button::create();
+	addGroupButton->setPosition("addLayerButton.right + 5%", "groupListCb.bottom+5");
+	addGroupButton->setSize("42.5%", "25");
+	addGroupButton->setText("Creer Groupe");
+	gui->add(addGroupButton, "addGroupButton");
+
 	addPointButton = tgui::Button::create();
-	addPointButton->setPosition("5%", "5");
+	addPointButton->setPosition("5%", "addLayerButton.bottom+50");
 	addPointButton->setSize("90%", "25");
 	addPointButton->setText("Ajouter Point");
 	gui->add(addPointButton, "addPointButton");
@@ -106,7 +134,7 @@ void Menu::initialiseDisplay() {
 	gui->add(addImageButton, "addImageButton");
 
 	widthLabel = tgui::Label::create("Largeur :");
-	widthLabel->setPosition("5%", "addImageButton.bottom + 100");
+	widthLabel->setPosition("5%", "addImageButton.bottom + 50");
 	widthLabel->setVisible(false);
 	widthEb = tgui::EditBox::create();
 	widthEb->setPosition("5%", "widthLabel.bottom");
@@ -132,7 +160,7 @@ void Menu::initialiseDisplay() {
 
 	singleLabel = tgui::Label::create("valeur");
 	singleLabel->setSize("90%", "20");
-	singleLabel->setPosition("5%", "addImageButton.bottom + 100");
+	singleLabel->setPosition("5%", "addImageButton.bottom + 50");
 	singleLabel->setVisible(false);
 	singleEb = tgui::EditBox::create();
 	singleEb->setPosition("5%", "singleLabel.bottom");
@@ -158,7 +186,7 @@ void Menu::initialiseDisplay() {
 
 	ancreLabel = tgui::Label::create("Position de l'ancre :");
 	ancreLabel->setSize("80%", "20");
-	ancreLabel->setPosition("5%", "addImageButton.bottom + 100");
+	ancreLabel->setPosition("5%", "addImageButton.bottom + 50");
 	ancreLabel->setVisible(false);
 	gui->add(ancreLabel, "ancreLabel");
 
@@ -207,6 +235,8 @@ void Menu::initialiseDisplay() {
 }
 
 void Menu::initialiseConnect() {
+	addLayerButton->connect("pressed", &Menu::createCalque, this);
+	addGroupButton->connect("pressed", &Menu::createGroupe, this);
 	addPointButton->connect("pressed", &Menu::displayDefault, this, std::string("point"));
 	addRectangleButton->connect("pressed", &Menu::display2ValuesConstructor, this, std::string("rectangle"));
 	addEllipseButton->connect("pressed", &Menu::display2ValuesConstructor, this, std::string("ellipse"));
@@ -219,7 +249,7 @@ void Menu::initialiseConnect() {
 void Menu::displayDefault(std::string type) {
 	hiddingAddShape(); //reset 
 
-	ancreLabel->setPosition("5%", "addImageButton.bottom + 100");
+	ancreLabel->setPosition("5%", "addImageButton.bottom + 50");
 	ancreLabel->setVisible(true);
 
 	posXLabel->setVisible(true);
@@ -320,6 +350,18 @@ void Menu::hiddingAddShape() {
 	createShapeButton->setVisible(false);
 }
 
+void Menu::createCalque() {
+	myApp->ajouter(new Calque());
+	layerListCb->addItem("Calque " + std::to_string(myApp->getNbCalques()));
+	layerListCb->setSelectedItemByIndex(myApp->getNbCalques()-1);
+}
+
+void Menu::createGroupe() {
+	myApp->ajouter(new Groupe());
+	groupListCb->addItem("Groupe " + std::to_string(myApp->getNbGroupes()));
+	groupListCb->setSelectedItemByIndex(myApp->getNbGroupes() - 1);
+}
+
 void Menu::createPoint() {
 
 	int x = NULL;
@@ -344,7 +386,7 @@ void Menu::createRectangle() {
 
 	if (x != NULL && y != NULL && largeur != NULL && hauteur != NULL) {
 		std::cout << "Rectangle : x : " << x << ", y : " << y << ", largeur : " << largeur << ", hauteur :" << hauteur << ", couleur :" << couleur <<  std::endl;
-		myApp->addRectangle(sf::Color::Red, x, y, largeur, hauteur);
+		myApp->addRectangle(sf::Color(couleur), x, y, largeur, hauteur, getSelectedCalque());
 	}
 }
 
@@ -367,9 +409,10 @@ void Menu::createCarre() {
 	int x = NULL;
 	int y = NULL;
 	int cote = NULL;
+	int color = NULL;
 
 	getXYValues(&x, &y);
-	getValue(&cote);
+	getValues(&cote, &color);
 
 	if (x != NULL && y != NULL && cote != NULL) {
 		std::cout << "Carre : x : " << x << ", y : " << y << ", cote : " << cote << std::endl;
@@ -380,9 +423,10 @@ void Menu::createCercle() {
 	int x = NULL;
 	int y = NULL;
 	int rayon = NULL;
+	int color = NULL;
 
 	getXYValues(&x, &y);
-	getValue(&rayon);
+	getValues(&rayon, &color);
 
 	if (x != NULL && y != NULL && rayon != NULL) {
 		std::cout << "Cercle : x : " << x << ", y : " << y << ", rayon : " << rayon << std::endl;
@@ -422,11 +466,11 @@ void Menu::getValues(int * largeur, int * hauteur, int * couleur) {
 
 	*hauteur = std::stoi((std::string) heightEb->getText());
 	*largeur = std::stoi((std::string) widthEb->getText());
-	*couleur = std::stoi((std::string) widthEb->getText());
+	*couleur = std::stoi((std::string) colorEb->getText());
 }
 
 
-void Menu::getValue(int * single) {
+void Menu::getValues(int * single, int * couleur) {
 	if (singleEb->getText().isEmpty()) {
 		singleEb->getRenderer()->setBorderColor(sf::Color::Red);
 		singleEb->setFocused(true);
@@ -439,4 +483,6 @@ void Menu::getValue(int * single) {
 		singleEb->getRenderer()->setBorderColor(sf::Color::Red);
 		singleEb->setFocused(true);
 	}
+
+	*couleur = std::stoi((std::string) colorEb->getText());
 }

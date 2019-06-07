@@ -114,36 +114,30 @@ int main()
 	bool focus = true;	//Savoir si la fenetre est focus
 	bool need_update = false;
 
-	gestion.ajouter(new Calque());	//Creer un deuxieme calque
-
-	gestion.ajouter(new Groupe());	//Creer un groupe
-	gestion.ajouter(new Groupe());	//Creer un groupe
-	gestion.ajouter(new Groupe());	//Creer un groupe
-
-	gestion.ajouter(new PointD(200, 200), 1);	//Ajoute un point sur le second calque
-	gestion.ajouter(new PointD(100, 150), 1);
-	gestion.ajouter(new PointD(400, 200), 1);
-	gestion.ajouter(new PointD(400, 400), 1);
-	gestion.ajouter(new PointD(300, 300), 1);
-	gestion.ajouter(new PointD(500, 300), 1);
-	gestion.ajouter(new PointD(600, 300), 1);
-	gestion.ajouter(new PointD(600, 350), 1);
+	gestion.ajouter(new PointD(200, 200));	//Ajoute un point sur le second calque
+	gestion.ajouter(new PointD(100, 150));
+	gestion.ajouter(new PointD(400, 200));
+	gestion.ajouter(new PointD(400, 400));
+	gestion.ajouter(new PointD(300, 300));
+	gestion.ajouter(new PointD(500, 300));
+	gestion.ajouter(new PointD(600, 300));
+	gestion.ajouter(new PointD(600, 350));
 
 
 	gestion.ajouter(new RectangleD(sf::Color::Red, 10, 10, 100, 50));	//Ajoute un rectangle au calque de base
 	gestion.ajouter(new EllipseD(sf::Color::Blue, 10, 70, 100, 50));	//Ajoute une ellipse au calque de base
 	gestion.ajouter(new CarreD(sf::Color::Green, 120, 10, 50));				//Ajoute un carré au calque de base
 	gestion.ajouter(new CercleD(sf::Color::Yellow, 120, 70, 25));			//Ajoute un cercle au calque de base
-	gestion.ajouter(new TriangleD(sf::Color::Cyan, 100, 300, gestion.getPointAt(0), gestion.getPointAt(1)), 1);	//Ajoute une forme au deuxieme calque
-	gestion.ajouter(new TriangleD(sf::Color::Black, 300, 100, gestion.getPointAt(2), gestion.getPointAt(1)), 1);
+	gestion.ajouter(new TriangleD(sf::Color::Cyan, 100, 300, gestion.getPointAt(0), gestion.getPointAt(1)));	//Ajoute une forme au deuxieme calque
+	gestion.ajouter(new TriangleD(sf::Color::Black, 300, 100, gestion.getPointAt(2), gestion.getPointAt(1)));
 
 	std::vector<PointD*> * tableau_de_pointD = new std::vector<PointD*>;
 	tableau_de_pointD->push_back(gestion.getPointAt(5));
 	tableau_de_pointD->push_back(gestion.getPointAt(6));
 	tableau_de_pointD->push_back(gestion.getPointAt(7));
-	gestion.ajouter(new PolygoneD(sf::Color::Cyan, 500, 400, tableau_de_pointD), 1);
+	gestion.ajouter(new PolygoneD(sf::Color::Cyan, 500, 400, tableau_de_pointD));
 
-	gestion.ajouter(new ImageD("download.png", 200, 200, gestion.getPointAt(3)), 1);
+	gestion.ajouter(new ImageD("download.png", 200, 200, gestion.getPointAt(3)));
 
 
 	enregistrer(gestion);
@@ -266,16 +260,10 @@ int main()
 				}
 
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-					gestion.getCalqueAt(1)->toggleActive();
+					gestion.getCalqueAt(menuW.getSelectedCalque())->toggleActive();
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
-					manageGroupe(gestion, select_shape, 0);
-				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::H)) {
-					manageGroupe(gestion, select_shape, 1);
-				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
-					manageGroupe(gestion, select_shape, 2);
+					manageGroupe(gestion, select_shape, menuW.getSelectedGroupe());
 				}
 
 				break;
