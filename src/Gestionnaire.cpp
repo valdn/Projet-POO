@@ -2,6 +2,7 @@
 
 Gestionnaire::Gestionnaire() {
 	tab_calque.push_back(new Calque());	//Calque de base 
+	tab_groupe.push_back(new Groupe()); //Groupe par défaut
 }
 
 Gestionnaire::~Gestionnaire() {
