@@ -1,4 +1,4 @@
-#include "MenuTGUI.hpp"
+#include "menuTGUI.hpp"
 
 Menu::Menu(MyApp * _myApp, sf::VideoMode mode, const sf::String & title, sf::Uint32 style, const sf::ContextSettings & settings)
 	: sf::RenderWindow(mode, title, style, settings), myApp(_myApp)
@@ -390,7 +390,21 @@ void Menu::createCercle() {
 }
 
 void Menu::createImage() {
+	int x = NULL;
+	int y = NULL;
 
+	getXYValues(&x, &y);
+
+	if (singleEb->getText().isEmpty()) {
+		singleEb->getRenderer()->setBorderColor(sf::Color::Red);
+		singleEb->setFocused(true);
+	}
+
+	std::string path = singleEb->getText();
+
+	if (x != NULL && y != NULL && !path.empty()) {
+		std::cout << "x : " << x << ", y :" << y << "path : " << path << std::endl;
+	}
 }
 
 
