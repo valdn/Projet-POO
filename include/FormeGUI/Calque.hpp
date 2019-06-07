@@ -17,9 +17,13 @@ class Calque {
 		~Calque();
 		void ajouter(FormeD *shape);
 		void ajouter(PointD * point);
+		void supprimer(FormeD *shape);
+		void supprimer(PointD *point);
 		FormeD * isOverForme(int x, int y) const;
 		PointD * isOverPoint(int x, int y) const;
 		void dessiner(sf::RenderWindow &window) const;
+		bool isInTab(FormeD * shape) const;
+		bool isInTab(PointD * point) const;
 
 		static Calque * charger(std::istream & is);
 
@@ -28,6 +32,10 @@ class Calque {
 		inline void toggleActive() { active = !active; }
 
 		friend std::ostream & operator<<(std::ostream &os, const Calque &calque);
+
+	private:
+		size_t getPosShape(FormeD * shape) const; 
+		size_t getPosPoint(PointD * point) const; 
 };
 
 #endif CALQUE_HPP

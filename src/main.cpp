@@ -259,8 +259,11 @@ int main()
 					}
 				}
 
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
 					gestion.getCalqueAt(menuW.getSelectedCalque())->toggleActive();
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {
+					gestion.shapeToLayer(select_shape, menuW.getSelectedCalque());
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
 					manageGroupe(gestion, select_shape, menuW.getSelectedGroupe());
