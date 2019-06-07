@@ -144,6 +144,11 @@ void Gestionnaire::addToGroup(Groupe * g1, Groupe * g2) {
 	}
 }
 
+void Gestionnaire::shapeToLayer(FormeD * shape, size_t index) {
+	getCalque(shape)->supprimer(shape);
+	tab_calque.at(index)->ajouter(shape);
+}
+
 ImageD * Gestionnaire::getImageByPoint(PointD * p1) const {
 	for (size_t i = 0; i < tab_forme.size(); i++) {
 		ImageD * test = dynamic_cast<ImageD*> (tab_forme[i]);
@@ -154,22 +159,39 @@ ImageD * Gestionnaire::getImageByPoint(PointD * p1) const {
 
 FormeD * Gestionnaire::isOverForme(int x, int y) const {
 	for (size_t i = tab_calque.size() - 1; i >= 0 && i < tab_calque.size(); i--) {
-		FormeD* forme = tab_calque[i]->isOverForme(x, y);
-		if (forme != nullptr)
-			return forme;
+		if (tab_calque[i]->isActive()) {
+			FormeD* forme = tab_calque[i]->isOverForme(x, y);
+			if (forme != nullptr)
+				return forme;
+		}
 	}
 	return nullptr;
 }
 
 PointD * Gestionnaire::isOverPoint(int x, int y) const {
 	for (size_t i = tab_calque.size() - 1; i >= 0 && i < tab_calque.size(); i--) {
-		PointD * point = tab_calque[i]->isOverPoint(x, y);
-		if (point != nullptr)
-			return point;
+		if (tab_calque[i]->isActive()) {
+			PointD * point = tab_calque[i]->isOverPoint(x, y);
+			if (point != nullptr)
+				return point;
+		}
 	}
 	return nullptr;
 }
 
+Calque * Gestionnaire::getCalque(FormeD * shape) const {
+	for (size_t i = 0; i < tab_calque.size(); i++) {
+		if (tab_calque[i]->isInTab(shape)) return tab_calque[i];
+	}
+	return nullptr;
+}
+
+Calque * Gestionnaire::getCalque(PointD * point) const {
+	for (size_t i = 0; i < tab_calque.size(); i++) {
+		if (tab_calque[i]->isInTab(point)) return tab_calque[i];
+	}
+	return nullptr;
+}
 
 Groupe * Gestionnaire::getGroupe(FormeD * shape) const
 {

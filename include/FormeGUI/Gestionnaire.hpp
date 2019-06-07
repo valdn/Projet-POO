@@ -30,11 +30,14 @@ class Gestionnaire {
 		void update() const;
 		void dessiner(sf::RenderWindow &window) const;
 		void addToGroup(Groupe* g1, Groupe* g2);
+		void shapeToLayer(FormeD * shape, size_t index);
 
 
 		ImageD * getImageByPoint(PointD* p1) const;
 		FormeD * isOverForme(int x, int y) const;
 		PointD * isOverPoint(int x, int y) const;
+		Calque * getCalque(FormeD* shape) const;
+		Calque * getCalque(PointD* point) const;
 		Groupe * getGroupe(FormeD* shape) const;
 
 
