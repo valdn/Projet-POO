@@ -38,12 +38,16 @@ void Menu::passEvent(sf::Event event) {
 				closeAddShapeButton->keyPressed(data);	//Active le bouton
 			}
 
-			if (colorEb->isFocused()) {
+		case sf::Event::KeyReleased:
+			if (!(colorEb1->getText().isEmpty() || colorEb2->getText().isEmpty() || colorEb3->getText().isEmpty())) {
+				if (std::stoi((std::string) colorEb1->getText()) > 255) colorEb1->setText("255");
+				if (std::stoi((std::string) colorEb2->getText()) > 255) colorEb2->setText("255");
+				if (std::stoi((std::string) colorEb3->getText()) > 255) colorEb3->setText("255");
 				try {
-					colorEb->getRenderer()->setBackgroundColor(sf::Color(std::stoi((std::string) colorEb->getText())));
+					exColor->clear(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255));
 				}
 				catch (std::invalid_argument) {
-					std::cerr << "yo";
+					std::cerr << "Valeur non comprise";
 				}
 			}
 
@@ -171,18 +175,42 @@ void Menu::initialiseDisplay() {
 	gui->add(singleLabel, "singleLabel");
 	gui->add(singleEb, "singleEb");
 
-	colorLabel = tgui::Label::create("Couleur");
+	colorLabel = tgui::Label::create("Couleur :");
 	colorLabel->setSize("90%", "20");
 	colorLabel->setPosition("5%", "heightEb.bottom + 5");
 	colorLabel->setVisible(false);
-	colorEb = tgui::EditBox::create();
-	colorEb->setPosition("5%", "colorLabel.bottom");
-	colorEb->setSize("90%", "30");
-	colorEb->setDefaultText("0-255 0-255 0-255");
-	colorEb->setInputValidator(tgui::EditBox::Validator::UInt);
-	colorEb->setVisible(false);
+
+	exColor = tgui::Canvas::create();
+	exColor->setPosition("5%", "colorLabel.bottom + 5");
+	exColor->setSize("25%", "30");
+	exColor->setVisible(false);
+
+	colorEb1 = tgui::EditBox::create();
+	colorEb1->setPosition("5%", "exColor.bottom+5");
+	colorEb1->setSize("25%", "30");
+	colorEb1->setDefaultText("0-255");
+	colorEb1->setInputValidator(tgui::EditBox::Validator::UInt);
+	colorEb1->setVisible(false);
+
+	colorEb2 = tgui::EditBox::create();
+	colorEb2->setPosition("colorEb1.right+7,5%", "exColor.bottom+5");
+	colorEb2->setSize("25%", "30");
+	colorEb2->setDefaultText("0-255");
+	colorEb2->setInputValidator(tgui::EditBox::Validator::UInt);
+	colorEb2->setVisible(false);
+
+	colorEb3 = tgui::EditBox::create();
+	colorEb3->setPosition("colorEb2.right + 7, 5 % ", "exColor.bottom+5");
+	colorEb3->setSize("25%", "30");
+	colorEb3->setDefaultText("0-255");
+	colorEb3->setInputValidator(tgui::EditBox::Validator::UInt);
+	colorEb3->setVisible(false);
+
 	gui->add(colorLabel, "colorLabel");
-	gui->add(colorEb, "colorEb");
+	gui->add(exColor, "exColor");
+	gui->add(colorEb1, "colorEb1");
+	gui->add(colorEb2, "colorEb2");
+	gui->add(colorEb3, "colorEb3");
 
 	ancreLabel = tgui::Label::create("Position de l'ancre :");
 	ancreLabel->setSize("80%", "20");
@@ -275,9 +303,12 @@ void Menu::display2ValuesConstructor(std::string type) {
 
 	colorLabel->setPosition("5%", "heightEb.bottom + 5");
 	colorLabel->setVisible(true);
-	colorEb->setVisible(true);
+	exColor->setVisible(true);
+	colorEb1->setVisible(true);
+	colorEb2->setVisible(true);
+	colorEb3->setVisible(true);
 
-	ancreLabel->setPosition("5%", "colorEb.bottom + 10");
+	ancreLabel->setPosition("5%", "colorEb1.bottom + 10");
 	ancreLabel->setVisible(true);
 
 	if (type == "rectangle") createShapeButton->connect("pressed", &Menu::createRectangle, this);
@@ -293,9 +324,12 @@ void Menu::display1ValueConstructor(std::string type) {
 
 	colorLabel->setPosition("5%", "singleEb.bottom + 5");
 	colorLabel->setVisible(true);
-	colorEb->setVisible(true);
+	exColor->setVisible(true);
+	colorEb1->setVisible(true);
+	colorEb2->setVisible(true);
+	colorEb3->setVisible(true);
 
-	ancreLabel->setPosition("5%", "colorEb.bottom + 10");
+	ancreLabel->setPosition("5%", "colorEb1.bottom + 10");
 	ancreLabel->setVisible(true);
 
 	if (type == "cercle") {
@@ -315,7 +349,10 @@ void Menu::display1ValueConstructor(std::string type) {
 		singleEb->setDefaultText("chemin\\vers\\votre\\image.png");
 		singleEb->setText("");
 		colorLabel->setVisible(false);
-		colorEb->setVisible(false);
+		exColor->setVisible(false);
+		colorEb1->setVisible(false);
+		colorEb2->setVisible(false);
+		colorEb3->setVisible(false);
 		ancreLabel->setPosition("5%", "singleEb.bottom + 10");
 		singleEb->setInputValidator(tgui::EditBox::Validator::All);
 		createShapeButton->connect("pressed", &Menu::createImage, this);
@@ -328,6 +365,8 @@ void Menu::hiddingAddShape() {
 	heightLabel->setVisible(false);
 	singleLabel->setVisible(false);
 	colorLabel->setVisible(false);
+	exColor->setVisible(false);
+	exColor->clear(sf::Color::Black);
 	ancreLabel->setVisible(false);
 	posXLabel->setVisible(false);
 	posYLabel->setVisible(false);
@@ -338,8 +377,13 @@ void Menu::hiddingAddShape() {
 	heightEb->setText("");
 	singleEb->setVisible(false);
 	singleEb->setText("");
-	colorEb->setVisible(false);
-	colorEb->setText("");
+
+	colorEb1->setVisible(false);
+	colorEb1->setText("");
+	colorEb2->setVisible(false);
+	colorEb2->setText("");
+	colorEb3->setVisible(false);
+	colorEb3->setText("");
 	posXEb->setVisible(false);
 	posXEb->setText("");
 	posYEb->setVisible(false);
@@ -386,7 +430,7 @@ void Menu::createRectangle() {
 
 	if (x != NULL && y != NULL && largeur != NULL && hauteur != NULL) {
 		std::cout << "Rectangle : x : " << x << ", y : " << y << ", largeur : " << largeur << ", hauteur :" << hauteur << ", couleur :" << couleur <<  std::endl;
-		myApp->addRectangle(sf::Color(couleur), x, y, largeur, hauteur, getSelectedCalque());
+		myApp->addRectangle(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()),255), x, y, largeur, hauteur, getSelectedCalque());
 	}
 }
 
@@ -402,6 +446,7 @@ void Menu::createEllipse() {
 
 	if (x != NULL && y != NULL && largeur != NULL && hauteur != NULL) {
 		std::cout << "Ellipse : x : " << x << ", y : " << y << ", largeur : " << largeur << ", hauteur :" << hauteur << std::endl;
+		myApp->addEllipse(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255), x, y, largeur, hauteur, getSelectedCalque());
 	}
 }
 
@@ -416,6 +461,7 @@ void Menu::createCarre() {
 
 	if (x != NULL && y != NULL && cote != NULL) {
 		std::cout << "Carre : x : " << x << ", y : " << y << ", cote : " << cote << std::endl;
+		myApp->addCarre(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255), x, y, cote, getSelectedCalque());
 	}
 }
 
@@ -430,6 +476,7 @@ void Menu::createCercle() {
 
 	if (x != NULL && y != NULL && rayon != NULL) {
 		std::cout << "Cercle : x : " << x << ", y : " << y << ", rayon : " << rayon << std::endl;
+		myApp->addCercle(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255), x, y, rayon, getSelectedCalque());
 	}
 }
 
@@ -480,7 +527,7 @@ void Menu::getValues(int * largeur, int * hauteur, int * couleur) {
 
 	*hauteur = std::stoi((std::string) heightEb->getText());
 	*largeur = std::stoi((std::string) widthEb->getText());
-	*couleur = std::stoi((std::string) colorEb->getText());
+	*couleur = std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()),255;
 }
 
 
@@ -498,5 +545,5 @@ void Menu::getValues(int * single, int * couleur) {
 		singleEb->setFocused(true);
 	}
 
-	*couleur = std::stoi((std::string) colorEb->getText());
+	*couleur = std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()),255;
 }

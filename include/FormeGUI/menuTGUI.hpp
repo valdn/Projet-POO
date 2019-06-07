@@ -39,7 +39,11 @@ class Menu : public sf::RenderWindow {
 	tgui::EditBox::Ptr widthEb;
 	tgui::EditBox::Ptr heightEb;
 	tgui::EditBox::Ptr singleEb;
-	tgui::EditBox::Ptr colorEb;
+	tgui::EditBox::Ptr colorEb1;
+	tgui::EditBox::Ptr colorEb2;
+	tgui::EditBox::Ptr colorEb3;
+	tgui::Canvas::Ptr exColor;
+
 	tgui::EditBox::Ptr posXEb;
 	tgui::EditBox::Ptr posYEb;
 

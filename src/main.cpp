@@ -2,10 +2,6 @@
 #include <iostream>
 #include <fstream>
 
-#include "RectangleDrawable.hpp"
-#include "CarreDrawable.hpp"
-#include "EllipseDrawable.hpp"
-#include "CercleDrawable.hpp"
 #include "TriangleDrawable.hpp"
 #include "ImageDrawable.hpp"
 #include "PolygoneDrawable.hpp"
