@@ -252,17 +252,17 @@ int main()
 							diminuerTrait(select_shape);
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
 							augmenterTrait(select_shape);
-					}
-				}
 
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
-					gestion.getCalqueAt(menuW.getSelectedCalque())->toggleActive();
-				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {
-					gestion.shapeToLayer(select_shape, menuW.getSelectedCalque());
-				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
-					manageGroupe(gestion, select_shape, menuW.getSelectedGroupe());
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
+							gestion.getCalqueAt(menuW.getSelectedCalque())->toggleActive();
+						}
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {
+							gestion.shapeToLayer(select_shape, menuW.getSelectedCalque());
+						}
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G)) {
+							manageGroupe(gestion, select_shape, menuW.getSelectedGroupe());
+						}
+					}
 				}
 
 				break;
