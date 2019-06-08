@@ -31,6 +31,7 @@ class Gestionnaire {
 		void dessiner(sf::RenderWindow &window) const;
 		void addToGroup(Groupe* g1, Groupe* g2);
 		void shapeToLayer(FormeD * shape, size_t index);
+		void groupeToLayer(Groupe * groupe, size_t index);
 
 
 		ImageD * getImageByPoint(PointD* p1) const;

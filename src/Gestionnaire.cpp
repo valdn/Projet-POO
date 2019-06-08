@@ -149,6 +149,11 @@ void Gestionnaire::shapeToLayer(FormeD * shape, size_t index) {
 	tab_calque.at(index)->ajouter(shape);
 }
 
+void Gestionnaire::groupeToLayer(Groupe * groupe, size_t index) {
+	for (size_t i = 0; i < groupe->getNbFormes(); ++i)
+		shapeToLayer(groupe->getFormeAt(i), index);
+}
+
 ImageD * Gestionnaire::getImageByPoint(PointD * p1) const {
 	for (size_t i = 0; i < tab_forme.size(); i++) {
 		ImageD * test = dynamic_cast<ImageD*> (tab_forme[i]);

@@ -1,4 +1,4 @@
-#include "menuTGUI.hpp"
+ï»¿#include "menuTGUI.hpp"
 
 Menu::Menu(MyApp * _myApp, sf::VideoMode mode, const sf::String & title, sf::Uint32 style, const sf::ContextSettings & settings)
 	: sf::RenderWindow(mode, title, style, settings), myApp(_myApp)
@@ -17,7 +17,7 @@ void Menu::setView(const sf::View &view) {
 
 void Menu::passEvent(sf::Event event) {
 	switch (event.type) {
-		//Fenetre fermé
+		//Fenetre fermÃ©
 		case sf::Event::Closed:
 			close();
 			break;
@@ -91,50 +91,50 @@ void Menu::initialiseDisplay() {
 
 	addPointButton = tgui::Button::create();
 	addPointButton->setPosition("5%", "addLayerButton.bottom+50");
-	addPointButton->setSize("90%", "25");
-	addPointButton->setText("Ajouter Point");
+	addPointButton->setSize("42.5%", "25");
+	addPointButton->setText("Point");
 	gui->add(addPointButton, "addPointButton");
 
 	addRectangleButton = tgui::Button::create();
-	addRectangleButton->setPosition("5%", "addPointButton.bottom + 5");
-	addRectangleButton->setSize("90%", "25");
-	addRectangleButton->setText("Ajouter Rectangle");
+	addRectangleButton->setPosition("addPointButton.right + 5%", "addPointButton.top");
+	addRectangleButton->setSize("42.5%", "25");
+	addRectangleButton->setText("Rectangle");
 	gui->add(addRectangleButton, "addRectangleButton");
 	
 	addEllipseButton = tgui::Button::create();
 	addEllipseButton->setPosition("5%", "addRectangleButton.bottom + 5");
-	addEllipseButton->setSize("90%", "25");
-	addEllipseButton->setText("Ajouter Ellipse");
+	addEllipseButton->setSize("42.5%", "25");
+	addEllipseButton->setText("Ellipse");
 	gui->add(addEllipseButton, "addEllipseButton");
 	
 	addCarreButton = tgui::Button::create();
-	addCarreButton->setPosition("5%", "addEllipseButton.bottom + 5");
-	addCarreButton->setSize("90%", "25");
-	addCarreButton->setText(std::string("Ajouter Carré"));	//std::string pour avoir le é
+	addCarreButton->setPosition("addEllipseButton.right + 5%", "addEllipseButton.top");
+	addCarreButton->setSize("42.5%", "25");
+	addCarreButton->setText(std::string("CarrÃ©"));	//std::string pour avoir le Ã©
 	gui->add(addCarreButton, "addCarreButton");
 
 	addCercleButton = tgui::Button::create();
 	addCercleButton->setPosition("5%", "addCarreButton.bottom + 5");
-	addCercleButton->setSize("90%", "25");
-	addCercleButton->setText("Ajouter Cercle");
+	addCercleButton->setSize("42.5%", "25");
+	addCercleButton->setText("Cercle");
 	gui->add(addCercleButton, "addCercleButton");
 
 	addTriangleButton = tgui::Button::create();
-	addTriangleButton->setPosition("5%", "addCercleButton.bottom + 5");
-	addTriangleButton->setSize("90%", "25");
-	addTriangleButton->setText("Ajouter Triangle");
+	addTriangleButton->setPosition("addCercleButton.right + 5%", "addCercleButton.top");
+	addTriangleButton->setSize("42.5%", "25");
+	addTriangleButton->setText("Triangle");
 	gui->add(addTriangleButton, "addTriangleButton");
 
 	addPolygoneButton = tgui::Button::create();
 	addPolygoneButton->setPosition("5%", "addTriangleButton.bottom + 5");
-	addPolygoneButton->setSize("90%", "25");
-	addPolygoneButton->setText("Ajouter Polygone");
+	addPolygoneButton->setSize("42.5%", "25");
+	addPolygoneButton->setText("Polygone");
 	gui->add(addPolygoneButton, "addPolygoneButton");
 
 	addImageButton = tgui::Button::create();
-	addImageButton->setPosition("5%", "addPolygoneButton.bottom + 5");
-	addImageButton->setSize("90%", "25");
-	addImageButton->setText("Ajouter Image");
+	addImageButton->setPosition("addPolygoneButton.right + 5%", "addPolygoneButton.top");
+	addImageButton->setSize("42.5%", "25");
+	addImageButton->setText("Image");
 	gui->add(addImageButton, "addImageButton");
 
 	widthLabel = tgui::Label::create("Largeur :");
@@ -254,7 +254,7 @@ void Menu::initialiseDisplay() {
 	createShapeButton = tgui::Button::create();
 	createShapeButton->setPosition("closeAddShapeButton.right + 40%", "posXEb.bottom + 30");
 	createShapeButton->setSize("25%", "25");
-	createShapeButton->setText("Créer");
+	createShapeButton->setText("CrÃ©er");
 	createShapeButton->setVisible(false);
 	gui->add(createShapeButton, "createShapeButton");
 
@@ -339,7 +339,7 @@ void Menu::display1ValueConstructor(std::string type) {
 	}
 
 	else if (type == "carre") {
-		singleLabel->setText(std::string("Coté"));
+		singleLabel->setText(std::string("CotÃ©"));
 		singleEb->setDefaultText("Nombre");
 		createShapeButton->connect("pressed", &Menu::createCarre, this);
 	}
