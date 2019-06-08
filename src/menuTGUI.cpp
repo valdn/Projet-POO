@@ -244,58 +244,6 @@ void Menu::initialiseDisplay() {
 	gui->add(posYLabel, "posYLabel");
 	gui->add(posYEb, "posYEb");
 
-	posP1XLabel = tgui::Label::create("Point 1 X :");
-	posP1XLabel->setSize("40%", "20");
-	posP1XLabel->setPosition("5%", "posXEb.bottom+10");
-	posP1XLabel->setVisible(false);
-	posP1XEb = tgui::EditBox::create();
-	posP1XEb->setPosition("5%", "posP1XLabel.bottom");
-	posP1XEb->setSize("40%", "30");
-	posP1XEb->setDefaultText("Nombre");
-	posP1XEb->setInputValidator(tgui::EditBox::Validator::UInt);
-	posP1XEb->setVisible(false);
-	gui->add(posP1XLabel, "posP1XLabel");
-	gui->add(posP1XEb, "posP1XEb");
-
-	posP1YLabel = tgui::Label::create("Point 1 Y :");
-	posP1YLabel->setSize("40%", "20");
-	posP1YLabel->setPosition("posP1XLabel.right + 10%", "posXEb.bottom+10");
-	posP1YLabel->setVisible(false);
-	posP1YEb = tgui::EditBox::create();
-	posP1YEb->setPosition("posP1XEb.right + 10%", "posP1YLabel.bottom");
-	posP1YEb->setSize("40%", "30");
-	posP1YEb->setDefaultText("Nombre");
-	posP1YEb->setInputValidator(tgui::EditBox::Validator::UInt);
-	posP1YEb->setVisible(false);
-	gui->add(posP1YLabel, "posP1YLabel");
-	gui->add(posP1YEb, "posP1YEb");
-
-	posP2XLabel = tgui::Label::create("Point 2 X :");
-	posP2XLabel->setSize("40%", "20");
-	posP2XLabel->setPosition("5%", "posP1XEb.bottom+10");
-	posP2XLabel->setVisible(false);
-	posP2XEb = tgui::EditBox::create();
-	posP2XEb->setPosition("5%", "posP2XLabel.bottom");
-	posP2XEb->setSize("40%", "30");
-	posP2XEb->setDefaultText("Nombre");
-	posP2XEb->setInputValidator(tgui::EditBox::Validator::UInt);
-	posP2XEb->setVisible(false);
-	gui->add(posP2XLabel, "posP2XLabel");
-	gui->add(posP2XEb, "posP2XEb");
-
-	posP2YLabel = tgui::Label::create("Point 2 Y :");
-	posP2YLabel->setSize("40%", "20");
-	posP2YLabel->setPosition("posP2XLabel.right + 10%", "posP1XEb.bottom+10");
-	posP2YLabel->setVisible(false);
-	posP2YEb = tgui::EditBox::create();
-	posP2YEb->setPosition("posP2XEb.right + 10%", "posP2YLabel.bottom");
-	posP2YEb->setSize("40%", "30");
-	posP2YEb->setDefaultText("Nombre");
-	posP2YEb->setInputValidator(tgui::EditBox::Validator::UInt);
-	posP2YEb->setVisible(false);
-	gui->add(posP2YLabel, "posP2YLabel");
-	gui->add(posP2YEb, "posP2YEb");
-
 	closeAddShapeButton = tgui::Button::create();
 	closeAddShapeButton->setPosition("5%", "posXEb.bottom + 30");
 	closeAddShapeButton->setSize("25%", "25");
@@ -327,6 +275,16 @@ void Menu::initialiseConnect() {
 	closeAddShapeButton->connect("pressed", &Menu::hiddingAddShape, this);
 }
 
+tgui::ComboBox::Ptr Menu::generatePointsCb() {
+	tgui::ComboBox::Ptr comboBox = tgui::ComboBox::create();
+	for (size_t i = 0; i < myApp->getNbPoints(); ++i)
+		comboBox->addItem("Point " + std::to_string(i + 1) + ", x : " + std::to_string(myApp->getPointAt(i)->getX()) + ", y : " + std::to_string(myApp->getPointAt(i)->getX()));
+	comboBox->setSize("90%", "25");
+	comboBox->setSelectedItemByIndex(0);
+	tab_cb.push_back(comboBox);
+	return comboBox;
+}
+
 void Menu::displayDefault(std::string type) {
 	hiddingAddShape(); //reset 
 
@@ -340,7 +298,9 @@ void Menu::displayDefault(std::string type) {
 	posYEb->setVisible(true);
 
 	createShapeButton->setVisible(true);
+	createShapeButton->setPosition("closeAddShapeButton.right + 40%", "closeAddShapeButton.top");
 	closeAddShapeButton->setVisible(true);
+	closeAddShapeButton->setPosition("5%", "posXEb.bottom + 30");
 
 	if (type == "point") createShapeButton->connect("pressed", &Menu::createPoint, this);
 }
@@ -415,8 +375,6 @@ void Menu::display1ValueConstructor(std::string type) {
 void Menu::displayTriValueConstructor(std::string type) {
 	displayDefault();
 
-
-
 	colorLabel->setPosition("5%", "addImageButton.bottom + 30");
 	colorLabel->setVisible(true);
 	exColor->setVisible(true);
@@ -425,25 +383,20 @@ void Menu::displayTriValueConstructor(std::string type) {
 	colorEb3->setVisible(true);
 
 	ancreLabel->setPosition("5%", "colorEb1.bottom + 10");
-	ancreLabel->setVisible(true);
 
-	posP1XLabel->setVisible(true);
-	posP1XEb->setVisible(true);
+	tgui::ComboBox::Ptr point1Cb = generatePointsCb();
+	point1Cb->setPosition("5%", "posXEb.bottom + 10");
+	gui->add(point1Cb, "point1Cb");
 
-	posP1YLabel->setVisible(true);
-	posP1YEb->setVisible(true);
-
-	posP2XLabel->setVisible(true);
-	posP2XEb->setVisible(true);
-
-	posP2YLabel->setVisible(true);
-	posP2YEb->setVisible(true);
+	tgui::ComboBox::Ptr point2Cb = generatePointsCb();
+	point2Cb->setPosition("5%", "point1Cb.bottom + 5");
+	gui->add(point2Cb, "point2Cb");
 
 	closeAddShapeButton->setVisible(true);
-	closeAddShapeButton->setPosition("5%", "posP2XEb.bottom + 30");
+	closeAddShapeButton->setPosition("5%", "point2Cb.bottom + 30");
 
 	createShapeButton->setVisible(true);
-	createShapeButton->setPosition("closeAddShapeButton.right + 40%", "posP2XEb.bottom + 30");
+	createShapeButton->setPosition("closeAddShapeButton.right + 40%", "closeAddShapeButton.top");
 
 	if (type == "triangle") createShapeButton->connect("pressed", &Menu::createTriangle, this);
 }
@@ -459,10 +412,6 @@ void Menu::hiddingAddShape() {
 	ancreLabel->setVisible(false);
 	posXLabel->setVisible(false);
 	posYLabel->setVisible(false);
-	posP1XLabel->setVisible(false);
-	posP1YLabel->setVisible(false);
-	posP2XLabel->setVisible(false);
-	posP2YLabel->setVisible(false);
 
 	widthEb->setVisible(false);
 	widthEb->setText("");
@@ -481,14 +430,12 @@ void Menu::hiddingAddShape() {
 	posXEb->setText("");
 	posYEb->setVisible(false);
 	posYEb->setText("");
-	posP1XEb->setVisible(false);
-	posP1XEb->setText("");
-	posP1YEb->setVisible(false);
-	posP1YEb->setText("");
-	posP2XEb->setVisible(false);
-	posP2XEb->setText("");
-	posP2YEb->setVisible(false);
-	posP2YEb->setText("");
+
+	for (size_t i = 0; i < tab_cb.size(); ++i) {	//Supprime toutes les ComboBox de points
+		gui->remove(tab_cb[i]);
+		tab_cb[i].~shared_ptr();
+	}
+	tab_cb.clear();
 
 	closeAddShapeButton->setVisible(false);
 	createShapeButton->disconnectAll();
@@ -601,26 +548,20 @@ void Menu::createImage() {
 	}
 }
 
-void Menu::createTriangle(){
+void Menu::createTriangle() {
 	int x = NULL;
 	int y = NULL;
-	int p1x = NULL;
-	int p1y = NULL;
-	int p2x = NULL;
-	int p2y = NULL;
+	size_t ip1 = tab_cb[0]->getSelectedItemIndex();
+	size_t ip2 = tab_cb[1]->getSelectedItemIndex();
 
 	getXYValues(&x, &y);
-	getP1XP1YValues(&p1x, &p1y);
-	getP2XP2YValues(&p2x, &p2y);
 
-	if (x != NULL && y != NULL && p1x != NULL && p1y != NULL && p2x != NULL && p2y != NULL) {
-		myApp->addTriangle(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255), x, y, p1x, p1y, p2x, p2y, getSelectedCalque());
+	if (x != NULL && y != NULL) {
+		myApp->addTriangle(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255), x, y, ip1, ip2, getSelectedCalque());
 	}
 
 
 }
-
-
 
 void Menu::getXYValues(int * x, int * y) {
 	if (posXEb->getText().isEmpty()) {
@@ -634,34 +575,6 @@ void Menu::getXYValues(int * x, int * y) {
 
 	*y = std::stoi((std::string) posYEb->getText());	//PAs besoin de try car on ne peut recevoir que des chiffre
 	*x = std::stoi((std::string) posXEb->getText());
-}
-
-void Menu::getP1XP1YValues(int * p1x, int * p1y) {
-	if (posP1XEb->getText().isEmpty()) {
-		posXEb->getRenderer()->setBorderColor(sf::Color::Red);
-		posXEb->setFocused(true);
-	}
-	else if (posP1YEb->getText().isEmpty()) {
-		posYEb->getRenderer()->setBorderColor(sf::Color::Red);
-		posYEb->setFocused(true);
-	}
-
-	*p1y = std::stoi((std::string) posP1YEb->getText());	//PAs besoin de try car on ne peut recevoir que des chiffre
-	*p1x = std::stoi((std::string) posP1XEb->getText());
-}
-
-void Menu::getP2XP2YValues(int * p2x, int * p2y) {
-	if (posP2XEb->getText().isEmpty()) {
-		posXEb->getRenderer()->setBorderColor(sf::Color::Red);
-		posXEb->setFocused(true);
-	}
-	else if (posP2YEb->getText().isEmpty()) {
-		posYEb->getRenderer()->setBorderColor(sf::Color::Red);
-		posYEb->setFocused(true);
-	}
-
-	*p2y = std::stoi((std::string) posP2YEb->getText());	//PAs besoin de try car on ne peut recevoir que des chiffre
-	*p2x = std::stoi((std::string) posP2XEb->getText());
 }
 
 void Menu::getValues(int * largeur, int * hauteur, int * couleur) {

@@ -35,12 +35,10 @@ void MyApp::addImage(std::string path, int x, int y, size_t calque)
 	ajouter(new ImageD(path, x, y, getLastPoint()), calque);
 }
 
-void MyApp::addTriangle(sf::Color color, int x, int y, int p1x, int p1y, int p2x, int p2y, size_t calque)
+void MyApp::addTriangle(sf::Color color, int x, int y, size_t ip1, size_t ip2, size_t calque)
 {
-	ajouter(new PointD(p1x, p1y), calque);
-	PointD* p1 = getLastPoint();
-	ajouter(new PointD(p2x, p2y), calque);
-	PointD* p2 = getLastPoint();
+	PointD* p1 = getPointAt(ip1);
+	PointD* p2 = getPointAt(ip2);
 	ajouter(new TriangleD(color, x, y, p1, p2), calque);
 }
 

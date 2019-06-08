@@ -12,6 +12,8 @@ class Menu : public sf::RenderWindow {
 	tgui::Gui * gui;
 	MyApp * myApp;
 
+	std::vector<tgui::ComboBox::Ptr> tab_cb;
+
 	tgui::ComboBox::Ptr layerListCb;
 	tgui::ComboBox::Ptr groupListCb;
 
@@ -35,10 +37,6 @@ class Menu : public sf::RenderWindow {
 	tgui::Label::Ptr ancreLabel;
 	tgui::Label::Ptr posXLabel;
 	tgui::Label::Ptr posYLabel;
-	tgui::Label::Ptr posP1XLabel;
-	tgui::Label::Ptr posP1YLabel;
-	tgui::Label::Ptr posP2XLabel;
-	tgui::Label::Ptr posP2YLabel;
 
 	tgui::EditBox::Ptr widthEb;
 	tgui::EditBox::Ptr heightEb;
@@ -47,13 +45,8 @@ class Menu : public sf::RenderWindow {
 	tgui::EditBox::Ptr colorEb2;
 	tgui::EditBox::Ptr colorEb3;
 	tgui::Canvas::Ptr exColor;
-
 	tgui::EditBox::Ptr posXEb;
 	tgui::EditBox::Ptr posYEb;
-	tgui::EditBox::Ptr posP1XEb;
-	tgui::EditBox::Ptr posP1YEb;
-	tgui::EditBox::Ptr posP2XEb;
-	tgui::EditBox::Ptr posP2YEb;
 
 public:
 	Menu(MyApp * myApp, sf::VideoMode mode, const sf::String& title, sf::Uint32 style = sf::Style::Default, const sf::ContextSettings& settings = sf::ContextSettings());
@@ -69,6 +62,7 @@ public:
 private:
 	void initialiseDisplay();
 	void initialiseConnect();
+	tgui::ComboBox::Ptr generatePointsCb();
 	void displayDefault(std::string type = "");
 	void display2ValuesConstructor(std::string type);
 	void display1ValueConstructor(std::string type);
@@ -87,8 +81,6 @@ private:
 	void createImage();
 
 	void getXYValues(int * x, int * y);
-	void getP1XP1YValues(int * p1x, int * p1y);
-	void getP2XP2YValues(int * p2x, int * p2y);
 	void getValues(int * largeur, int * hauteur, int * couleur);
 	void getValues(int * single, int * couleur);
 };
