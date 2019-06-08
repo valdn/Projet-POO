@@ -35,6 +35,10 @@ class Menu : public sf::RenderWindow {
 	tgui::Label::Ptr ancreLabel;
 	tgui::Label::Ptr posXLabel;
 	tgui::Label::Ptr posYLabel;
+	tgui::Label::Ptr posP1XLabel;
+	tgui::Label::Ptr posP1YLabel;
+	tgui::Label::Ptr posP2XLabel;
+	tgui::Label::Ptr posP2YLabel;
 
 	tgui::EditBox::Ptr widthEb;
 	tgui::EditBox::Ptr heightEb;
@@ -46,6 +50,10 @@ class Menu : public sf::RenderWindow {
 
 	tgui::EditBox::Ptr posXEb;
 	tgui::EditBox::Ptr posYEb;
+	tgui::EditBox::Ptr posP1XEb;
+	tgui::EditBox::Ptr posP1YEb;
+	tgui::EditBox::Ptr posP2XEb;
+	tgui::EditBox::Ptr posP2YEb;
 
 public:
 	Menu(MyApp * myApp, sf::VideoMode mode, const sf::String& title, sf::Uint32 style = sf::Style::Default, const sf::ContextSettings& settings = sf::ContextSettings());
@@ -64,6 +72,7 @@ private:
 	void displayDefault(std::string type = "");
 	void display2ValuesConstructor(std::string type);
 	void display1ValueConstructor(std::string type);
+	void displayTriValueConstructor(std::string type);
 	void hiddingAddShape();
 
 	void createCalque();
@@ -78,6 +87,8 @@ private:
 	void createImage();
 
 	void getXYValues(int * x, int * y);
+	void getP1XP1YValues(int * p1x, int * p1y);
+	void getP2XP2YValues(int * p2x, int * p2y);
 	void getValues(int * largeur, int * hauteur, int * couleur);
 	void getValues(int * single, int * couleur);
 };
