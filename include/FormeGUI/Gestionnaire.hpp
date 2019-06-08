@@ -48,6 +48,7 @@ class Gestionnaire {
 
 		inline size_t getNbPoints() const { return tab_point.size(); }
 		inline PointD* getPointAt(size_t i) const { return tab_point.at(i); }
+		inline PointD* getLastPoint() const { return tab_point.back(); }
 		size_t getIndex(PointD* point) const;
 
 		inline size_t getNbCalques() const { return tab_calque.size(); }

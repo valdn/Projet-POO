@@ -2,8 +2,6 @@
 #include <iostream>
 #include <fstream>
 
-#include "TriangleDrawable.hpp"
-#include "ImageDrawable.hpp"
 #include "PolygoneDrawable.hpp"
 #include "Gestionnaire.hpp"
 #include "menuTGUI.hpp"
@@ -98,7 +96,7 @@ int main()
 
 	MyApp gestion = MyApp(); //Creer un gestionnaire
 
-	Menu menuW(&gestion, sf::VideoMode(250, 700), "Menu window", sf::Style::Close);
+	Menu menuW(&gestion, sf::VideoMode(250, 850), "Menu window", sf::Style::Close);
 
 	FormeD * select_shape = nullptr;	//Sert a pointer sur une forme
 	FormeD * select_shape_move = nullptr;
