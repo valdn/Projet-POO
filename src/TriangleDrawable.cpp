@@ -17,10 +17,15 @@ TriangleD::TriangleD(sf::Color couleur, int x1, int y1, PointD * _p1, PointD * _
 TriangleD::TriangleD(const TriangleD & ori) : TriangleD(sf::Color(ori.getCouleur()), getAncre().getX(), getAncre().getY(), ori.p1, ori.p2) {}
 
 TriangleD::TriangleD(std::istream & is) : Forme(is), Triangle(is), FormeD(is) {
-	std::string str;
-	std::getline(is, str);
+	p1 = PointD::getPointD(getPtrP1());
+	p2 = PointD::getPointD(getPtrP2());
 
-	throw std::range_error("il est impossible de charger cette forme");
+	setFillColor(sf::Color(getCouleur()));
+	setOutlineThickness(-1);
+	setOutlineColor(sf::Color(getCouleur()));
+	dist1 = getDistance(getAncre(), p1->getPoint());
+	dist2 = getDistance(getAncre(), p2->getPoint());
+	recalculate();
 }
 
 TriangleD::~TriangleD() {}

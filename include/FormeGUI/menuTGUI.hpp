@@ -55,6 +55,7 @@ public:
 	void setView(const sf::View &view);
 	inline void drawGui() const { gui->draw(); }
 	void passEvent(sf::Event event);
+	void updateCalque();
 
 	inline size_t getSelectedCalque() const { return layerListCb->getSelectedItemIndex(); }
 	inline size_t getSelectedGroupe() const { return groupListCb->getSelectedItemIndex(); }

@@ -67,19 +67,19 @@ void Gestionnaire::ajouter(Groupe * groupe) {
 }
 
 void Gestionnaire::sauver(std::ostream & os) const {
+
+	//Sauvegarde le nombre de calques
+	os << tab_calque.size() << std::endl;
+	os << std::endl;
+
 	//Sauvegarde les points
 	os << tab_point.size() << std::endl;
-	for (size_t i = 0; i < tab_point.size(); i++) os << (*tab_point[i]) << std::endl;
+	for (size_t i = 0; i < tab_point.size(); i++) os << getIndex(getCalque(tab_point[i])) << ' ' << (*tab_point[i]) << std::endl;
 
 	os << std::endl;
 	//Sauvegarde les formes
 	os << tab_forme.size() << std::endl;
-	for (size_t i = 0; i < tab_forme.size(); i++) os << (*tab_forme[i]) << std::endl;
-
-	os << std::endl;
-	//Sauvegarde les calques
-	os << tab_calque.size() << std::endl;
-	for (size_t i = 0; i < tab_calque.size(); i++) os << (*tab_calque[i]) << std::endl;
+	for (size_t i = 0; i < tab_forme.size(); i++) os << getIndex(getCalque(tab_point[i])) << ' ' << (*tab_forme[i]) << std::endl;	
 }
 
 void Gestionnaire::charger(std::istream & is) {
@@ -90,13 +90,22 @@ void Gestionnaire::charger(std::istream & is) {
 	tab_point.clear();
 	for (size_t i = 0; i < tab_calque.size(); i++) delete tab_calque[i];
 	tab_calque.clear();
+	for (size_t i = 0; i < tab_groupe.size(); i++) delete tab_groupe[i];
+	tab_groupe.clear();
+
+	tab_groupe.push_back(new Groupe());
+
+	size_t nb;
+
+	//Charge les calques
+	is >> nb;
+	for (size_t i = 0; i < nb; ++i) ajouter(new Calque());
 
 	//Charge les points
-	size_t nb;
 	is >> nb;
 	for (size_t i = 0; i < nb; ++i) {
 		try {
-			ajouter(PointD::charger(is));
+			ajouter(PointD::charger(is), getCalqueIndex(is));
 		} catch (std::runtime_error & e) {
 			std::cerr << e.what() << std::endl;
 		}
@@ -106,18 +115,7 @@ void Gestionnaire::charger(std::istream & is) {
 	is >> nb;
 	for (size_t i = 0; i < nb; ++i) {
 		try {
-			ajouter(FormeD::charger(is));
-		}
-		catch (std::runtime_error & e) {
-			std::cerr << e.what() << std::endl;
-		}
-	}
-
-	//Charge les calques
-	is >> nb;
-	for (size_t i = 0; i < nb; ++i) {
-		try {
-			ajouter(Calque::charger(is));
+			ajouter(FormeD::charger(is), getCalqueIndex(is));
 		}
 		catch (std::runtime_error & e) {
 			std::cerr << e.what() << std::endl;
@@ -218,4 +216,17 @@ size_t Gestionnaire::getIndex(PointD * point) const {
 		if (tab_point[i] == point) return i;
 	}
 	throw std::domain_error("Le point n'existe pas");
+}
+
+size_t Gestionnaire::getIndex(Calque * calque) const {
+	for (size_t i = 0; i < tab_calque.size(); i++) {
+		if (tab_calque[i] == calque) return i;
+	}
+	throw std::domain_error("Le calque n'existe pas");
+}
+
+inline size_t Gestionnaire::getCalqueIndex(std::istream & is) {
+	size_t index;
+	is >> index;
+	return index;
 }

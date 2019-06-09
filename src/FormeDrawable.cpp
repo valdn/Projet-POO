@@ -19,7 +19,7 @@ void FormeD::maj() {
 	ancreD.update();
 }
 
-sf::Vector2f FormeD::getDistance(const fm::Point p1, const fm::Point p2) {
+sf::Vector2f FormeD::getDistance(const fm::Point & p1, const fm::Point & p2) {
 	return sf::Vector2f((p2.getX() - p1.getX()), (p2.getY() - p1.getY()));
 }
 

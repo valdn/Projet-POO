@@ -1,13 +1,17 @@
 #include "PointDrawable.hpp"
 
-PointD::PointD(fm::Point * _point, sf::Color _couleur) : point(_point), couleur(_couleur) {
+std::vector<PointD*> PointD::tab_points = std::vector<PointD*>();
+
+PointD::PointD(fm::Point * _point, sf::Color _couleur, bool _partage) : point(_point), couleur(_couleur), partage(_partage) {
+	tab_points.push_back(this);
 	cercle.setFillColor(couleur);
 	cercle.setRadius((float)point->getTaille());
 	cercle.setOrigin(cercle.getRadius(), cercle.getRadius());
 	update();
 }
 
-PointD::PointD(int x, int y, sf::Color _couleur) : point(new fm::Point(x,y)), couleur(_couleur) {
+PointD::PointD(int x, int y, sf::Color _couleur, bool _partage) : point(new fm::Point(x,y)), couleur(_couleur), partage(_partage) {
+	tab_points.push_back(this);
 	cercle.setFillColor(couleur);
 	cercle.setRadius((float)point->getTaille());
 	cercle.setOrigin(cercle.getRadius(), cercle.getRadius());
@@ -17,13 +21,23 @@ PointD::PointD(int x, int y, sf::Color _couleur) : point(new fm::Point(x,y)), co
 PointD::PointD(const PointD & ori) : PointD(&fm::Point(ori.getPoint()), ori.couleur) {}
 
 PointD::PointD(std::istream & is) : point(new fm::Point(is)) {
-	int ucolor;
-	is >> ucolor;
-
-	couleur = sf::Color(ucolor);
+	tab_points.push_back(this);
+	cercle.setFillColor(couleur);
+	cercle.setRadius((float)point->getTaille());
+	cercle.setOrigin(cercle.getRadius(), cercle.getRadius());
+	update();
 }
 
 PointD::~PointD() {
+	try { 
+		tab_points.erase(tab_points.begin() + getPointDIndex(this)); 
+	}
+	catch (std::domain_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
+	
+	if (partage) delete point;
+
 	point = nullptr;
 }
 
@@ -44,7 +58,22 @@ PointD * PointD::charger(std::istream & is) {
 	return new PointD(is);
 }
 
+PointD * PointD::getPointD(fm::Point * point) {
+	for (size_t i = 0; i < tab_points.size(); ++i) {
+		if (tab_points[i]->getPtrPoint() == point) return tab_points[i];
+	}
+	return nullptr;
+}
+
+size_t PointD::getPointDIndex(PointD * point) {
+	for (size_t i = 0; tab_points.size(); ++i) {
+		if (tab_points[i] == point) return i;
+	}
+
+	throw std::domain_error("Le point n'existe pas");
+}
+
 std::ostream & operator<<(std::ostream & os, const PointD & p) {
-	os << p.getPoint() << p.couleur.toInteger();
+	os << p.getPoint();
 	return os;
 }

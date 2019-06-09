@@ -72,12 +72,6 @@ bool Calque::isInTab(PointD * point) const {
 	return false;
 }
 
-
-Calque * Calque::charger(std::istream & is) {
-	//TODO
-	return nullptr;
-}
-
 size_t Calque::getPosShape(FormeD * shape) const {
 	for (size_t i = 0; i < tab_forme->size(); ++i) {
 		if (tab_forme->at(i) == shape) return i;
@@ -94,6 +88,5 @@ size_t Calque::getPosPoint(PointD * point) const {
 
 std::ostream & operator<<(std::ostream & os, const Calque & calque) {
 	//TODO
-	os << "TODO";
 	return os;
 }

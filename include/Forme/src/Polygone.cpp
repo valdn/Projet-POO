@@ -5,23 +5,30 @@ namespace fm {
 void Polygone::ecrire(std::ostream &os) const {
 	os << "Polygone ";
 	Forme::ecrire(os);
+	os << tabPoint->size();
 	for (size_t i = 0; i < tabPoint->size(); i++)
-		os << tabPoint->at(i) << ' ';
+		os << ' ' << tabPoint->at(i)->getId() - 1;
 }
 
-Polygone::Polygone(uint couleur, int x, int y, std::vector<Point*>* _tabPoint) : Forme(couleur, x, y), tabPoint(_tabPoint), taille_tab(0) {
-	if (tabPoint != nullptr) {
-		taille_tab = tabPoint->size();
-	}
-}
+Polygone::Polygone(uint couleur, int x, int y, std::vector<Point*>* _tabPoint) : Forme(couleur, x, y), tabPoint(_tabPoint) {}
 
 Polygone::Polygone(const Polygone & ori) : Polygone(ori.getCouleur(), ori.getAncre().getX(), ori.getAncre().getY(), ori.getTabPointPtr()) {}
 
 Polygone::Polygone(std::istream &is) : Forme(is) {
-	//TODO
+	tabPoint = new std::vector<Point*>();
+
+	size_t nb_point, ipoint;
+	is >> nb_point;
+
+	for (size_t i = 0; i < nb_point; ++i) {
+		is >> ipoint;
+		tabPoint->push_back(Point::getPointAt(ipoint));
+	}
 }
 
-Polygone::~Polygone() {}
+Polygone::~Polygone() {
+	delete tabPoint;
+}
 
 double Polygone::perimetre() const {
 	double perimetre = 0;
@@ -31,7 +38,7 @@ double Polygone::perimetre() const {
 
 	//Ajoute au périmètre la distance entre deux point
 	//Exemple si y'a 4 point ça va calculer la distance entre p1-p2 puis p2-p3 puis p3-p4
-	for (; i < taille_tab - 1; i++) {
+	for (; i < tabPoint->size() - 1; i++) {
 		perimetre += getLonSeg( (*getPointAt(i)), (*getPointAt(i+1)) );
 	}
 

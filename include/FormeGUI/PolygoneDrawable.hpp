@@ -7,12 +7,12 @@
 #include "FormeDrawable.hpp"
 
 class PolygoneD : public fm::Polygone, public FormeD {
-	std::vector<PointD*> * tabPointD;
-	std::vector <sf::Vector2f> tabDistance;
+	std::vector<PointD*> tabPointD;
+	std::vector<sf::Vector2f> tabDistance;
 
 	public:
-		PolygoneD(sf::Color couleur, int x1, int y1, std::vector<PointD*> * tabPoint);
-		PolygoneD(const PolygoneD & ori);
+		PolygoneD(sf::Color couleur, int x1, int y1, std::vector<PointD*> & tabPoint);
+		//PolygoneD(const PolygoneD & ori);
 		PolygoneD(std::istream & is);
 		~PolygoneD() override;
 		bool isOver(int x, int y) const override;

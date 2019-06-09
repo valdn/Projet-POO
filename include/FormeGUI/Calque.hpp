@@ -25,8 +25,6 @@ class Calque {
 		bool isInTab(FormeD * shape) const;
 		bool isInTab(PointD * point) const;
 
-		static Calque * charger(std::istream & is);
-
 		inline size_t getNbFormes() const { return tab_forme->size(); }
 		inline bool isActive() const { return active; }
 		inline void toggleActive() { active = !active; }
