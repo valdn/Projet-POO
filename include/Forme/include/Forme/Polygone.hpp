@@ -27,13 +27,12 @@ namespace fm {
 
 class Polygone : virtual public Forme {
 	std::vector<Point*> * tabPoint;
-	size_t taille_tab;
 
 	protected:
 		void ecrire(std::ostream & os) const override;
 		inline std::vector<Point*>* getTabPointPtr() const { return tabPoint; }
 		inline Point* getPointPtrAt(size_t i) const { return tabPoint->at(i); }
-		inline void setTabPoint(std::vector<Point*>* _tabPoint) { tabPoint = _tabPoint; taille_tab = tabPoint->size(); }
+		inline void setTabPoint(std::vector<Point*>* _tabPoint) { tabPoint = _tabPoint; }
 
 	public:
 		Polygone(uint couleur, int x, int y, std::vector<Point*>* tabPoint);
@@ -44,7 +43,7 @@ class Polygone : virtual public Forme {
 		//Getter - Setter
 		inline const Point* getPointAt(size_t i) const { return tabPoint->at(i); }
 		inline void setPosPointAt(int x, int y, size_t i) { tabPoint->at(i)->setXY(x,y); }
-		inline size_t getTailleTab() const { return taille_tab; }
+		inline size_t getTailleTab() const { return tabPoint->size(); }
 
 		//Longueur de tous les cotés
 		double perimetre() const override;

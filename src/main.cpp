@@ -107,7 +107,7 @@ int main()
 	bool mouseIn = true; //Savoir si la souris est dans la fenetre ou non
 	bool focus = true;	//Savoir si la fenetre est focus
 	bool need_update = false;
-
+	
 	gestion.ajouter(new PointD(200, 200));	//Ajoute un point sur le second calque
 	gestion.ajouter(new PointD(100, 150));
 	gestion.ajouter(new PointD(400, 200));
@@ -116,7 +116,8 @@ int main()
 	gestion.ajouter(new PointD(500, 300));
 	gestion.ajouter(new PointD(600, 300));
 	gestion.ajouter(new PointD(600, 350));
-
+	gestion.ajouter(new PointD(700, 350));
+	
 
 	gestion.ajouter(new RectangleD(sf::Color::Red, 10, 10, 100, 50));	//Ajoute un rectangle au calque de base
 	gestion.ajouter(new EllipseD(sf::Color::Blue, 10, 70, 100, 50));	//Ajoute une ellipse au calque de base
@@ -125,17 +126,17 @@ int main()
 	gestion.ajouter(new TriangleD(sf::Color::Cyan, 100, 300, gestion.getPointAt(0), gestion.getPointAt(1)));	//Ajoute une forme au deuxieme calque
 	gestion.ajouter(new TriangleD(sf::Color::Black, 300, 100, gestion.getPointAt(2), gestion.getPointAt(1)));
 
-	std::vector<PointD*> * tableau_de_pointD = new std::vector<PointD*>;
-	tableau_de_pointD->push_back(gestion.getPointAt(5));
-	tableau_de_pointD->push_back(gestion.getPointAt(6));
-	tableau_de_pointD->push_back(gestion.getPointAt(7));
+	std::vector<PointD*> tableau_de_pointD = std::vector<PointD*>();
+	tableau_de_pointD.push_back(gestion.getPointAt(5));
+	tableau_de_pointD.push_back(gestion.getPointAt(6));
+	tableau_de_pointD.push_back(gestion.getPointAt(7));
 	gestion.ajouter(new PolygoneD(sf::Color::Cyan, 500, 400, tableau_de_pointD));
 
 	gestion.ajouter(new ImageD("download.png", 200, 200, gestion.getPointAt(3)));
 
-
 	enregistrer(gestion);
-	//charger(gestionF, gestionP);
+	charger(gestion);
+	menuW.updateCalque();
 
 
 	//Boucle principale

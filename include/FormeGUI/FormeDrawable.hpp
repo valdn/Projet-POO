@@ -21,7 +21,7 @@ class FormeD : public virtual fm::Forme, public sf::Shape {
 		virtual bool isOver(int _x, int _y) const = 0;
 		virtual void maj();
 		virtual void recalculate() = 0;
-		sf::Vector2f getDistance(const fm::Point p1, const fm::Point p2);
+		sf::Vector2f getDistance(const fm::Point & p1, const fm::Point & p2);
 		virtual void dessiner(sf::RenderWindow & window) const = 0;
 		static FormeD* charger(std::istream & is);
 		inline int getTrsp() const { return trsp; }

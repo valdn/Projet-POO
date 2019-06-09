@@ -10,7 +10,7 @@
 namespace fm {
 
 void Forme::ecrire(std::ostream & os) const {
-	os << ancre << couleur << ' ';
+	os << ancre << ' ' << couleur << ' ';
 }
 
 Forme::Forme(uint _couleur, int x, int y) : couleur(_couleur), ancre(x, y) {}

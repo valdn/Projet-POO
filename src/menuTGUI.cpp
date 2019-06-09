@@ -59,6 +59,13 @@ void Menu::passEvent(sf::Event event) {
 	gui->handleEvent(event);
 }
 
+void Menu::updateCalque() {
+	layerListCb->removeAllItems();
+	for (size_t i = 0; i < myApp->getNbCalques(); ++i)
+		layerListCb->addItem("Calque " + std::to_string(i + 1));
+	layerListCb->setSelectedItemByIndex(0);
+}
+
 
 void Menu::initialiseDisplay() {
 	layerListCb = tgui::ComboBox::create();

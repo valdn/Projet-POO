@@ -53,6 +53,8 @@ class Gestionnaire {
 
 		inline size_t getNbCalques() const { return tab_calque.size(); }
 		inline Calque* getCalqueAt(size_t i) const { return tab_calque.at(i); }
+		inline size_t getCalqueIndex(std::istream& is);
+		size_t getIndex(Calque* calque) const;
 
 		inline size_t getNbGroupes() const { return tab_groupe.size(); }
 		inline Groupe* getGroupeAt(size_t i) const { return tab_groupe.at(i); }
