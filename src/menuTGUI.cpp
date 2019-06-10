@@ -461,9 +461,7 @@ void Menu::displayFile(std::string type) {
 	singleLabel->setText("Chemin vers le fichier :");
 	singleLabel->setVisible(true);
 	singleEb->setInputValidator(tgui::EditBox::Validator::All);
-	singleEb->setDefaultText("chemin\\vers\\votre\\fichier.txt");
 	singleEb->setText("");
-	singleEb->setVisible(true);
 
 	closeAddShapeButton->setVisible(true);
 	closeAddShapeButton->setPosition("5%", "singleEb.bottom + 30");
@@ -471,8 +469,16 @@ void Menu::displayFile(std::string type) {
 	generateButton->setVisible(true);
 	generateButton->setPosition("closeAddShapeButton.right + 40%", "closeAddShapeButton.top");
 
-	if(type == "load") generateButton->connect("pressed", &Menu::loadFile, this);
-	else if(type == "save") generateButton->connect("pressed", &Menu::saveFile, this);
+	if (type == "load") {
+		singleEb->setDefaultText("chemin\\vers\\votre\\fichier.shape");
+		singleEb->setVisible(true);
+		generateButton->connect("pressed", &Menu::loadFile, this);
+	}
+	else if (type == "save") {
+		singleEb->setDefaultText("chemin\\vers\\votre\\fichier");
+		singleEb->setVisible(true);
+		generateButton->connect("pressed", &Menu::saveFile, this);
+	}
 }
 
 
@@ -543,7 +549,7 @@ void Menu::saveFile() {
 	std::string path = singleEb->getText();
 
 	if (!path.empty()) {
-		myApp->sauvegarder(path);
+		myApp->sauvegarder(path+".shape");
 	}
 }
 
