@@ -5,7 +5,7 @@
 #include <vector>
 
 typedef unsigned int uint;
-//les coordonée d'un point sont entière car il est possible d'avoir des point avec des coordonnées négatives
+//les coordonnée d'un point sont entière car il est possible d'avoir des point avec des coordonnées négatives
 
 namespace fm {
 
@@ -13,7 +13,7 @@ class Point {
   static const uint TAILLE = 3;
 	static std::vector<Point*> tab_points;
 	size_t id;
-  int x,y;
+	int x,y;
 
 	public:
     Point(int _x, int _y);

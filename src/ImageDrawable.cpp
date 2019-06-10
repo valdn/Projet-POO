@@ -8,11 +8,12 @@ ImageD::ImageD(std::string img, int x1, int y1, PointD* _p1)
 	p1->setColor(sf::Color::Blue);
 	setFillColor(sf::Color::White);
 	sf::Texture * texture = new sf::Texture();
-	if (!texture->loadFromFile(img)) std::cerr << "Texture introuvable" << std::endl;
+	if (!texture->loadFromFile(img)) std::cerr << "La texture n'est pas en .png ou n'est pas trouvable" << std::endl;
 	texture->setSmooth(true);
 	setTexture(texture);
 	setTaille(texture->getSize().x, texture->getSize().y);
-	p1->getPtrPoint()->setXY(getAncre().getX() + getLargeur(), getAncre().getY() + getHauteur());
+	p1->setPos(getAncre().getX() + getLargeur(), getAncre().getY() + getHauteur());
+	p1->update();
 	dist1 = getDistance(getAncre(), p1->getPoint());
 	recalculate();
 }

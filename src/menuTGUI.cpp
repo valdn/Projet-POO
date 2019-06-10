@@ -149,8 +149,20 @@ void Menu::initialiseDisplay() {
 	addImageButton->setText("Image");
 	gui->add(addImageButton, "addImageButton");
 
+	loadButton = tgui::Button::create();
+	loadButton->setPosition("5%", "addPolygoneButton.bottom + 30");
+	loadButton->setSize("42.5%", "25");
+	loadButton->setText("Charger");
+	gui->add(loadButton, "loadButton");
+
+	saveButton = tgui::Button::create();
+	saveButton->setPosition("loadButton.right + 5%", "loadButton.top");
+	saveButton->setSize("42.5%", "25");
+	saveButton->setText("Sauvegarder");
+	gui->add(saveButton, "saveButton");
+
 	widthLabel = tgui::Label::create("Largeur :");
-	widthLabel->setPosition("5%", "addImageButton.bottom + 50");
+	widthLabel->setPosition("5%", "loadButton.bottom + 50");
 	widthLabel->setVisible(false);
 	widthEb = tgui::EditBox::create();
 	widthEb->setPosition("5%", "widthLabel.bottom");
@@ -176,7 +188,7 @@ void Menu::initialiseDisplay() {
 
 	singleLabel = tgui::Label::create("valeur");
 	singleLabel->setSize("90%", "20");
-	singleLabel->setPosition("5%", "addImageButton.bottom + 50");
+	singleLabel->setPosition("5%", "loadButton.bottom + 50");
 	singleLabel->setVisible(false);
 	singleEb = tgui::EditBox::create();
 	singleEb->setPosition("5%", "singleLabel.bottom");
@@ -226,7 +238,7 @@ void Menu::initialiseDisplay() {
 
 	ancreLabel = tgui::Label::create("Position de l'ancre :");
 	ancreLabel->setSize("80%", "20");
-	ancreLabel->setPosition("5%", "addImageButton.bottom + 30");
+	ancreLabel->setPosition("5%", "loadButton.bottom + 30");
 	ancreLabel->setVisible(false);
 	gui->add(ancreLabel, "ancreLabel");
 
@@ -256,6 +268,12 @@ void Menu::initialiseDisplay() {
 	gui->add(posYLabel, "posYLabel");
 	gui->add(posYEb, "posYEb");
 
+	addToPolButton = tgui::Button::create();
+	addToPolButton->setSize("90%", "25");
+	addToPolButton->setText("Ajouter au Polygone");
+	addToPolButton->setVisible(false);
+	gui->add(addToPolButton, "addToPolButton");
+
 	closeAddShapeButton = tgui::Button::create();
 	closeAddShapeButton->setPosition("5%", "posXEb.bottom + 30");
 	closeAddShapeButton->setSize("25%", "25");
@@ -263,19 +281,19 @@ void Menu::initialiseDisplay() {
 	closeAddShapeButton->setVisible(false);
 	gui->add(closeAddShapeButton, "closeAddShapeButton");
 
+	generateButton = tgui::Button::create();
+	generateButton->setPosition("closeAddShapeButton.right + 40%", "singleEb.bottom + 30");
+	generateButton->setSize("25%", "25");
+	generateButton->setText("Générer");
+	generateButton->setVisible(false);
+	gui->add(generateButton, "generateButton");
+
 	createShapeButton = tgui::Button::create();
 	createShapeButton->setPosition("closeAddShapeButton.right + 40%", "posXEb.bottom + 30");
 	createShapeButton->setSize("25%", "25");
 	createShapeButton->setText("Créer");
 	createShapeButton->setVisible(false);
 	gui->add(createShapeButton, "createShapeButton");
-
-	addToPol = tgui::Button::create();
-	addToPol->setSize("90%", "25");
-	addToPol->setText("Ajouter au Polygone");
-	addToPol->setVisible(false);
-	gui->add(addToPol, "addToPol");
-
 
 	initialiseConnect();
 }
@@ -291,7 +309,9 @@ void Menu::initialiseConnect() {
 	addImageButton->connect("pressed", &Menu::display1ValueConstructor, this, std::string("image"));
 	addTriangleButton->connect("pressed", &Menu::displayTriValueConstructor, this, std::string("triangle"));
 	addPolygoneButton->connect("pressed", &Menu::displayTriValueConstructor, this, std::string("polygone"));
-	addToPol->connect("pressed", &Menu::createTabPoint, this);
+	addToPolButton->connect("pressed", &Menu::createTabPoint, this);
+	saveButton->connect("pressed", &Menu::saveFile, this);
+	loadButton->connect("pressed", &Menu::displayLoadFile, this);
 	closeAddShapeButton->connect("pressed", &Menu::hiddingAddShape, this);
 }
 
@@ -309,7 +329,7 @@ tgui::ComboBox::Ptr Menu::generatePointsCb() {
 void Menu::displayDefault(std::string type) {
 	hiddingAddShape(); //reset 
 
-	ancreLabel->setPosition("5%", "addImageButton.bottom + 50");
+	ancreLabel->setPosition("5%", "saveButton.bottom + 50");
 	ancreLabel->setVisible(true);
 
 	posXLabel->setVisible(true);
@@ -396,7 +416,7 @@ void Menu::display1ValueConstructor(std::string type) {
 void Menu::displayTriValueConstructor(std::string type) {
 	displayDefault();
 
-	colorLabel->setPosition("5%", "addImageButton.bottom + 30");
+	colorLabel->setPosition("5%", "saveButton.bottom + 30");
 	colorLabel->setVisible(true);
 	exColor->setVisible(true);
 	colorEb1->setVisible(true);
@@ -423,16 +443,33 @@ void Menu::displayTriValueConstructor(std::string type) {
 		createShapeButton->connect("pressed", &Menu::createTriangle, this);
 	}
 	if (type == "polygone") {
-		addToPol->setVisible(true);
-		addToPol->setPosition("5%", "point1Cb.bottom + 20");
+		addToPolButton->setVisible(true);
+		addToPolButton->setPosition("5%", "point1Cb.bottom + 20");
 
 		closeAddShapeButton->setVisible(true);
-		closeAddShapeButton->setPosition("5%", "addToPol.bottom + 30");
+		closeAddShapeButton->setPosition("5%", "addToPolButton.bottom + 30");
 
 		createShapeButton->setVisible(true);
 		createShapeButton->setPosition("closeAddShapeButton.right + 40%", "closeAddShapeButton.top");
 		createShapeButton->connect("pressed", &Menu::createPolygone, this);
 	}
+}
+
+void Menu::displayLoadFile() {
+
+	singleLabel->setText("Chemin vers le fichier :");
+	singleLabel->setVisible(true);
+	singleEb->setDefaultText("chemin\\vers\\votre\\fichier.txt");
+	singleEb->setText("");
+	singleEb->setVisible(true);
+
+	closeAddShapeButton->setVisible(true);
+	closeAddShapeButton->setPosition("5%", "singleEb.bottom + 30");
+
+	generateButton->setVisible(true);
+	generateButton->setPosition("closeAddShapeButton.right + 40%", "closeAddShapeButton.top");
+
+	generateButton->connect("pressed", &Menu::loadFile, this);
 }
 
 
@@ -471,9 +508,20 @@ void Menu::hiddingAddShape() {
 	}
 	tab_cb.clear();
 
+
+	addToPolButton->setVisible(false);
+	generateButton->setVisible(false);
 	closeAddShapeButton->setVisible(false);
 	createShapeButton->disconnectAll();
 	createShapeButton->setVisible(false);
+}
+
+void Menu::loadFile() {
+	std::cout << "load moi le cul johnny" << std::endl;
+}
+
+void Menu::saveFile() {
+	std::cout << "save moi le cul johnny" << std::endl;
 }
 
 void Menu::createCalque() {
@@ -623,13 +671,28 @@ void Menu::createTabPoint() {
 }
 
 void Menu::getXYValues(int * x, int * y) const {
-	if (!posXEb->getText().isEmpty()) *x = std::stoi((std::string) posXEb->getText());
+	if (!posXEb->getText().isEmpty()) {
+		if (std::stoi((std::string)posXEb->getText()) >= getPosXWindow()) {
+			*x = getPosXWindow();
+			posXEb->setText(std::to_string(getPosXWindow()));
+		}
+		else
+			*x = std::stoi((std::string) posXEb->getText());
+	}
 	else {
 		posXEb->getRenderer()->setBorderColor(sf::Color::Red);
 		posXEb->setFocused(true);
 	}
 
-	if (!posYEb->getText().isEmpty()) *y = std::stoi((std::string) posYEb->getText());
+	if (!posYEb->getText().isEmpty()) {
+		if (std::stoi((std::string)posYEb->getText()) >= getPosYWindow()) {
+			*y = getPosYWindow();
+			posYEb->setText(std::to_string(getPosYWindow()));
+		}
+		else
+			*y = std::stoi((std::string) posYEb->getText());
+	}
+
 	else {
 		posYEb->getRenderer()->setBorderColor(sf::Color::Red);
 		posYEb->setFocused(true);
@@ -659,7 +722,7 @@ void Menu::getValues(int * single) const {
 	}
 }
 
-sf::Color Menu::getCouleur() {
+sf::Color Menu::getCouleur() const {
 	if (colorEb1->getText().isEmpty()) colorEb1->setText("0");
 	if (colorEb2->getText().isEmpty()) colorEb2->setText("0");
 	if (colorEb3->getText().isEmpty()) colorEb3->setText("0");

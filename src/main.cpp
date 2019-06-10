@@ -54,11 +54,13 @@ void manageGroupe(Gestionnaire & gestion, FormeD* forme, size_t index) {
 
 int main()
 {
-	sf::RenderWindow mainW(sf::VideoMode(1000, 500), "ShapEditor");
+	
 
 	MyApp gestion = MyApp(); //Creer un gestionnaire
 
 	Menu menuW(&gestion, sf::VideoMode(250, 850), "Menu window", sf::Style::Close);
+
+	sf::RenderWindow mainW(sf::VideoMode(menuW.getPosXWindow(), menuW.getPosYWindow()), "ShapEditor");
 
 	FormeD * select_shape = nullptr;	//Sert a pointer sur une forme
 	FormeD * select_shape_move = nullptr;
@@ -74,7 +76,7 @@ int main()
 	gestion.ajouter(new PointD(200, 200));	//Ajoute un point sur le second calque
 	gestion.ajouter(new PointD(100, 150));
 	gestion.ajouter(new PointD(400, 200));
-	gestion.ajouter(new PointD(400, 400, false));
+	gestion.ajouter(new PointD(600, 600, false));
 	gestion.ajouter(new PointD(300, 300));
 	gestion.ajouter(new PointD(500, 300));
 	gestion.ajouter(new PointD(600, 300));
@@ -113,6 +115,8 @@ int main()
 				//fenetre resize
 				case sf::Event::Resized:
 					mainW.setView(sf::View(sf::FloatRect(0, 0, event.size.width, event.size.height)));
+					menuW.setPosXWindow(event.size.width);
+					menuW.setPosYWindow(event.size.height);
 					break;
 
 				//La fenetre est selectionné

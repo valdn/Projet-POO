@@ -30,8 +30,10 @@ class Menu : public sf::RenderWindow {
 	tgui::Button::Ptr addImageButton;
 	tgui::Button::Ptr createShapeButton;
 	tgui::Button::Ptr closeAddShapeButton;
-	tgui::Button::Ptr addToPol;
-
+	tgui::Button::Ptr addToPolButton;
+	tgui::Button::Ptr saveButton;
+	tgui::Button::Ptr loadButton;
+	tgui::Button::Ptr generateButton;
 
 	tgui::Label::Ptr widthLabel;
 	tgui::Label::Ptr heightLabel;
@@ -63,7 +65,15 @@ public:
 	inline size_t getSelectedCalque() const { return layerListCb->getSelectedItemIndex(); }
 	inline size_t getSelectedGroupe() const { return groupListCb->getSelectedItemIndex(); }
 
+	inline int getPosXWindow() const { return posXWindow; }
+	inline int getPosYWindow() const { return posYWindow; }
+	inline void setPosXWindow(int posx) { posXWindow = posx; }
+	inline void setPosYWindow(int posy) { posYWindow = posy; }
+
 private:
+	int posXWindow = 1000;
+	int posYWindow = 500;
+
 	void initialiseDisplay();
 	void initialiseConnect();
 	tgui::ComboBox::Ptr generatePointsCb();
@@ -71,6 +81,7 @@ private:
 	void display2ValuesConstructor(std::string type);
 	void display1ValueConstructor(std::string type);
 	void displayTriValueConstructor(std::string type);
+	void displayLoadFile();
 	void hiddingAddShape();
 
 	void createCalque();
@@ -84,6 +95,8 @@ private:
 	void createPolygone();
 	void createImage();
 	void createTabPoint();
+	void saveFile();
+	void loadFile();
 
 	void getXYValues(int * x, int * y) const;
 	void getValues(int * largeur, int * hauteur) const;

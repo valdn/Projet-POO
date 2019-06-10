@@ -31,8 +31,9 @@ void MyApp::addEllipse(sf::Color color, int x, int y, uint largeur, uint hauteur
 
 void MyApp::addImage(std::string path, int x, int y, size_t calque)
 {
-	ajouter(new PointD(0, 0, false), calque);
-	ajouter(new ImageD(path, x, y, getLastPoint()), calque);
+	ajouter(new PointD(0,0, false), calque);
+	ajouter(new ImageD(path, x, y, getLastPoint()) , calque);
+
 }
 
 void MyApp::addTriangle(sf::Color color, int x, int y, size_t ip1, size_t ip2, size_t calque)

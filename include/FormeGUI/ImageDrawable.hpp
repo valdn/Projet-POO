@@ -20,7 +20,7 @@ public:
 	void dessiner(sf::RenderWindow & window) const override;
 	void maj() override;
 	void recalculate() override;
-	inline void setTaille(float x, float y) { largeur = x, hauteur = y; }
+	inline void setTaille(uint x, uint y) { largeur = x, hauteur = y; }
 	inline uint getLargeur() const { return largeur; }
 	inline uint getHauteur() const { return hauteur; }
 	inline const PointD* getPointD() const { return p1; }
