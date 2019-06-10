@@ -44,6 +44,8 @@ class Triangle : virtual public Forme {
 		inline const Point & getP2() const { return *p2; }
 		inline void setP2(int x, int y) { p2->setXY(x, y); }
 
+		bool pointInTab(Point * point) const;
+
 		//Longueur des trois cotés
 		inline double perimetre() const override { return (getLonSeg(getAncre(), getP1()) + getLonSeg(getP1(), getP2()) + getLonSeg(getP2(), getAncre()) ); }
 };

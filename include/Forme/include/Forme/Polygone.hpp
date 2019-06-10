@@ -45,6 +45,8 @@ class Polygone : virtual public Forme {
 		inline void setPosPointAt(int x, int y, size_t i) { tabPoint->at(i)->setXY(x,y); }
 		inline size_t getTailleTab() const { return tabPoint->size(); }
 
+		bool pointInTab(Point * point) const;
+
 		//Longueur de tous les cotés
 		double perimetre() const override;
 };

@@ -129,7 +129,7 @@ void Gestionnaire::sauver(std::ostream & os) const {
 	os << std::endl;
 	//Sauvegarde les formes
 	os << tab_forme.size() << std::endl;
-	for (size_t i = 0; i < tab_forme.size(); i++) os << getIndex(getCalque(tab_point[i])) << ' ' << (*tab_forme[i]) << std::endl;	
+	for (size_t i = 0; i < tab_forme.size(); i++) os << getIndex(getCalque(tab_forme[i])) << ' ' << (*tab_forme[i]) << std::endl;
 }
 
 void Gestionnaire::charger(std::istream & is) {
@@ -193,8 +193,13 @@ void Gestionnaire::addToGroup(Groupe * g1, Groupe * g2) {
 }
 
 void Gestionnaire::shapeToLayer(FormeD * shape, size_t index) {
-	getCalque(shape)->supprimer(shape);
+	getCalque(shape)->delInTab(shape);
 	tab_calque.at(index)->ajouter(shape);
+}
+
+void Gestionnaire::pointToLayer(PointD * point, size_t index) {
+	getCalque(point)->delInTab(point);
+	tab_calque.at(index)->ajouter(point);
 }
 
 void Gestionnaire::groupeToLayer(Groupe * groupe, size_t index) {

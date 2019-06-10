@@ -44,7 +44,6 @@ bool ImageD::isOver(int _x, int _y) const {
 void ImageD::dessiner(sf::RenderWindow & window) const {
 	window.draw(*this);
 	getAncreD().dessiner(window);
-	p1->dessiner(window);
 }
 
 inline void ImageD::maj() {

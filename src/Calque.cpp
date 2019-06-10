@@ -17,23 +17,33 @@ void Calque::ajouter(PointD * point) {
 	tab_point->push_back(point);
 }
 
-void Calque::supprimer(FormeD * shape) {
+void Calque::delInTab(FormeD * forme) {
 	try {
-		tab_forme->erase(tab_forme->begin() + getPosShape(shape));
+		tab_forme->erase(tab_forme->begin() + getPosShape(forme));
 	}
 	catch (std::domain_error & e) {
 		std::cerr << e.what() << std::endl;
 	}
-	
 }
 
-void Calque::supprimer(PointD * point) {
+void Calque::supprimer(FormeD * shape) {
+	delInTab(shape);
+	delete shape;
+}
+
+void Calque::delInTab(PointD * point) {
 	try {
 		tab_point->erase(tab_point->begin() + getPosPoint(point));
 	}
 	catch (std::domain_error & e) {
 		std::cerr << e.what() << std::endl;
 	}
+}
+
+void Calque::supprimer(PointD * point) {
+	if (pointInShape(point)) throw std::runtime_error("Impossible de supprimer le point, il appartient à une forme");
+	delInTab(point);
+	delete point;
 }
 
 FormeD* Calque::isOverForme(int x, int y) const {
@@ -68,6 +78,24 @@ bool Calque::isInTab(PointD * point) const {
 	for (size_t i = 0; i < tab_point->size(); i++) {
 		if (tab_point->at(i) == point)
 			return true;
+	}
+	return false;
+}
+
+bool Calque::pointInShape(PointD * point) const {
+	for (size_t i = 0; i < tab_forme->size(); ++i) {
+		PolygoneD * poly = dynamic_cast<PolygoneD*> ((*tab_forme)[i]);
+		if (poly != nullptr && poly->pointInTab(point->getPtrPoint())) return true;
+
+		else {
+			TriangleD * tri = dynamic_cast<TriangleD*> ((*tab_forme)[i]);
+			if (tri != nullptr && tri->pointInTab(point->getPtrPoint())) return true;
+
+			else {
+				ImageD * img = dynamic_cast<ImageD*> ((*tab_forme)[i]);
+				if (img != nullptr && img->getPointD() == point) return true;
+			}
+		}
 	}
 	return false;
 }

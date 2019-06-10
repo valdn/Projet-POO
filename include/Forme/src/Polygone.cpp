@@ -30,6 +30,13 @@ Polygone::~Polygone() {
 	delete tabPoint;
 }
 
+bool Polygone::pointInTab(Point * point) const {
+	for (size_t i = 0; i < tabPoint->size(); ++i) {
+		if ((*tabPoint)[i] == point) return true;
+	}
+	return false;
+}
+
 double Polygone::perimetre() const {
 	double perimetre = 0;
 	size_t i = 0;	//Défini i en dehors du fort pour s'en reservir plus tard

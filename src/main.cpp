@@ -90,7 +90,7 @@ int main()
 	gestion.ajouter(new PointD(600, 350));
 	gestion.ajouter(new PointD(700, 350));
 	
-
+	
 	gestion.ajouter(new RectangleD(sf::Color::Red, 10, 10, 100, 50));	//Ajoute un rectangle au calque de base
 	gestion.ajouter(new EllipseD(sf::Color::Blue, 10, 70, 100, 50));	//Ajoute une ellipse au calque de base
 	gestion.ajouter(new CarreD(sf::Color::Green, 120, 10, 50));				//Ajoute un carré au calque de base
@@ -155,13 +155,15 @@ int main()
 					select_point_move = select_point;
 					if (select_point == nullptr) {
 
-						select_shape = gestion.isOverForme(x,y);	//Selection de la forme
+						select_shape = gestion.isOverForme(x, y);	//Selection de la forme
 						select_shape_move = select_shape;
 						if (select_shape != nullptr) {	//Si on clique sur une forme
 							dist_x = x - select_shape->getAncre().getX();	//Distance en x entre l'ancre de la forme et de la souris
 							dist_y = y - select_shape->getAncre().getY();	//Distance en y entre l'ancre de la forme et de la souris
 						}
 					}
+					else //Si jamais un point est séléctionner alors on désélectionne la forme 
+						select_shape = nullptr;
 				}
 				break;
 
@@ -218,7 +220,7 @@ int main()
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 							dynamic_cast<ImageD*> (select_shape)->ToggleActiveRatio();
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete))
-							gestion.supprimer(img->getPtrPointD());
+							img->getPtrPointD()->setColor(sf::Color::Black);
 					}
 					else {
 						if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
@@ -250,8 +252,16 @@ int main()
 
 				if (select_point != nullptr) {
 					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete)) {
-						gestion.supprimer(select_point);
-						select_point = nullptr;
+						try {
+							gestion.supprimer(select_point);
+							select_point = nullptr;
+						}
+						catch (std::runtime_error & e) {
+							std::cerr << e.what() << std::endl;
+						}
+					}
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {
+							gestion.pointToLayer(select_point, menuW.getSelectedCalque());	//Déplace le point au layer souhaité
 					}
 				}
 

@@ -23,4 +23,9 @@ Triangle::Triangle(std::istream &is) : Forme(is) {
 
 Triangle::~Triangle() {}
 
+bool Triangle::pointInTab(Point * point) const {
+	if (point == p1 || point == p2) return true;
+	else return false;
+}
+
 }//namespace

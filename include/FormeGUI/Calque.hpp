@@ -5,7 +5,9 @@
 #include <vector>
 
 #include "FormeDrawable.hpp"
-#include "SFML/Graphics.hpp"
+#include "PolygoneDrawable.hpp"
+#include "TriangleDrawable.hpp"
+#include "ImageDrawable.hpp"
 
 class Calque {
 	bool active;
@@ -15,15 +17,18 @@ class Calque {
 	public:
 		Calque(bool active = true);
 		~Calque();
-		void ajouter(FormeD *shape);
+		void ajouter(FormeD * forme);
 		void ajouter(PointD * point);
-		void supprimer(FormeD *shape);
-		void supprimer(PointD *point);
+		void delInTab(FormeD * forme);
+		void supprimer(FormeD * forme);
+		void delInTab(PointD * point);
+		void supprimer(PointD * point);
 		FormeD * isOverForme(int x, int y) const;
 		PointD * isOverPoint(int x, int y) const;
 		void dessiner(sf::RenderWindow &window) const;
 		bool isInTab(FormeD * shape) const;
 		bool isInTab(PointD * point) const;
+		bool pointInShape(PointD * point) const;
 
 		inline size_t getNbFormes() const { return tab_forme->size(); }
 		inline size_t getNbPoints() const { return tab_point->size(); }
