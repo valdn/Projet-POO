@@ -32,7 +32,7 @@ TriangleD::~TriangleD() {}
 
 //TODO
 bool TriangleD::isOver(int x, int y) const {
-	return (getAncreD().isOver(x,y));
+	return ((getAncreD().isOver(x, y)));
 }
 
 void TriangleD::dessiner(sf::RenderWindow & window) const {

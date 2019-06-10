@@ -30,7 +30,6 @@ double Forme::getLonSeg(const Point p1, const Point p2) const {
 Forme * Forme::charger(std::istream & is) {
 	std::string type;
 	is >> type;
-	std::cout << "type : " << type << std::endl;
 	if (type == "Rectangle") return new Rectangle(is);
 	else if (type == "Carre") return new Carre(is);
 	else if (type == "Ellipse") return new Ellipse(is);
@@ -38,7 +37,7 @@ Forme * Forme::charger(std::istream & is) {
 	else if (type == "Triangle") return new Triangle(is);
 	else if (type == "Polygone") return new Polygone(is);
 
-	throw std::range_error("Cette forme n'existe pas");
+	throw std::range_error("La forme \"" + type + "\" n'existe pas");
 }
 
 std::ostream & operator<<(std::ostream & os, const Forme &forme) {

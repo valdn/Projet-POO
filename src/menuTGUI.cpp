@@ -310,8 +310,8 @@ void Menu::initialiseConnect() {
 	addTriangleButton->connect("pressed", &Menu::displayTriValueConstructor, this, std::string("triangle"));
 	addPolygoneButton->connect("pressed", &Menu::displayTriValueConstructor, this, std::string("polygone"));
 	addToPolButton->connect("pressed", &Menu::createTabPoint, this);
-	saveButton->connect("pressed", &Menu::saveFile, this);
-	loadButton->connect("pressed", &Menu::displayLoadFile, this);
+	saveButton->connect("pressed", &Menu::displayFile, this, std::string("save"));
+	loadButton->connect("pressed", &Menu::displayFile, this, std::string("load"));
 	closeAddShapeButton->connect("pressed", &Menu::hiddingAddShape, this);
 }
 
@@ -455,10 +455,12 @@ void Menu::displayTriValueConstructor(std::string type) {
 	}
 }
 
-void Menu::displayLoadFile() {
+void Menu::displayFile(std::string type) {
+	hiddingAddShape(); //reset 
 
 	singleLabel->setText("Chemin vers le fichier :");
 	singleLabel->setVisible(true);
+	singleEb->setInputValidator(tgui::EditBox::Validator::All);
 	singleEb->setDefaultText("chemin\\vers\\votre\\fichier.txt");
 	singleEb->setText("");
 	singleEb->setVisible(true);
@@ -469,7 +471,8 @@ void Menu::displayLoadFile() {
 	generateButton->setVisible(true);
 	generateButton->setPosition("closeAddShapeButton.right + 40%", "closeAddShapeButton.top");
 
-	generateButton->connect("pressed", &Menu::loadFile, this);
+	if(type == "load") generateButton->connect("pressed", &Menu::loadFile, this);
+	else if(type == "save") generateButton->connect("pressed", &Menu::saveFile, this);
 }
 
 
@@ -510,18 +513,38 @@ void Menu::hiddingAddShape() {
 
 
 	addToPolButton->setVisible(false);
-	generateButton->setVisible(false);
 	closeAddShapeButton->setVisible(false);
 	createShapeButton->disconnectAll();
 	createShapeButton->setVisible(false);
+	generateButton->disconnectAll();
+	generateButton->setVisible(false);
 }
 
 void Menu::loadFile() {
-	std::cout << "load moi le cul johnny" << std::endl;
+	if (singleEb->getText().isEmpty()) {
+		singleEb->getRenderer()->setBorderColor(sf::Color::Red);
+		singleEb->setFocused(true);
+	}
+
+	std::string path = singleEb->getText();
+
+	if (!path.empty()) {
+		myApp->charger(path);
+	}
+	updateCalque();
 }
 
 void Menu::saveFile() {
-	std::cout << "save moi le cul johnny" << std::endl;
+	if (singleEb->getText().isEmpty()) {
+		singleEb->getRenderer()->setBorderColor(sf::Color::Red);
+		singleEb->setFocused(true);
+	}
+
+	std::string path = singleEb->getText();
+
+	if (!path.empty()) {
+		myApp->sauvegarder(path);
+	}
 }
 
 void Menu::createCalque() {

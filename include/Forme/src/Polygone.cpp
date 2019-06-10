@@ -7,7 +7,7 @@ void Polygone::ecrire(std::ostream &os) const {
 	Forme::ecrire(os);
 	os << tabPoint->size();
 	for (size_t i = 0; i < tabPoint->size(); i++)
-		os << ' ' << tabPoint->at(i)->getId() - 1;
+		os << ' ' << tabPoint->at(i)->getId();
 }
 
 Polygone::Polygone(uint couleur, int x, int y, std::vector<Point*>* _tabPoint) : Forme(couleur, x, y), tabPoint(_tabPoint) {}

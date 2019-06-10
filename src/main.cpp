@@ -257,14 +257,6 @@ int main()
 
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
 					gestion.getCalqueAt(menuW.getSelectedCalque())->toggleActive();
-
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
-					gestion.sauvegarder("enregistrer.txt");
-
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
-					gestion.charger("charger.txt");
-					menuW.updateCalque();
-				}
 					
 
 				break;

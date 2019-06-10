@@ -81,7 +81,7 @@ private:
 	void display2ValuesConstructor(std::string type);
 	void display1ValueConstructor(std::string type);
 	void displayTriValueConstructor(std::string type);
-	void displayLoadFile();
+	void displayFile(std::string type);
 	void hiddingAddShape();
 
 	void createCalque();

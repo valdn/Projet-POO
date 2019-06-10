@@ -26,7 +26,6 @@ sf::Vector2f FormeD::getDistance(const fm::Point & p1, const fm::Point & p2) {
 FormeD * FormeD::charger(std::istream & is) {
 	std::string type;
 	is >> type;
-	std::cout << "type : " << type << std::endl;
 	if (type == "Rectangle") return new RectangleD(is);
 	else if (type == "Carre") return new CarreD(is);
 	else if (type == "Ellipse") return new EllipseD(is);
@@ -35,5 +34,5 @@ FormeD * FormeD::charger(std::istream & is) {
 	else if (type == "Polygone") return new PolygoneD(is);
 	else if (type == "Image") return new ImageD(is);
 
-	throw std::range_error("Cette forme n'existe pas");
+	throw std::range_error("La forme \"" + type + "\" n'existe pas");
 }
