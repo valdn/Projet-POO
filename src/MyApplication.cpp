@@ -31,7 +31,7 @@ void MyApp::addEllipse(sf::Color color, int x, int y, uint largeur, uint hauteur
 
 void MyApp::addImage(std::string path, int x, int y, size_t calque)
 {
-	ajouter(new PointD(0, 0), calque);
+	ajouter(new PointD(0, 0, false), calque);
 	ajouter(new ImageD(path, x, y, getLastPoint()), calque);
 }
 
@@ -46,3 +46,30 @@ void MyApp::addPolygone(sf::Color color, int x, int y, std::vector<PointD*> & ta
 {
 	ajouter(new PolygoneD(color, x, y, tabPoint), calque);
 }
+
+void MyApp::sauvegarder(std::string path) {
+	std::filebuf fb;	//Creer un buffer
+	fb.open(path, std::ios::out);	//Ouvre le fichier en ecriture
+	std::ostream os(&fb);	//Creer un ostream avec ce buffer
+
+	Gestionnaire::sauver(os);		//Sauvegarde les points
+
+	fb.close();	//Ferme le fichier
+}
+
+void MyApp::charger(std::string path) {
+	std::filebuf fb;	//Creer un buffer
+	try {
+		if (fb.open(path, std::ios::in)) {	//Ouvre le fichier en lecture
+			std::istream is(&fb);	//Crrer un istream avec ce buffer
+
+			Gestionnaire::charger(is);	//Charge les points
+		}
+		else throw std::runtime_error("Le fichier est introuvable");	//Si le fichier est introuvable
+	}
+	catch (const std::exception &e) {
+		std::cerr << e.what() << std::endl;
+	}
+	fb.close();	//ferme le fichier
+}
+

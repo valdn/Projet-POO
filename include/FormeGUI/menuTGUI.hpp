@@ -85,10 +85,11 @@ private:
 	void createImage();
 	void createTabPoint();
 
-	void getXYValues(int * x, int * y);
-	void getValues(int * largeur, int * hauteur);
-	void getValues(int * single);
-	sf::Color getCouleur();
+	void getXYValues(int * x, int * y) const;
+	void getValues(int * largeur, int * hauteur) const;
+	void getValues(int * single) const;
+	sf::Color getCouleur() const;
+	size_t getPointIndex(size_t index) const;
 };
 
 #endif // !TGUI_MENU_HPP

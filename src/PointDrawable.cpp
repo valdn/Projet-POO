@@ -10,7 +10,7 @@ PointD::PointD(fm::Point * _point, sf::Color _couleur, bool _partage) : point(_p
 	update();
 }
 
-PointD::PointD(int x, int y, sf::Color _couleur, bool _partage) : point(new fm::Point(x,y)), couleur(_couleur), partage(_partage) {
+PointD::PointD(int x, int y, bool _partage, sf::Color _couleur) : point(new fm::Point(x,y)), couleur(_couleur), partage(_partage) {
 	tab_points.push_back(this);
 	cercle.setFillColor(couleur);
 	cercle.setRadius((float)point->getTaille());
@@ -39,6 +39,12 @@ PointD::~PointD() {
 	if (partage) delete point;
 
 	point = nullptr;
+}
+
+void PointD::setColor(sf::Color _couleur) {
+	couleur = _couleur;
+	cercle.setFillColor(couleur);
+	update();
 }
 
 void PointD::update() {

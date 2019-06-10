@@ -5,6 +5,7 @@ ImageD::ImageD(std::string img, int x1, int y1, PointD* _p1)
 		Image(img, x1, y1, _p1->getPtrPoint()), 
 		FormeD(sf::Color::White, x1, y1) ,p1(_p1)
 {
+	p1->setColor(sf::Color::Blue);
 	setFillColor(sf::Color::White);
 	sf::Texture * texture = new sf::Texture();
 	if (!texture->loadFromFile(img)) std::cerr << "Texture introuvable" << std::endl;
@@ -51,7 +52,7 @@ void ImageD::recalculate() {
 }
 
 std::size_t ImageD::getPointCount() const {
-	return 4;	//Y'a 4 coin dans un carr�
+	return 4;	//Y'a 4 coin dans un carré
 }
 
 sf::Vector2f ImageD::getPoint(std::size_t index) const {
