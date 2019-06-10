@@ -1,5 +1,7 @@
 #include "MyApplication.hpp"
 
+#include <regex>
+
 MyApp::MyApp() : Gestionnaire() {
 
 }
@@ -59,18 +61,24 @@ void MyApp::sauvegarder(std::string path) {
 }
 
 void MyApp::charger(std::string path) {
-	std::filebuf fb;	//Creer un buffer
-	try {
-		if (fb.open(path, std::ios::in)) {	//Ouvre le fichier en lecture
-			std::istream is(&fb);	//Crrer un istream avec ce buffer
+	std::regex pattern{ ".shape" }; // on recherche le motif ".shape"
+	std::string target{ path };
+	bool result = std::regex_search(target, pattern);
+	if (result) {
+		std::filebuf fb;	//Creer un buffer
+		try {
+			if (fb.open(path, std::ios::in)) {	//Ouvre le fichier en lecture
+				std::istream is(&fb);	//Crrer un istream avec ce buffer
 
-			Gestionnaire::charger(is);	//Charge les points
+				Gestionnaire::charger(is);	//Charge les points
+			}
+			else throw std::runtime_error("Le fichier est introuvable");	//Si le fichier est introuvable
 		}
-		else throw std::runtime_error("Le fichier est introuvable");	//Si le fichier est introuvable
+		catch (const std::exception &e) {
+			std::cerr << e.what() << std::endl;
+		}
+		fb.close();	//ferme le fichier
 	}
-	catch (const std::exception &e) {
-		std::cerr << e.what() << std::endl;
-	}
-	fb.close();	//ferme le fichier
+	else std::cerr << "Le fichier doit etre en .shape" << std::endl;
 }
 
