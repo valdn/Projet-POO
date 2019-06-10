@@ -26,6 +26,7 @@ class Gestionnaire {
 
 		void supprimer(FormeD * forme);
 		void supprimer(PointD * point);
+		void supprimer(size_t icalque);
 		void supprimer(Calque * calque);
 		void supprimer(Groupe * groupe);
 

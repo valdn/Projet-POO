@@ -299,7 +299,7 @@ tgui::ComboBox::Ptr Menu::generatePointsCb() {
 	tgui::ComboBox::Ptr comboBox = tgui::ComboBox::create();
 	std::vector<PointD*> * tab_partage = myApp->getPartagedPoint();
 	for (size_t i = 0; i < tab_partage->size(); ++i)
-		comboBox->addItem("Point " + std::to_string(i + 1) + ", x : " + std::to_string((*tab_partage)[i]->getX()) + ", y : " + std::to_string((*tab_partage)[i]->getX()));
+		comboBox->addItem("Point " + std::to_string(i + 1) + ", x : " + std::to_string((*tab_partage)[i]->getX()) + ", y : " + std::to_string((*tab_partage)[i]->getY()));
 	comboBox->setSize("90%", "25");
 	comboBox->setSelectedItemByIndex(0);
 	tab_cb.push_back(comboBox);
@@ -599,7 +599,7 @@ void Menu::createTriangle() {
 }
 
 size_t Menu::getPointIndex(size_t index) const {
-	if (tab_cb[index]->getSelectedItemIndex() >= 0) return tab_cb[index]->getSelectedItemIndex() >= 0;
+	if (tab_cb[index]->getSelectedItemIndex() >= 0) return tab_cb[index]->getSelectedItemIndex();
 	else throw std::runtime_error("Aucun point séléctionné");
 }
 
@@ -659,7 +659,7 @@ void Menu::getValues(int * single) const {
 	}
 }
 
-sf::Color Menu::getCouleur() {
+sf::Color Menu::getCouleur() const {
 	if (colorEb1->getText().isEmpty()) colorEb1->setText("0");
 	if (colorEb2->getText().isEmpty()) colorEb2->setText("0");
 	if (colorEb3->getText().isEmpty()) colorEb3->setText("0");

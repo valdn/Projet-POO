@@ -17,12 +17,12 @@ Polygone::Polygone(const Polygone & ori) : Polygone(ori.getCouleur(), ori.getAnc
 Polygone::Polygone(std::istream &is) : Forme(is) {
 	tabPoint = new std::vector<Point*>();
 
-	size_t nb_point, ipoint;
+	size_t nb_point, id_point;
 	is >> nb_point;
 
 	for (size_t i = 0; i < nb_point; ++i) {
-		is >> ipoint;
-		tabPoint->push_back(Point::getPointAt(ipoint));
+		is >> id_point;
+		tabPoint->push_back(Point::getPointByID(id_point));
 	}
 }
 

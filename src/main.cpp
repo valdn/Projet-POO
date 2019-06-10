@@ -52,6 +52,14 @@ void manageGroupe(Gestionnaire & gestion, FormeD* forme, size_t index) {
 		gestion.getGroupeAt(index)->ajouter(forme);	//Sinon on ajoute la forme au groupe index
 }
 
+void manageGroupe(Gestionnaire & gestion, FormeD* forme) {
+	if (gestion.getGroupe(forme) != nullptr) {	//Si la forme est dans un groupe
+		gestion.supprimer(gestion.getGroupe(forme));	//On supprime toutes les formes du groupe
+	}
+	else
+		gestion.supprimer(forme);	//Sinon on supprime juste la forme
+}
+
 int main()
 {
 	sf::RenderWindow mainW(sf::VideoMode(1000, 500), "ShapEditor");
@@ -74,7 +82,6 @@ int main()
 	gestion.ajouter(new PointD(200, 200));	//Ajoute un point sur le second calque
 	gestion.ajouter(new PointD(100, 150));
 	gestion.ajouter(new PointD(400, 200));
-	gestion.ajouter(new PointD(400, 400, false));
 	gestion.ajouter(new PointD(300, 300));
 	gestion.ajouter(new PointD(500, 300));
 	gestion.ajouter(new PointD(600, 300));
@@ -95,7 +102,8 @@ int main()
 	tableau_de_pointD.push_back(gestion.getPointAt(7));
 	gestion.ajouter(new PolygoneD(sf::Color::Cyan, 500, 400, tableau_de_pointD));
 
-	gestion.ajouter(new ImageD("download.png", 200, 200, gestion.getPointAt(3)));
+	gestion.ajouter(new PointD(400, 400));
+	gestion.ajouter(new ImageD("download.png", 200, 200, gestion.getPointAt(8)));
 
 	//Boucle principale
 	while (mainW.isOpen())
@@ -164,7 +172,6 @@ int main()
 						select_point_move->setPos((event.mouseMove.x), (event.mouseMove.y));
 					}
 					select_point_move->update();
-					menuW.updateCalque();
 					need_update = true;
 				}
 				else if ((select_shape_move != nullptr) && (mouseIn)) {	//Si une forme est selectionné, que la souris est dans la fenetre et que la fenetre est focus
@@ -192,7 +199,12 @@ int main()
 				break;
 
 			case sf::Event::KeyPressed:
-				if (select_shape != nullptr) {
+				if (select_shape == nullptr && select_point == nullptr && sf::Keyboard::isKeyPressed(sf::Keyboard::Delete)) {
+					gestion.supprimer(menuW.getSelectedCalque());
+					menuW.updateCalque();
+				}
+
+				else if (select_shape != nullptr) {
 					ImageD * img = dynamic_cast<ImageD*> (select_shape);
 					if (img != nullptr) {//permet de récupérer uniquement les images
 						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
@@ -225,8 +237,9 @@ int main()
 					}
 					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
 						manageGroupe(gestion, select_shape, menuW.getSelectedGroupe());
+
 					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete)) {
-						gestion.supprimer(select_shape);
+						manageGroupe(gestion, select_shape);
 						select_shape = nullptr;
 					}
 				}
