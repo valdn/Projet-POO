@@ -13,6 +13,7 @@ class Menu : public sf::RenderWindow {
 	MyApp * myApp;
 
 	std::vector<tgui::ComboBox::Ptr> tab_cb;
+	std::vector<PointD*> tab_point;
 
 	tgui::ComboBox::Ptr layerListCb;
 	tgui::ComboBox::Ptr groupListCb;
@@ -29,6 +30,8 @@ class Menu : public sf::RenderWindow {
 	tgui::Button::Ptr addImageButton;
 	tgui::Button::Ptr createShapeButton;
 	tgui::Button::Ptr closeAddShapeButton;
+	tgui::Button::Ptr addToPol;
+
 
 	tgui::Label::Ptr widthLabel;
 	tgui::Label::Ptr heightLabel;
@@ -80,10 +83,12 @@ private:
 	void createTriangle();
 	void createPolygone();
 	void createImage();
+	void createTabPoint();
 
 	void getXYValues(int * x, int * y);
-	void getValues(int * largeur, int * hauteur, int * couleur);
-	void getValues(int * single, int * couleur);
+	void getValues(int * largeur, int * hauteur);
+	void getValues(int * single);
+	sf::Color getCouleur();
 };
 
 #endif // !TGUI_MENU_HPP

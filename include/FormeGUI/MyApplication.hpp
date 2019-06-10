@@ -8,6 +8,7 @@
 #include "EllipseDrawable.hpp"
 #include "TriangleDrawable.hpp"
 #include "ImageDrawable.hpp"
+#include "PolygoneDrawable.hpp"
 
 class MyApp : public Gestionnaire {
 public:
@@ -21,6 +22,7 @@ public:
 	void addEllipse(sf::Color color, int x, int y, uint largeur, uint hauteur, size_t calque);
 	void addImage(std::string path, int x, int y, size_t calque);
 	void addTriangle(sf::Color color, int x, int y, size_t ip1, size_t ip2, size_t calque);
+	void addPolygone(sf::Color color, int x, int y, std::vector<PointD*> & tabPoint, size_t calque);
 };
 
 #endif // !MY_APPLICATION_HPP

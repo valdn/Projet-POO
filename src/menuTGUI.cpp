@@ -37,6 +37,11 @@ void Menu::passEvent(sf::Event event) {
 				data.code = sf::Keyboard::Enter;	//Met la touche du clavier sur enter
 				closeAddShapeButton->keyPressed(data);	//Active le bouton
 			}
+			if (heightEb->isFocused()) heightEb->getRenderer()->setBorderColor(sf::Color::Black);
+			else if (widthEb->isFocused()) widthEb->getRenderer()->setBorderColor(sf::Color::Black);
+			else if (singleEb->isFocused()) singleEb->getRenderer()->setBorderColor(sf::Color::Black);
+			else if (posXEb->isFocused()) posXEb->getRenderer()->setBorderColor(sf::Color::Black);
+			else if (posYEb->isFocused()) posYEb->getRenderer()->setBorderColor(sf::Color::Black);
 
 		case sf::Event::KeyReleased:
 			if (!(colorEb1->getText().isEmpty() || colorEb2->getText().isEmpty() || colorEb3->getText().isEmpty())) {
@@ -265,6 +270,12 @@ void Menu::initialiseDisplay() {
 	createShapeButton->setVisible(false);
 	gui->add(createShapeButton, "createShapeButton");
 
+	addToPol = tgui::Button::create();
+	addToPol->setSize("90%", "25");
+	addToPol->setText("Ajouter au Polygone");
+	addToPol->setVisible(false);
+	gui->add(addToPol, "addToPol");
+
 
 	initialiseConnect();
 }
@@ -279,6 +290,8 @@ void Menu::initialiseConnect() {
 	addCarreButton->connect("pressed", &Menu::display1ValueConstructor, this, std::string("carre"));
 	addImageButton->connect("pressed", &Menu::display1ValueConstructor, this, std::string("image"));
 	addTriangleButton->connect("pressed", &Menu::displayTriValueConstructor, this, std::string("triangle"));
+	addPolygoneButton->connect("pressed", &Menu::displayTriValueConstructor, this, std::string("polygone"));
+	addToPol->connect("pressed", &Menu::createTabPoint, this);
 	closeAddShapeButton->connect("pressed", &Menu::hiddingAddShape, this);
 }
 
@@ -395,17 +408,30 @@ void Menu::displayTriValueConstructor(std::string type) {
 	point1Cb->setPosition("5%", "posXEb.bottom + 10");
 	gui->add(point1Cb, "point1Cb");
 
-	tgui::ComboBox::Ptr point2Cb = generatePointsCb();
-	point2Cb->setPosition("5%", "point1Cb.bottom + 5");
-	gui->add(point2Cb, "point2Cb");
+	if (type == "triangle") {
 
-	closeAddShapeButton->setVisible(true);
-	closeAddShapeButton->setPosition("5%", "point2Cb.bottom + 30");
+		tgui::ComboBox::Ptr point2Cb = generatePointsCb();
+		point2Cb->setPosition("5%", "point1Cb.bottom + 5");
+		gui->add(point2Cb, "point2Cb");
 
-	createShapeButton->setVisible(true);
-	createShapeButton->setPosition("closeAddShapeButton.right + 40%", "closeAddShapeButton.top");
+		closeAddShapeButton->setVisible(true);
+		closeAddShapeButton->setPosition("5%", "point2Cb.bottom + 30");
 
-	if (type == "triangle") createShapeButton->connect("pressed", &Menu::createTriangle, this);
+		createShapeButton->setVisible(true);
+		createShapeButton->setPosition("closeAddShapeButton.right + 40%", "closeAddShapeButton.top");
+		createShapeButton->connect("pressed", &Menu::createTriangle, this);
+	}
+	if (type == "polygone") {
+		addToPol->setVisible(true);
+		addToPol->setPosition("5%", "point1Cb.bottom + 20");
+
+		closeAddShapeButton->setVisible(true);
+		closeAddShapeButton->setPosition("5%", "addToPol.bottom + 30");
+
+		createShapeButton->setVisible(true);
+		createShapeButton->setPosition("closeAddShapeButton.right + 40%", "closeAddShapeButton.top");
+		createShapeButton->connect("pressed", &Menu::createPolygone, this);
+	}
 }
 
 
@@ -469,7 +495,6 @@ void Menu::createPoint() {
 	getXYValues(&x, &y);
 
 	if (x != NULL && y != NULL) {
-		std::cout << "x : " << x << ", y : " << y << std::endl;
 		myApp->addPoint(x, y, getSelectedCalque());
 	}
 }
@@ -479,14 +504,13 @@ void Menu::createRectangle() {
 	int y = NULL;
 	int largeur = NULL;
 	int hauteur = NULL;
-	int color = NULL;
+	sf::Color color = getCouleur();
 
 	getXYValues(&x, &y);
-	getValues(&largeur, &hauteur, &color);
+	getValues(&largeur, &hauteur);
 
 	if (x != NULL && y != NULL && largeur != NULL && hauteur != NULL) {
-		std::cout << "Rectangle : x : " << x << ", y : " << y << ", largeur : " << largeur << ", hauteur :" << hauteur << ", couleur :" << color <<  std::endl;
-		myApp->addRectangle(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255), x, y, largeur, hauteur, getSelectedCalque());
+		myApp->addRectangle(color, x, y, largeur, hauteur, getSelectedCalque());
 	}
 }
 
@@ -495,14 +519,13 @@ void Menu::createEllipse() {
 	int y = NULL;
 	int largeur = NULL;
 	int hauteur = NULL;
-	int color = NULL;
+	sf::Color color = getCouleur();
 
 	getXYValues(&x, &y);
-	getValues(&largeur, &hauteur, &color);
+	getValues(&largeur, &hauteur);
 
 	if (x != NULL && y != NULL && largeur != NULL && hauteur != NULL) {
-		std::cout << "Ellipse : x : " << x << ", y : " << y << ", largeur : " << largeur << ", hauteur :" << hauteur << std::endl;
-		myApp->addEllipse(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255), x, y, largeur, hauteur, getSelectedCalque());
+		myApp->addEllipse(color, x, y, largeur, hauteur, getSelectedCalque());
 	}
 }
 
@@ -510,14 +533,13 @@ void Menu::createCarre() {
 	int x = NULL;
 	int y = NULL;
 	int cote = NULL;
-	int color = NULL;
+	sf::Color color = getCouleur();
 
 	getXYValues(&x, &y);
-	getValues(&cote, &color);
+	getValues(&cote);
 
 	if (x != NULL && y != NULL && cote != NULL) {
-		std::cout << "Carre : x : " << x << ", y : " << y << ", cote : " << cote << std::endl;
-		myApp->addCarre(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255), x, y, cote, getSelectedCalque());
+		myApp->addCarre(color, x, y, cote, getSelectedCalque());
 	}
 }
 
@@ -525,14 +547,13 @@ void Menu::createCercle() {
 	int x = NULL;
 	int y = NULL;
 	int rayon = NULL;
-	int color = NULL;
+	sf::Color color = getCouleur();
 
 	getXYValues(&x, &y);
-	getValues(&rayon, &color);
+	getValues(&rayon);
 
 	if (x != NULL && y != NULL && rayon != NULL) {
-		std::cout << "Cercle : x : " << x << ", y : " << y << ", rayon : " << rayon << std::endl;
-		myApp->addCercle(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255), x, y, rayon, getSelectedCalque());
+		myApp->addCercle(color, x, y, rayon, getSelectedCalque());
 	}
 }
 
@@ -550,7 +571,6 @@ void Menu::createImage() {
 	std::string path = singleEb->getText();
 
 	if (x != NULL && y != NULL && !path.empty()) {
-		std::cout << "x : " << x << ", y :" << y << "path : " << path << std::endl;
 		myApp->addImage(path, x, y, getSelectedCalque());
 	}
 }
@@ -558,61 +578,79 @@ void Menu::createImage() {
 void Menu::createTriangle() {
 	int x = NULL;
 	int y = NULL;
+	sf::Color color = getCouleur();
 	size_t ip1 = tab_cb[0]->getSelectedItemIndex();
 	size_t ip2 = tab_cb[1]->getSelectedItemIndex();
 
 	getXYValues(&x, &y);
 
 	if (x != NULL && y != NULL) {
-		myApp->addTriangle(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255), x, y, ip1, ip2, getSelectedCalque());
+		myApp->addTriangle(color, x, y, ip1, ip2, getSelectedCalque());
 	}
 
 
+}
+
+void Menu::createPolygone() {
+	int x = NULL;
+	int y = NULL;
+	sf::Color color = getCouleur();
+
+	getXYValues(&x, &y);
+
+	if (x != NULL && y != NULL && tab_point.size()>=3) {
+		myApp->addPolygone(color, x, y, tab_point, getSelectedCalque());
+	}
+	tab_point.clear();
+}
+
+void Menu::createTabPoint() {
+	std::cout << tab_cb[0]->getSelectedItemIndex() << std::endl;
+	size_t ip1 = tab_cb[0]->getSelectedItemIndex();
+	tab_point.push_back(myApp->getPointAt(ip1));
 }
 
 void Menu::getXYValues(int * x, int * y) {
-	if (posXEb->getText().isEmpty()) {
+	if (!posXEb->getText().isEmpty()) *x = std::stoi((std::string) posXEb->getText());
+	else {
 		posXEb->getRenderer()->setBorderColor(sf::Color::Red);
 		posXEb->setFocused(true);
 	}
-	else if (posYEb->getText().isEmpty()) {
+
+	if (!posYEb->getText().isEmpty()) *y = std::stoi((std::string) posYEb->getText());
+	else {
 		posYEb->getRenderer()->setBorderColor(sf::Color::Red);
 		posYEb->setFocused(true);
 	}
-
-	*y = std::stoi((std::string) posYEb->getText());	//PAs besoin de try car on ne peut recevoir que des chiffre
-	*x = std::stoi((std::string) posXEb->getText());
 }
 
-void Menu::getValues(int * largeur, int * hauteur, int * couleur) {
-	if (widthEb->getText().isEmpty()) {
+void Menu::getValues(int * largeur, int * hauteur) {
+	if(!widthEb->getText().isEmpty()) *largeur = std::stoi((std::string) widthEb->getText());
+	else {
 		widthEb->getRenderer()->setBorderColor(sf::Color::Red);
 		widthEb->setFocused(true);
 	}
-	else if (heightEb->getText().isEmpty()) {
+
+	if (!heightEb->getText().isEmpty()) *hauteur = std::stoi((std::string) heightEb->getText());
+	else {
 		heightEb->getRenderer()->setBorderColor(sf::Color::Red);
 		heightEb->setFocused(true);
 	}
-
-	*hauteur = std::stoi((std::string) heightEb->getText());
-	*largeur = std::stoi((std::string) widthEb->getText());
-	*couleur = std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()),255;
 }
 
 
-void Menu::getValues(int * single, int * couleur) {
-	if (singleEb->getText().isEmpty()) {
+void Menu::getValues(int * single) {
+	if (!singleEb->getText().isEmpty()) *single = std::stoi((std::string) singleEb->getText());
+	else {
 		singleEb->getRenderer()->setBorderColor(sf::Color::Red);
 		singleEb->setFocused(true);
 	}
+}
 
-	try {
-		*single = std::stoi((std::string) singleEb->getText());
-	}
-	catch (std::invalid_argument) {
-		singleEb->getRenderer()->setBorderColor(sf::Color::Red);
-		singleEb->setFocused(true);
-	}
+sf::Color Menu::getCouleur() {
+	if (colorEb1->getText().isEmpty()) colorEb1->setText("0");
+	if (colorEb2->getText().isEmpty()) colorEb2->setText("0");
+	if (colorEb3->getText().isEmpty()) colorEb3->setText("0");
 
-	*couleur = std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()),255;
+	return sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255);
 }

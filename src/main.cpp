@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "PolygoneDrawable.hpp"
+
 #include "Gestionnaire.hpp"
 #include "menuTGUI.hpp"
 #include "MyApplication.hpp"

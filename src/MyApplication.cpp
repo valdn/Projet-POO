@@ -42,3 +42,7 @@ void MyApp::addTriangle(sf::Color color, int x, int y, size_t ip1, size_t ip2, s
 	ajouter(new TriangleD(color, x, y, p1, p2), calque);
 }
 
+void MyApp::addPolygone(sf::Color color, int x, int y, std::vector<PointD*> & tabPoint, size_t calque)
+{
+	ajouter(new PolygoneD(color, x, y, tabPoint), calque);
+}
