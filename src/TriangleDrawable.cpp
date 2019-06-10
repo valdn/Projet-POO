@@ -32,7 +32,17 @@ TriangleD::~TriangleD() {}
 
 //TODO
 bool TriangleD::isOver(int x, int y) const {
-	return ((getAncreD().isOver(x, y)));
+	sf::Vector2f posSouris(x, y);
+	sf::Vector2f ancre(getAncre().getX(), getAncre().getY());
+	sf::Vector2f p1(p1->getX(), p1->getY());
+	sf::Vector2f p2(p2->getX(), p2->getY());
+
+	float A = getArea(ancre, p1, p2);
+	float A1 = getArea(posSouris, p1, p2);
+	float A2 = getArea(ancre, posSouris, p2);
+	float A3 = getArea(ancre, p1, posSouris);
+
+	return ( (getAncreD().isOver(x, y)) || (A == A1 + A2 + A3));
 }
 
 void TriangleD::dessiner(sf::RenderWindow & window) const {
@@ -55,6 +65,10 @@ void TriangleD::recalculate() {
 	dist1 = getDistance(getAncre(), p1->getPoint());
 	dist2 = getDistance(getAncre(), p2->getPoint());
 	Shape::update();
+}
+
+float TriangleD::getArea(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3) const {
+	return abs((p1.x*(p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y)) / 2.0);
 }
 
 std::size_t TriangleD::getPointCount() const {

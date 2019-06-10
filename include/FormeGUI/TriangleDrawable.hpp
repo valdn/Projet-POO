@@ -19,6 +19,8 @@ class TriangleD : public fm::Triangle, public FormeD {
 		void maj() override;
 		void recalculate() override;
 
+		float getArea(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f posSouris) const;
+
 		//SFML Stuff
 		std::size_t getPointCount() const override;
 		sf::Vector2f getPoint(std::size_t index) const override;
