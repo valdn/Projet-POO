@@ -26,6 +26,9 @@ class Calque {
 		bool isInTab(PointD * point) const;
 
 		inline size_t getNbFormes() const { return tab_forme->size(); }
+		inline size_t getNbPoints() const { return tab_point->size(); }
+		inline FormeD* getFormeAt(size_t i) const { return tab_forme->at(i); }
+		inline PointD* getPointAt(size_t i) const { return tab_point->at(i); }
 		inline bool isActive() const { return active; }
 		inline void toggleActive() { active = !active; }
 

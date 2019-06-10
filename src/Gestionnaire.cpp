@@ -92,6 +92,30 @@ void Gestionnaire::supprimer(PointD * point) {
 	}
 }
 
+void Gestionnaire::supprimer(size_t icalque) {
+	Calque * calque = tab_calque.at(icalque);
+	for (size_t i = 0; i < calque->getNbFormes();) {
+		supprimer(calque->getFormeAt(i));
+	}
+
+	for (size_t i = 0; i < calque->getNbPoints();) {
+		supprimer(calque->getPointAt(i));
+	}
+
+	supprimer(calque);
+}
+
+void Gestionnaire::supprimer(Calque * calque) {
+	if (tab_calque.size() > 1)	tab_calque.erase(tab_calque.begin() + getIndex(calque));
+}
+
+void Gestionnaire::supprimer(Groupe * groupe) {
+	for (size_t i = 0; i < groupe->getNbFormes();) {
+		supprimer(groupe->getFormeAt(i));
+		groupe->supprimer(groupe->getFormeAt(i));
+	}
+}
+
 void Gestionnaire::sauver(std::ostream & os) const {
 
 	//Sauvegarde le nombre de calques

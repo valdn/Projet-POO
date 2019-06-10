@@ -21,6 +21,7 @@ PointD::PointD(int x, int y, bool _partage, sf::Color _couleur) : point(new fm::
 PointD::PointD(const PointD & ori) : PointD(&fm::Point(ori.getPoint()), ori.couleur) {}
 
 PointD::PointD(std::istream & is) : point(new fm::Point(is)) {
+	is >> partage;
 	tab_points.push_back(this);
 	cercle.setFillColor(couleur);
 	cercle.setRadius((float)point->getTaille());
@@ -80,6 +81,6 @@ size_t PointD::getPointDIndex(PointD * point) {
 }
 
 std::ostream & operator<<(std::ostream & os, const PointD & p) {
-	os << p.getPoint();
+	os << p.getPoint() << ' ' << p.partage;
 	return os;
 }

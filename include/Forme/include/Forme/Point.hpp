@@ -30,7 +30,7 @@ class Point {
     friend std::ostream & operator<<(std::ostream &os, const Point & p);
     friend std::istream & operator>>(std::istream &is, Point & p);
 
-		static Point* getPointAt(size_t index) { return tab_points.at(index); }
+		static Point* getPointByID(size_t id);
 
 	private:
 		static size_t getPointIndex(Point * point);
