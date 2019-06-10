@@ -66,6 +66,32 @@ void Gestionnaire::ajouter(Groupe * groupe) {
 	else tab_groupe.push_back(groupe);
 }
 
+void Gestionnaire::supprimer(FormeD * forme) {
+	for (size_t i = 0; i < tab_calque.size(); ++i) {
+		if (tab_calque[i]->isInTab(forme)) tab_calque[i]->supprimer(forme);
+	}
+
+	try {
+		tab_forme.erase(tab_forme.begin() + getIndex(forme));
+	}
+	catch (std::domain_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
+}
+
+void Gestionnaire::supprimer(PointD * point) {
+	for (size_t i = 0; i < tab_calque.size(); ++i) {
+		if (tab_calque[i]->isInTab(point)) tab_calque[i]->supprimer(point);
+	}
+
+	try {
+		tab_point.erase(tab_point.begin() + getIndex(point));
+	}
+	catch (std::domain_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
+}
+
 void Gestionnaire::sauver(std::ostream & os) const {
 
 	//Sauvegarde le nombre de calques
@@ -209,6 +235,14 @@ size_t Gestionnaire::getIndex(FormeD * forme) const {
 		if (tab_forme[i] == forme) return i;
 	}
 	throw std::domain_error("La forme n'existe pas");
+}
+
+std::vector<PointD*>* Gestionnaire::getPartagedPoint() const {
+	std::vector<PointD*> * tab_partage = new std::vector<PointD*>();
+	for (size_t i = 0; i < tab_point.size(); ++i)
+		if (tab_point[i]->isPartaged()) tab_partage->push_back(tab_point[i]);
+
+	return tab_partage;
 }
 
 size_t Gestionnaire::getIndex(PointD * point) const {

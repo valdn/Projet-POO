@@ -81,9 +81,10 @@ private:
 	void createPolygone();
 	void createImage();
 
-	void getXYValues(int * x, int * y);
-	void getValues(int * largeur, int * hauteur, int * couleur);
-	void getValues(int * single, int * couleur);
+	void getXYValues(int * x, int * y) const;
+	void getValues(int * largeur, int * hauteur, int * couleur) const;
+	void getValues(int * single, int * couleur) const;
+	size_t getPointIndex(size_t index) const;
 };
 
 #endif // !TGUI_MENU_HPP

@@ -284,8 +284,9 @@ void Menu::initialiseConnect() {
 
 tgui::ComboBox::Ptr Menu::generatePointsCb() {
 	tgui::ComboBox::Ptr comboBox = tgui::ComboBox::create();
-	for (size_t i = 0; i < myApp->getNbPoints(); ++i)
-		comboBox->addItem("Point " + std::to_string(i + 1) + ", x : " + std::to_string(myApp->getPointAt(i)->getX()) + ", y : " + std::to_string(myApp->getPointAt(i)->getX()));
+	std::vector<PointD*> * tab_partage = myApp->getPartagedPoint();
+	for (size_t i = 0; i < tab_partage->size(); ++i)
+		comboBox->addItem("Point " + std::to_string(i + 1) + ", x : " + std::to_string((*tab_partage)[i]->getX()) + ", y : " + std::to_string((*tab_partage)[i]->getX()));
 	comboBox->setSize("90%", "25");
 	comboBox->setSelectedItemByIndex(0);
 	tab_cb.push_back(comboBox);
@@ -558,19 +559,30 @@ void Menu::createImage() {
 void Menu::createTriangle() {
 	int x = NULL;
 	int y = NULL;
-	size_t ip1 = tab_cb[0]->getSelectedItemIndex();
-	size_t ip2 = tab_cb[1]->getSelectedItemIndex();
+
+	size_t ip1, ip2;
+
+	try {
+		ip1 = getPointIndex(0);
+		ip2 = getPointIndex(1);
+	}
+	catch (std::runtime_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
 
 	getXYValues(&x, &y);
 
 	if (x != NULL && y != NULL) {
 		myApp->addTriangle(sf::Color(std::stoi((std::string) colorEb1->getText()), std::stoi((std::string) colorEb2->getText()), std::stoi((std::string) colorEb3->getText()), 255), x, y, ip1, ip2, getSelectedCalque());
 	}
-
-
 }
 
-void Menu::getXYValues(int * x, int * y) {
+size_t Menu::getPointIndex(size_t index) const {
+	if (tab_cb[index]->getSelectedItemIndex() >= 0) return tab_cb[index]->getSelectedItemIndex() >= 0;
+	else throw std::runtime_error("Aucun point séléctionné");
+}
+
+void Menu::getXYValues(int * x, int * y) const  {
 	if (posXEb->getText().isEmpty()) {
 		posXEb->getRenderer()->setBorderColor(sf::Color::Red);
 		posXEb->setFocused(true);
@@ -584,7 +596,7 @@ void Menu::getXYValues(int * x, int * y) {
 	*x = std::stoi((std::string) posXEb->getText());
 }
 
-void Menu::getValues(int * largeur, int * hauteur, int * couleur) {
+void Menu::getValues(int * largeur, int * hauteur, int * couleur) const {
 	if (widthEb->getText().isEmpty()) {
 		widthEb->getRenderer()->setBorderColor(sf::Color::Red);
 		widthEb->setFocused(true);
@@ -600,7 +612,7 @@ void Menu::getValues(int * largeur, int * hauteur, int * couleur) {
 }
 
 
-void Menu::getValues(int * single, int * couleur) {
+void Menu::getValues(int * single, int * couleur) const {
 	if (singleEb->getText().isEmpty()) {
 		singleEb->getRenderer()->setBorderColor(sf::Color::Red);
 		singleEb->setFocused(true);

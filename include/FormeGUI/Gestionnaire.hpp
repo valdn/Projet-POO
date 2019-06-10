@@ -24,6 +24,10 @@ class Gestionnaire {
 		void ajouter(Calque * calque);
 		void ajouter(Groupe * groupe);
 
+		void supprimer(FormeD * forme);
+		void supprimer(PointD * point);
+		void supprimer(Calque * calque);
+		void supprimer(Groupe * groupe);
 
 		void sauver(std::ostream &os) const;
 		void charger(std::istream & is);
@@ -49,6 +53,7 @@ class Gestionnaire {
 		inline size_t getNbPoints() const { return tab_point.size(); }
 		inline PointD* getPointAt(size_t i) const { return tab_point.at(i); }
 		inline PointD* getLastPoint() const { return tab_point.back(); }
+		std::vector<PointD*> * getPartagedPoint() const;
 		size_t getIndex(PointD* point) const;
 
 		inline size_t getNbCalques() const { return tab_calque.size(); }

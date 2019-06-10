@@ -1,6 +1,9 @@
 #ifndef MY_APPLICATION_HPP
 #define MY_APPLICATION_HPP
 
+#include <iostream>
+#include <fstream>
+
 #include "Gestionnaire.hpp"
 #include "RectangleDrawable.hpp"
 #include "CarreDrawable.hpp"
@@ -21,6 +24,8 @@ public:
 	void addEllipse(sf::Color color, int x, int y, uint largeur, uint hauteur, size_t calque);
 	void addImage(std::string path, int x, int y, size_t calque);
 	void addTriangle(sf::Color color, int x, int y, size_t ip1, size_t ip2, size_t calque);
+	void sauvegarder(std::string path);
+	void charger(std::string path);
 };
 
 #endif // !MY_APPLICATION_HPP

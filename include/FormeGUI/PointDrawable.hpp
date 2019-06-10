@@ -13,7 +13,7 @@ class PointD {
 
 	public:
 		PointD(fm::Point * point, sf::Color couleur = sf::Color::Black, bool _partage = false);
-		PointD(int x, int y, sf::Color couleur = sf::Color::Black, bool partage = true);
+		PointD(int x, int y, bool partage = true, sf::Color couleur = sf::Color::Black);
 		PointD(const PointD & ori);
 		PointD(std::istream & is);
 		~PointD();
@@ -22,6 +22,8 @@ class PointD {
 		inline void setPos(uint x, uint y) { point->setXY(x,y); }
 		inline int getX() { return point->getX(); }
 		inline int getY() { return point->getY(); }
+		inline bool isPartaged() const { return partage; }
+		void setColor(sf::Color couleur);
 		void update();
 		void dessiner(sf::RenderWindow & window) const;
 		bool isOver(int x, int y) const;
