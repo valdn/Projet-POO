@@ -32,6 +32,7 @@
 /// \todo avoir des info sur la forme / le point sélectionné
 /// \todo Ajouter toutes les exceptions à la doc
 /// \todo faire correctement le point de resize de la forme
+/// \todo faire correctement l'épaisseur des formes et la Sauvegarder/Charger
 
 int main()
 {
