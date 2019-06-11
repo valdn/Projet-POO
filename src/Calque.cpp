@@ -113,8 +113,3 @@ size_t Calque::getPosPoint(PointD * point) const {
 	}
 	throw std::domain_error("Le point n'est pas dans ce calque");
 }
-
-std::ostream & operator<<(std::ostream & os, const Calque & calque) {
-	//TODO
-	return os;
-}

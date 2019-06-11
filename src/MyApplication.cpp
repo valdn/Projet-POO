@@ -2,9 +2,7 @@
 
 #include <regex>
 
-MyApp::MyApp() : Gestionnaire() {
-
-}
+MyApp::MyApp() : Gestionnaire() {}
 
 MyApp::~MyApp() {}
 
@@ -80,5 +78,74 @@ void MyApp::charger(std::string path) {
 		fb.close();	//ferme le fichier
 	}
 	else std::cerr << "Le fichier doit etre en .shape" << std::endl;
+}
+
+void MyApp::viderForme(FormeD * shape) {
+	shape->setFillColor(sf::Color::Transparent);
+	shape->togglePleine();
+	shape->maj();
+}
+
+void MyApp::remplirForme(FormeD * shape) {
+	shape->setFillColor(sf::Color(shape->getCouleur()));
+	shape->togglePleine();
+	shape->maj();
+}
+
+void MyApp::diminuerTrait(FormeD * shape) {
+	if (shape->getOutlineThickness() < -1)
+		shape->setOutlineThickness(shape->getOutlineThickness() + 1);
+}
+
+void MyApp::augmenterTrait(FormeD * shape) {
+	if (shape->getOutlineThickness() >= -10)
+		shape->setOutlineThickness(shape->getOutlineThickness() - 1);
+}
+
+void MyApp::dimTransparence(FormeD * shape) {
+	if (shape->getTrsp() > 2) {
+		uint i = shape->getTrsp() - 2;
+		shape->setFillColor(sf::Color(255, 255, 255, i));
+		shape->setTrsp(i);
+	}
+}
+
+void MyApp::augTransparence(FormeD * shape) {
+	if (shape->getTrsp() < 255) {
+		uint i = shape->getTrsp() + 2;
+		shape->setFillColor(sf::Color(255, 255, 255, i));
+		shape->setTrsp(i);
+	}
+}
+
+void MyApp::move(FormeD * forme, int x, int y) {
+	forme->setAncre(forme->getAncre().getX() + x, forme->getAncre().getY() + y);
+	forme->maj();
+	update();
+}
+
+void MyApp::move(PointD * point, int x, int y) {
+	point->setPos(point->getX() + x, point->getY() + y);
+	point->update();
+	update();
+}
+
+void MyApp::manageGroupe(FormeD * forme, size_t index) {
+	if (getGroupe(forme) != nullptr) {	//Si la forme est dans un groupe
+		if (getGroupeAt(index)->inTab(forme))	//Si la forme appartient au groupe a l'index
+			getGroupeAt(index)->supprimer(forme);	//On la supprime
+		else
+			addToGroup(getGroupe(forme), getGroupeAt(index));	//Sinon on ajoute toutes les formes du groupe de la forme au groupe à l'index 
+	}
+	else
+		getGroupeAt(index)->ajouter(forme);	//Sinon on ajoute la forme au groupe index
+}
+
+void MyApp::manageGroupe(FormeD * forme) {
+	if (getGroupe(forme) != nullptr) {	//Si la forme est dans un groupe
+		supprimer(getGroupe(forme));	//On supprime toutes les formes du groupe
+	}
+	else
+		supprimer(forme);	//Sinon on supprime juste la forme
 }
 

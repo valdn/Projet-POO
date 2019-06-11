@@ -7,11 +7,11 @@
 #include "PolygoneDrawable.hpp"
 #include "ImageDrawable.hpp"
 
-FormeD::FormeD(sf::Color couleur, int x, int y) : Forme(couleur.toInteger(),x,y), pleine(true), ancreD(getAncreMem(), sf::Color::Magenta) {}
+FormeD::FormeD(sf::Color couleur, int x, int y) : Forme(couleur.toInteger(),x,y), pleine(true), ancreD(getAncrePtr(), sf::Color::Magenta) {}
 
 FormeD::FormeD(const FormeD & ori) : FormeD(sf::Color(ori.getCouleur()), ori.getAncre().getX(), ori.getAncre().getY()) {}
 
-FormeD::FormeD(std::istream & is) : Forme(is), ancreD(getAncreMem(), sf::Color::Magenta) {}
+FormeD::FormeD(std::istream & is) : Forme(is), ancreD(getAncrePtr(), sf::Color::Magenta) {}
 
 FormeD::~FormeD() {}
 

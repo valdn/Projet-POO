@@ -28,6 +28,16 @@ public:
 	void addPolygone(sf::Color color, int x, int y, std::vector<PointD*> & tabPoint, size_t calque);
 	void sauvegarder(std::string path);
 	void charger(std::string path);
+	void viderForme(FormeD * shape);
+	void remplirForme(FormeD * shape);
+	void diminuerTrait(FormeD * shape);
+	void augmenterTrait(FormeD * shape);
+	void dimTransparence(FormeD * shape);
+	void augTransparence(FormeD * shape);
+	void move(FormeD * forme, int x, int y);
+	void move(PointD * point, int x, int y);
+	void manageGroupe(FormeD* forme, size_t index);
+	void manageGroupe(FormeD* forme);
 };
 
 #endif // !MY_APPLICATION_HPP
