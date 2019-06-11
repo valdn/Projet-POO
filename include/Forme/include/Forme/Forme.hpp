@@ -24,8 +24,8 @@
 namespace fm {
 
 ////////////////////////////////////////////////////////////
-/// \class Rectangle Rectangle.hpp "Forme/Rectangle.hpp"
-/// \brief Classe pour créer des Rectangles
+/// \class Forme Forme.hpp "Forme/Forme.hpp"
+/// \brief Classe pour créer des Formes
 /// \authors DI NARDO Valentin, LENHARD Erwan
 /// \version 1.0
 /// \date 11 juin 2019
