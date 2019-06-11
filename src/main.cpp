@@ -23,62 +23,16 @@
   *
   */
 
-void viderForme(FormeD * shape) {
-	shape->setFillColor(sf::Color::Transparent);
-	shape->togglePleine();
-	shape->maj();
-}
+/*TODO
 
-void remplirForme(FormeD * shape) {
-	shape->setFillColor(sf::Color(shape->getCouleur()));
-	shape->togglePleine();
-	shape->maj();
-}
+- Afficher les messages d'erreur sur le menu
+- Animation
+- documentation / commentaire / uniformiser le code
+- le README (fonctionnement de l'app) --- ??? rajouter un menu d'aide ???
+- faire en sorte qu'on puisse re-ouvrir la fenetre du menu
+- avoir des info sur la forme / le point sélectionné
 
-void diminuerTrait(FormeD * shape) {
-	if (shape->getOutlineThickness() < -1)
-		shape->setOutlineThickness(shape->getOutlineThickness() + 1);
-}
-
-void augmenterTrait(FormeD * shape) {
-	if (shape->getOutlineThickness() >= -10)
-		shape->setOutlineThickness(shape->getOutlineThickness() - 1);
-}
-
-void dimTransparence(FormeD * shape) {
-	if (shape->getTrsp() > 2) {
-		uint i = shape->getTrsp() - 2;
-		shape->setFillColor(sf::Color(255, 255, 255, i));
-		shape->setTrsp(i);
-	}
-}
-
-void augTransparence(FormeD * shape) {
-	if (shape->getTrsp() < 255) {
-		uint i = shape->getTrsp() + 2;
-		shape->setFillColor(sf::Color(255, 255, 255, i));
-		shape->setTrsp(i);
-	}
-}
-
-void manageGroupe(Gestionnaire & gestion, FormeD* forme, size_t index) {
-	if (gestion.getGroupe(forme) != nullptr) {	//Si la forme est dans un groupe
-		if (gestion.getGroupeAt(index)->inTab(forme))	//Si la forme appartient au groupe a l'index
-			gestion.getGroupeAt(index)->supprimer(forme);	//On la supprime
-		else
-			gestion.addToGroup(gestion.getGroupe(forme), gestion.getGroupeAt(index));	//Sinon on ajoute toutes les formes du groupe de la forme au groupe à l'index 
-	}
-	else
-		gestion.getGroupeAt(index)->ajouter(forme);	//Sinon on ajoute la forme au groupe index
-}
-
-void manageGroupe(Gestionnaire & gestion, FormeD* forme) {
-	if (gestion.getGroupe(forme) != nullptr) {	//Si la forme est dans un groupe
-		gestion.supprimer(gestion.getGroupe(forme));	//On supprime toutes les formes du groupe
-	}
-	else
-		gestion.supprimer(forme);	//Sinon on supprime juste la forme
-}
+*/
 
 int main()
 {
@@ -109,7 +63,6 @@ int main()
 	gestion.ajouter(new PointD(600, 300));
 	gestion.ajouter(new PointD(600, 350));
 	gestion.ajouter(new PointD(700, 350));
-	
 	
 	gestion.ajouter(new RectangleD(sf::Color::Red, 10, 10, 100, 50));	//Ajoute un rectangle au calque de base
 	gestion.ajouter(new EllipseD(sf::Color::Blue, 10, 70, 100, 50));	//Ajoute une ellipse au calque de base
@@ -234,9 +187,9 @@ int main()
 					ImageD * img = dynamic_cast<ImageD*> (select_shape);
 					if (img != nullptr) {//permet de récupérer uniquement les images
 						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-							dimTransparence(select_shape);
+							gestion.dimTransparence(select_shape);
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
-							augTransparence(select_shape);
+							gestion.augTransparence(select_shape);
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 							dynamic_cast<ImageD*> (select_shape)->ToggleActiveRatio();
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete))
@@ -245,13 +198,21 @@ int main()
 					else {
 						if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 							if (select_shape->isPleine())
-								viderForme(select_shape);
+								gestion.viderForme(select_shape);
 							else
-								remplirForme(select_shape);
+								gestion.remplirForme(select_shape);
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-							diminuerTrait(select_shape);
+							gestion.diminuerTrait(select_shape);
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
-							augmenterTrait(select_shape);
+							gestion.augmenterTrait(select_shape);
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+							gestion.move(select_shape, 0, -1);
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+							gestion.move(select_shape, 0, 1);
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+							gestion.move(select_shape, 1, 0);
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+							gestion.move(select_shape, -1, 0);
 					}
 
 					if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {
@@ -262,10 +223,10 @@ int main()
 							gestion.shapeToLayer(select_shape, menuW.getSelectedCalque());	//Déplace la forme au layer souhaité
 					}
 					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
-						manageGroupe(gestion, select_shape, menuW.getSelectedGroupe());
+						gestion.manageGroupe(select_shape, menuW.getSelectedGroupe());
 
 					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete)) {
-						manageGroupe(gestion, select_shape);
+						gestion.manageGroupe(select_shape);
 						select_shape = nullptr;
 					}
 				}

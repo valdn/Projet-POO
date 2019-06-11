@@ -30,7 +30,7 @@ TriangleD::TriangleD(std::istream & is) : Forme(is), Triangle(is), FormeD(is) {
 
 TriangleD::~TriangleD() {}
 
-//TODO
+//isOver avec des Aires, il pourrai y avoir plus optimisé
 bool TriangleD::isOver(int x, int y) const {
 	sf::Vector2f posSouris(x, y);
 	sf::Vector2f ancre(getAncre().getX(), getAncre().getY());
