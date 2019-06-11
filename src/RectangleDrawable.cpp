@@ -44,8 +44,8 @@ std::size_t RectangleD::getPointCount() const {
 }
 
 sf::Vector2f RectangleD::getPoint(std::size_t index) const {
-	float x = getAncre().getX();
-	float y = getAncre().getY();
+	float x = float(getAncre().getX());
+	float y = float(getAncre().getY());
 	float largeur = float(getLargeur());
 	float hauteur = float(getHauteur());
 

@@ -29,7 +29,7 @@ class PointD {
 		bool isOver(int x, int y) const;
 
 		static PointD* charger(std::istream & is);
-		static PointD* getPointD(fm::Point * point);
+		static PointD* getPointD(const fm::Point * point);
 		static size_t getPointDIndex(PointD * point);
 
 		friend std::ostream & operator<<(std::ostream &os, const PointD & p);

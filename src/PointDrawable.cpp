@@ -65,7 +65,7 @@ PointD * PointD::charger(std::istream & is) {
 	return new PointD(is);
 }
 
-PointD * PointD::getPointD(fm::Point * point) {
+PointD * PointD::getPointD(const fm::Point * point) {
 	for (size_t i = 0; i < tab_points.size(); ++i) {
 		if (tab_points[i]->getPtrPoint() == point) return tab_points[i];
 	}

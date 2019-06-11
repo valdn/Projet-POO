@@ -10,7 +10,7 @@ void Image::ecrire(std::ostream &os) const {
 
 Image::Image(std::string _img, int x, int y, Point * _p1) : Forme(0, x, y), p1(_p1), img(_img), activeRatio(true) {}
 
-Image::Image(const Image & ori) : Image(ori.getImg(), ori.getAncre().getX(), ori.getAncre().getY(), &Point(ori.getP1())) {}
+Image::Image(const Image & ori) : Image(ori.getImg(), ori.getAncre().getX(), ori.getAncre().getY(), ori.p1) {}
 
 Image::Image(std::istream &is) : Forme(is) {
 	size_t id_p1;
@@ -22,5 +22,10 @@ Image::Image(std::istream &is) : Forme(is) {
 }
 
 Image::~Image() {}
+
+bool Image::pointInShape(const Point * point) const {
+	if (Forme::pointInShape(point) || point == p1) return true;
+	else return false;
+}
 
 }//namespace

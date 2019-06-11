@@ -17,8 +17,8 @@ TriangleD::TriangleD(sf::Color couleur, int x1, int y1, PointD * _p1, PointD * _
 TriangleD::TriangleD(const TriangleD & ori) : TriangleD(sf::Color(ori.getCouleur()), getAncre().getX(), getAncre().getY(), ori.p1, ori.p2) {}
 
 TriangleD::TriangleD(std::istream & is) : Forme(is), Triangle(is), FormeD(is) {
-	p1 = PointD::getPointD(getPtrP1());
-	p2 = PointD::getPointD(getPtrP2());
+	p1 = PointD::getPointD(getP1());
+	p2 = PointD::getPointD(getP2());
 
 	setFillColor(sf::Color(getCouleur()));
 	setOutlineThickness(-1);
@@ -54,8 +54,8 @@ void TriangleD::dessiner(sf::RenderWindow & window) const {
 
 void TriangleD::maj() {
 	FormeD::maj();
-	p1->getPtrPoint()->setXY(getAncre().getX()+dist1.x, getAncre().getY() + dist1.y);
-	p2->getPtrPoint()->setXY(getAncre().getX()+dist2.x, getAncre().getY() + dist2.y);
+	setPosP1(getAncre().getX()+dist1.x, getAncre().getY() + dist1.y);
+	setPosP2(getAncre().getX()+dist2.x, getAncre().getY() + dist2.y);
 	p1->update();
 	p2->update();
 	recalculate();
@@ -68,7 +68,7 @@ void TriangleD::recalculate() {
 }
 
 float TriangleD::getArea(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f p3) const {
-	return abs((p1.x*(p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y)) / 2.0);
+	return float(abs((p1.x*(p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y)) / 2.0));
 }
 
 std::size_t TriangleD::getPointCount() const {
@@ -79,7 +79,7 @@ sf::Vector2f TriangleD::getPoint(std::size_t index) const {
 	switch (index) {
 	default:	//pour eviter le warning
 	case 0: return sf::Vector2f(getAncre().getX(), getAncre().getY());	//Premier point, ancre
-	case 1: return sf::Vector2f(getP1().getX(), getP1().getY());	//2eme point
-	case 2: return sf::Vector2f(getP2().getX(), getP2().getY());	//3eme point
+	case 1: return sf::Vector2f(getP1()->getX(), getP1()->getY());	//2eme point
+	case 2: return sf::Vector2f(getP2()->getX(), getP2()->getY());	//3eme point
 	}
 }

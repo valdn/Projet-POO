@@ -4,16 +4,16 @@
 
 #include "Forme.hpp"
 
-/*Pourquoi fait on un hÈritage virtuel ?
-		Dans cette bibliothËque nous ne gÈrons pas tout ce qui touche aux interfaces. Or si une personne souhaite utiliser cette bibliothËque pour afficher ces formes il devra crÈer
-		des classes qui hÈrite de celle-ci. Cependant s'il reprend le shÈma de notre bibliothËque il peut souhaiter faire classe abstraite pour ses formes. Donc une classe d'un objet
-		affichable aurait comme hÈritage une classe forme (exemple rectangle), qui hÈrite elle mÍme de la classe abstraite Forme, et une classe abstraite (exemple FormeAffichable), qui
-		hÈrite elle aussi de la classe abstraite Forme.
-		On voit donc ici un probleme, si on souhaite atteindre un membre de Forme comment fait-on au vu de l'ambiguitÈ ?
-		Un solution est de passÈ par l'hÈritage virtuelle comme Áa la classe Forme sera la meme pour une classe de forme (exemple carrÈ) et pour la classe abstraite qui represente les formes
+/*Pourquoi fait on un h√©ritage virtuel ?
+		Dans cette biblioth√©que nous ne g√©rons pas tout ce qui touche aux interfaces. Or si une personne souhaite utiliser cette biblioth√©que pour afficher ces formes il devra cr√©er
+		des classes qui h√©rite de celle-ci. Cependant s'il reprend le sh√©ma de notre biblioth√©que il peut souhaiter faire classe abstraite pour ses formes. Donc une classe d'un objet
+		affichable aurait comme h√©ritage une classe forme (exemple rectangle), qui h√©rite elle m√©me de la classe abstraite Forme, et une classe abstraite (exemple FormeAffichable), qui
+		h√©rite elle aussi de la classe abstraite Forme.
+		On voit donc ici un probleme, si on souhaite atteindre un membre de Forme comment fait-on au vu de l'ambiguit√© ?
+		Un solution est de pass√© par l'h√©ritage virtuelle comme √©a la classe Forme sera la meme pour une classe de forme (exemple carr√©) et pour la classe abstraite qui represente les formes
 		affichable.
 
-		Sans l'heritage virtuel on aurait quelque chose comme Áa :	Forme   Forme								Alors qu'avec on a :		 Forme
+		Sans l'heritage virtuel on aurait quelque chose comme √©a :	Forme   Forme								Alors qu'avec on a :		 Forme
 																																	|			  |																						/  \
 																																Carre   FormeAffichable														Carre	 FormeAffichable
 																																		 \ /																							\	 /
@@ -21,24 +21,110 @@
 
 */
 
+////////////////////////////////////////////////////////////
+/// \namespace fm
+/// \brief Namespace pour la biblioth√©que de forme
+///
+////////////////////////////////////////////////////////////
 namespace fm {
 
+
+////////////////////////////////////////////////////////////
+/// \class Ellipse Ellipse.hpp "Forme/Ellipse.hpp"
+/// \brief Classe pour cr√©er des Ellipses
+/// \authors DI NARDO Valentin, LENHARD Erwan
+/// \version 1.0
+/// \date 11 juin 2019
+///
+////////////////////////////////////////////////////////////
 class Ellipse : virtual public Forme {
+	
+	////////////////////////////////////////////////////////////
+	/// \var uint demiLargeur
+	/// \brief Taille de la demi largeur de l'Ellipse
+	/// \var uint demiHauteur
+	/// \brief Taille de la demi hauteur de l'Ellipse
+	///
+	////////////////////////////////////////////////////////////
 	uint demiLargeur, demiHauteur;
 
-protected:
-	void ecrire(std::ostream & os) const override;
+	protected:
+		////////////////////////////////////////////////////////////
+		/// \brief Ecris les donn√©es n√©cessaire de l'Ellipse
+		/// \param std::ostream & os, le flux d'√©criture
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		void ecrire(std::ostream & os) const override;
 
-public:
-	Ellipse(uint couleur, int x, int y, uint _demiLargeur, uint _demiHauteur);
-	Ellipse(const Ellipse & ori);
-	Ellipse(std::istream & is);
-	~Ellipse() override;
-	inline uint getDemiLargeur() const { return demiLargeur; }
-	inline uint getDemiHauteur() const { return demiHauteur; }
-	inline void setDemiLargeur(uint _demiLargeur) { demiLargeur = _demiLargeur; }
-	inline void setDemiHauteur(uint _demiHauteur) { demiHauteur = _demiHauteur; }
-	inline double perimetre() const override { return M_PI * std::sqrt( 2 * ( std::pow(demiLargeur,2) + std::pow(demiHauteur, 2))); }
+	public:
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur de l'Ellipse
+		/// \param uint couleur, la couleur de l'Ellipse
+		/// \param int x, la position x de l'ancre
+		/// \param int y, position y de l'ancre
+		/// \param uint demiHauteur, la taille de la demi hauteur de l'Ellipse
+		/// \param uint demiLargeur, la taille de la demi largeur de l'Ellipse
+		///
+		////////////////////////////////////////////////////////////
+		Ellipse(uint couleur, int x, int y, uint demiLargeur, uint demiHauteur);
+
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur par copie de l'Ellipse
+		/// \param const Ellipse &ori, l'Ellipse √† copier
+		///
+		////////////////////////////////////////////////////////////
+		Ellipse(const Ellipse & ori);
+
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur de l'Ellipse par flux de lecture
+		/// \param std::istream &is, le flux de lecture
+		///
+		////////////////////////////////////////////////////////////
+		Ellipse(std::istream & is);
+
+		////////////////////////////////////////////////////////////
+		/// \brief Destructeur de l'Ellipse
+		///
+		////////////////////////////////////////////////////////////
+		~Ellipse() override;
+
+		////////////////////////////////////////////////////////////
+		/// \brief Getter - demi largeur de l'Ellipse
+		/// \return uint demiLargeur
+		///
+		////////////////////////////////////////////////////////////
+		inline uint getDemiLargeur() const { return demiLargeur; }
+
+		////////////////////////////////////////////////////////////
+		/// \brief Setter - nouvelle valeur de la demi largeur
+		/// \param uint demiLargeur
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		inline void setDemiLargeur(uint _demiLargeur) { demiLargeur = _demiLargeur; }
+		
+		////////////////////////////////////////////////////////////
+		/// \brief Getter - demi hauteur de l'Ellipse
+		/// \return uint demiHauteur
+		///
+		////////////////////////////////////////////////////////////
+		inline uint getDemiHauteur() const { return demiHauteur; }
+		
+		////////////////////////////////////////////////////////////
+		/// \brief Setter - nouvelle valeur de la demi hauteur
+		/// \param uint demiHauteur
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		inline void setDemiHauteur(uint _demiHauteur) { demiHauteur = _demiHauteur; }
+		
+		////////////////////////////////////////////////////////////
+		/// \brief La valeur du p√©rim√®tre de l'Ellipse
+		/// \return double perimetre
+		///
+		////////////////////////////////////////////////////////////
+		inline double perimetre() const override { return M_PI * std::sqrt( 2 * ( std::pow(demiLargeur,2) + std::pow(demiHauteur, 2))); }
 };
 
 }//namespace

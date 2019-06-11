@@ -191,7 +191,7 @@ int main()
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
 							gestion.augTransparence(select_shape);
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-							dynamic_cast<ImageD*> (select_shape)->ToggleActiveRatio();
+							dynamic_cast<ImageD*> (select_shape)->toggleActiveRatio();
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete))
 							img->getPtrPointD()->setColor(sf::Color::Black);
 					}
