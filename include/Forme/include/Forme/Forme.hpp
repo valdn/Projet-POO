@@ -24,7 +24,7 @@ namespace fm {
 
 
 ///\class Forme Forme.hpp "Forme/Forme.hpp"
-///\brief classe abstraite de base pour définir des formes
+///\brief classe abstraite de base pour definir des formes
 class Forme {
 	uint couleur;
 	Point ancre;
