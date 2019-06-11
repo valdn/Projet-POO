@@ -32,6 +32,7 @@ Point * Point::getPointByID(size_t id) {
 	for (size_t i = 0; i < tab_points.size(); ++i) {
 		if (tab_points[i]->id == id) return tab_points[i];
 	}
+	throw std::out_of_range("Aucun point ne possède l'Id : " + std::to_string(id));
 }
 
  size_t Point::getPointIndex(Point * point) {

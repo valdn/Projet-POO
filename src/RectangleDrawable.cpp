@@ -40,7 +40,7 @@ void RectangleD::recalculate() {
 }
 
 std::size_t RectangleD::getPointCount() const {
-	return 4;	//Y'a 4 coin dans un carr�
+	return 4;	//Y'a 4 coin dans un carré
 }
 
 sf::Vector2f RectangleD::getPoint(std::size_t index) const {
@@ -51,9 +51,9 @@ sf::Vector2f RectangleD::getPoint(std::size_t index) const {
 
 	switch (index) {
 	default:	//pour eviter le warning
-	case 0: return sf::Vector2f(x, y);	//Premier point ancre coin sup�rieur gauche
-	case 1: return sf::Vector2f(largeur + x, y);	//coin sup�rieur droit
-	case 2: return sf::Vector2f(largeur + x, y + hauteur);	//coin inf�rieur droit
-	case 3: return sf::Vector2f(x, y + hauteur);	//coin inf�rieur gauche
+	case 0: return sf::Vector2f(x, y);	//Premier point ancre coin supérieur gauche
+	case 1: return sf::Vector2f(largeur + x, y);	//coin supérieur droit
+	case 2: return sf::Vector2f(largeur + x, y + hauteur);	//coin inférieur droit
+	case 3: return sf::Vector2f(x, y + hauteur);	//coin inférieur gauche
 	}
 }

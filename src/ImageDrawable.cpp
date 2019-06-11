@@ -67,9 +67,9 @@ sf::Vector2f ImageD::getPoint(std::size_t index) const {
 
 	switch (index) {
 	default:	//pour eviter le warning
-	case 0: return sf::Vector2f(getAncre().getX(), getAncre().getY());	//Premier point ancre coin sup�rieur gauche
-	case 1: return sf::Vector2f(getP1()->getX(), getAncre().getY());	//coin sup�rieur droit
-	case 2: return sf::Vector2f(getP1()->getX(),getP1()->getY());	//coin inf�rieur droit
-	case 3: return sf::Vector2f(getAncre().getX(), getP1()->getY());	//coin inf�rieur gauche
+	case 0: return sf::Vector2f(getAncre().getX(), getAncre().getY());	//Premier point ancre coin supérieur gauche
+	case 1: return sf::Vector2f(getP1()->getX(), getAncre().getY());	//coin supérieur droit
+	case 2: return sf::Vector2f(getP1()->getX(),getP1()->getY());	//coin inférieur droit
+	case 3: return sf::Vector2f(getAncre().getX(), getP1()->getY());	//coin inférieur gauche
 	}
 }

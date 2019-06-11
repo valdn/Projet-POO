@@ -57,7 +57,7 @@ void PointD::dessiner(sf::RenderWindow & window) const {
 }
 
 bool PointD::isOver(int x, int y) const {
-	//retourne vrai si la distance entre le centre du cerlce et la souris est inf�rieur au rayon
+	//retourne vrai si la distance entre le centre du cerlce et la souris est inférieur au rayon
 	return ((std::pow(x - point->getX(), 2) + std::pow(y - point->getY(), 2)) <= std::pow(point->getTaille(),2));
 }
 

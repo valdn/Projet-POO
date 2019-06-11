@@ -39,7 +39,7 @@ void Gestionnaire::ajouter(FormeD * forme, size_t num_calque) {
 			tab_calque.at(num_calque)->ajouter(forme);
 		}
 		catch (std::out_of_range) {
-			std::cerr << "Le calque " << num_calque << " n'existe pas !" << std::endl;
+			throw std::out_of_range("Le calque " + std::to_string(num_calque) + " n'existe pas !");
 		}
 	}
 }
@@ -51,7 +51,7 @@ void Gestionnaire::ajouter(PointD * point, size_t num_calque) {
 		try {
 			tab_calque.at(num_calque)->ajouter(point);
 		} catch (std::out_of_range) {
-			std::cerr << "Le calque " << num_calque << " n'existe pas !" << std::endl;
+			throw std::out_of_range("Le calque " + std::to_string(num_calque) + " n'existe pas !");
 		}
 	}
 }
@@ -94,6 +94,10 @@ void Gestionnaire::supprimer(PointD * point) {
 
 void Gestionnaire::supprimer(size_t icalque) {
 	Calque * calque = tab_calque.at(icalque);
+	supprimer(calque);
+}
+
+void Gestionnaire::supprimer(Calque * calque) {
 	for (size_t i = 0; i < calque->getNbFormes();) {
 		supprimer(calque->getFormeAt(i));
 	}
@@ -102,11 +106,14 @@ void Gestionnaire::supprimer(size_t icalque) {
 		supprimer(calque->getPointAt(i));
 	}
 
-	supprimer(calque);
-}
-
-void Gestionnaire::supprimer(Calque * calque) {
-	if (tab_calque.size() > 1)	tab_calque.erase(tab_calque.begin() + getIndex(calque));
+	if (tab_calque.size() > 1) {
+		try {
+			tab_calque.erase(tab_calque.begin() + getIndex(calque));
+		}
+		catch (std::domain_error & e) {
+			std::cerr << e.what() << std::endl;
+		}
+	}
 }
 
 void Gestionnaire::supprimer(Groupe * groupe) {
@@ -185,7 +192,7 @@ void Gestionnaire::dessiner(sf::RenderWindow & window) const {
 	}
 }
 
-void Gestionnaire::addToGroup(Groupe * g1, Groupe * g2) {
+void Gestionnaire::swapToGroup(Groupe * g1, Groupe * g2) {
 	for (size_t i = 0; i < g1->getNbFormes();) {
 		g2->ajouter(g1->getFormeAt(i));
 		g1->supprimer(g1->getFormeAt(i));
@@ -202,15 +209,15 @@ void Gestionnaire::pointToLayer(PointD * point, size_t index) {
 	tab_calque.at(index)->ajouter(point);
 }
 
-void Gestionnaire::groupeToLayer(Groupe * groupe, size_t index) {
+void Gestionnaire::groupeToLayer(const Groupe * groupe, size_t index) {
 	for (size_t i = 0; i < groupe->getNbFormes(); ++i)
 		shapeToLayer(groupe->getFormeAt(i), index);
 }
 
-ImageD * Gestionnaire::getImageByPoint(PointD * p1) const {
+ImageD * Gestionnaire::getImageByPoint(PointD * point) const {
 	for (size_t i = 0; i < tab_forme.size(); i++) {
 		ImageD * test = dynamic_cast<ImageD*> (tab_forme[i]);
-		if (test != nullptr && test->getPointD() == p1) return test;
+		if (test != nullptr && test->pointInShape(point->getPtrPoint())) return test;
 	}
 	return nullptr;
 }

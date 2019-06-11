@@ -2,6 +2,7 @@
 #define POINT_HPP
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 /// \typedef uint = unsigned int
@@ -60,48 +61,48 @@ class Point {
 		/// \brief Constructeur de Point
 		/// \param int x, la position x du Point
 		/// \param int y, position y du Point
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		Point(int _x, int _y);
 
 		////////////////////////////////////////////////////////////
 		/// \brief Constructeur par copie de Point
 		/// \param const Point &ori, le Point à copier
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		Point(const Point &ori);
 
 		////////////////////////////////////////////////////////////
 		/// \brief Constructeur de Point par flux de lecture
 		/// \param std::istream &is, le flux de lecture
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		Point(std::istream &is);
 
 		////////////////////////////////////////////////////////////
 		/// \brief Destructeur de Point
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		~Point();
 
 		////////////////////////////////////////////////////////////
 		/// \brief Getter - la taille du Point
 		/// \return uint TAILLE
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		inline uint getTaille() const {return TAILLE;}
 
 		////////////////////////////////////////////////////////////
 		/// \brief Getter - la position x du Point
 		/// \return int x
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		inline int getX() const {return x;}
 
 		////////////////////////////////////////////////////////////
 		/// \brief Getter - la position y du Point
 		/// \return int y
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		inline int getY() const {return y;}
 
@@ -116,7 +117,7 @@ class Point {
 		/// \brief Setter - Position x
 		/// \param int x, nouvelle position en x
 		/// \return void
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		inline void setX(int _x) {x = _x;}
 
@@ -124,7 +125,7 @@ class Point {
 		/// \brief Setter - Position y
 		/// \param int y, nouvelle position en y
 		/// \return void
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		inline void setY(int _y) {y = _y;}
 
@@ -133,20 +134,20 @@ class Point {
 		/// \param int x, nouvelle position en x
 		/// \param int y, nouvelle position en y
 		/// \return void
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		inline void setXY(int _x, int _y) {x=_x; y=_y;}
 
 		////////////////////////////////////////////////////////////
 		/// \brief Permet d'insérer un Point dans un flux std::ostream
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		friend std::ostream & operator<<(std::ostream &os, const Point & p);
 
 		////////////////////////////////////////////////////////////
 		/// \brief Permet d'insérer un Point dans un flux std::istream
 		/// \warning N'écrit pas son id !
-    	///
+		///
 		////////////////////////////////////////////////////////////
 		friend std::istream & operator>>(std::istream &is, Point & p);
 
