@@ -1,10 +1,11 @@
+// Enleve les warning pour l'héritage via la dominance
+#pragma warning( disable : 4250 )
+
 #ifndef ELLIPSE_DRAWABLE_HPP
 #define ELLIPSE_DRAWABLE_HPP
 
-
 #include "Forme/Ellipse.hpp"
 #include "FormeDrawable.hpp"
-
 
 class EllipseD : public fm::Ellipse, public FormeD {
 	public:

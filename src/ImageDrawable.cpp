@@ -21,7 +21,7 @@ ImageD::ImageD(std::string img, int x1, int y1, PointD* _p1)
 ImageD::ImageD(const ImageD & ori) : ImageD(ori.Image::getImg(), ori.Image::getAncre().getX(), ori.Image::getAncre().getY(), ori.p1) {}
 
 ImageD::ImageD(std::istream & is) : Forme(is), Image(is), FormeD(is) {
-	p1 = PointD::getPointD(getPtrP1());
+	p1 = PointD::getPointD(getP1());
 
 	p1->setColor(sf::Color::Blue);
 	setFillColor(sf::Color::White);
@@ -68,8 +68,8 @@ sf::Vector2f ImageD::getPoint(std::size_t index) const {
 	switch (index) {
 	default:	//pour eviter le warning
 	case 0: return sf::Vector2f(getAncre().getX(), getAncre().getY());	//Premier point ancre coin sup�rieur gauche
-	case 1: return sf::Vector2f(getP1().getX(), getAncre().getY());	//coin sup�rieur droit
-	case 2: return sf::Vector2f(getP1().getX(),getP1().getY());	//coin inf�rieur droit
-	case 3: return sf::Vector2f(getAncre().getX(), getP1().getY());	//coin inf�rieur gauche
+	case 1: return sf::Vector2f(getP1()->getX(), getAncre().getY());	//coin sup�rieur droit
+	case 2: return sf::Vector2f(getP1()->getX(),getP1()->getY());	//coin inf�rieur droit
+	case 3: return sf::Vector2f(getAncre().getX(), getP1()->getY());	//coin inf�rieur gauche
 	}
 }

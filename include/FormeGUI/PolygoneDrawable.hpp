@@ -1,3 +1,6 @@
+// Enleve les warning pour l'héritage via la dominance
+#pragma warning( disable : 4250 )
+
 #ifndef POLYGONE_DRAWABLE_HPP
 #define POLYGONE_DRAWABLE_HPP
 

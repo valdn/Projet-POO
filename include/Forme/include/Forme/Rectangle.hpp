@@ -3,16 +3,16 @@
 
 #include "Forme.hpp"
 
-/*Pourquoi fait on un hÈritage virtuel ?
-		Dans cette bibliothËque nous ne gÈrons pas tout ce qui touche aux interfaces. Or si une personne souhaite utiliser cette bibliothËque pour afficher ces formes il devra crÈer
-		des classes qui hÈrite de celle-ci. Cependant s'il reprend le shÈma de notre bibliothËque il peut souhaiter faire classe abstraite pour ses formes. Donc une classe d'un objet
-		affichable aurait comme hÈritage une classe forme (exemple rectangle), qui hÈrite elle mÍme de la classe abstraite Forme, et une classe abstraite (exemple FormeAffichable), qui
-		hÈrite elle aussi de la classe abstraite Forme.
-		On voit donc ici un probleme, si on souhaite atteindre un membre de Forme comment fait-on au vu de l'ambiguitÈ ?
-		Un solution est de passÈ par l'hÈritage virtuelle comme Áa la classe Forme sera la meme pour une classe de forme (exemple carrÈ) et pour la classe abstraite qui represente les formes
+/*Pourquoi fait on un h√©ritage virtuel ?
+		Dans cette biblioth√©que nous ne g√©rons pas tout ce qui touche aux interfaces. Or si une personne souhaite utiliser cette biblioth√©que pour afficher ces formes il devra cr√©er
+		des classes qui h√©rite de celle-ci. Cependant s'il reprend le sh√©ma de notre biblioth√©que il peut souhaiter faire classe abstraite pour ses formes. Donc une classe d'un objet
+		affichable aurait comme h√©ritage une classe forme (exemple rectangle), qui h√©rite elle m√©me de la classe abstraite Forme, et une classe abstraite (exemple FormeAffichable), qui
+		h√©rite elle aussi de la classe abstraite Forme.
+		On voit donc ici un probleme, si on souhaite atteindre un membre de Forme comment fait-on au vu de l'ambiguit√© ?
+		Un solution est de pass√© par l'h√©ritage virtuelle comme √©a la classe Forme sera la meme pour une classe de forme (exemple carr√©) et pour la classe abstraite qui represente les formes
 		affichable.
 
-		Sans l'heritage virtuel on aurait quelque chose comme Áa :	Forme   Forme								Alors qu'avec on a :		 Forme
+		Sans l'heritage virtuel on aurait quelque chose comme √©a :	Forme   Forme								Alors qu'avec on a :		 Forme
 																																	|			  |																						/  \
 																																Carre   FormeAffichable														Carre	 FormeAffichable
 																																		 \ /																							\	 /
@@ -20,23 +20,108 @@
 
 */
 
+////////////////////////////////////////////////////////////
+/// \namespace fm
+/// \brief Namespace pour la biblioth√©que de forme
+///
+////////////////////////////////////////////////////////////
 namespace fm {
 
+////////////////////////////////////////////////////////////
+/// \class Rectangle Rectangle.hpp "Forme/Rectangle.hpp"
+/// \brief Classe pour cr√©er des Rectangles
+/// \authors DI NARDO Valentin, LENHARD Erwan
+/// \version 1.0
+/// \date 11 juin 2019
+///
+////////////////////////////////////////////////////////////
 class Rectangle : public virtual Forme {
+
+	////////////////////////////////////////////////////////////
+	/// \var uint largeur
+	/// \brief Taille de la largeur du Rectangle
+	/// \var uint hauteur
+	/// \brief Taille de la hauteur du Rectangle
+	///
+	////////////////////////////////////////////////////////////
 	uint largeur, hauteur;
 
 	protected:
+		////////////////////////////////////////////////////////////
+		/// \brief Ecris les donn√©es n√©cessaire du Rectangle
+		/// \param std::ostream & os, le flux d'√©criture
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
 		void ecrire(std::ostream & os) const override;
 
 	public:
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur du Rectangle
+		/// \param uint couleur, la couleur du Rectangle
+		/// \param int x, la position x de l'ancre
+		/// \param int y, position y de l'ancre
+		/// \param uint hauteur, la taille de la hauteur du Rectangle
+		/// \param uint largeur, la taille de la largeur du Rectangle
+		///
+		////////////////////////////////////////////////////////////
 		Rectangle(uint couleur, int x, int y, uint _largeur, uint _hauteur);
+		
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur par copie du Rectangle
+		/// \param const Rectangle &ori, le Rectangle √† copier
+		///
+		////////////////////////////////////////////////////////////
 		Rectangle(const Rectangle & ori);
+		
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur du Rectangle par flux de lecture
+		/// \param std::istream &is, le flux de lecture
+		///
+		////////////////////////////////////////////////////////////
 		Rectangle(std::istream & is);
+
+		////////////////////////////////////////////////////////////
+		/// \brief Destructeur du Rectangle
+		///
+		////////////////////////////////////////////////////////////
 		~Rectangle() override;
+		
+		////////////////////////////////////////////////////////////
+		/// \brief Getter - la largeur du Rectangle
+		/// \return uint largeur
+		///
+		////////////////////////////////////////////////////////////
 		inline uint getLargeur() const { return largeur; }
+
+		////////////////////////////////////////////////////////////
+		/// \brief Setter - largeur
+		/// \param uint value, nouvelle valeur de la largeur
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		inline void setLargeur(uint value) { largeur = value; }
+
+		////////////////////////////////////////////////////////////
+		/// \brief Getter - la hauteur du Rectangle
+		/// \return uint hauteur
+		///
+		////////////////////////////////////////////////////////////
 		inline uint getHauteur() const { return hauteur; }
-		inline void setLargeur(uint _largeur) { largeur = _largeur; }
-		inline void setHauteur(uint _hauteur) { hauteur = _hauteur; }
+
+		////////////////////////////////////////////////////////////
+		/// \brief Setter - hauteur
+		/// \param uint value, nouvelle valeur de la hauteur
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		inline void setHauteur(uint value) { hauteur = value; }
+		
+		////////////////////////////////////////////////////////////
+		/// \brief La valeur du p√©rim√®tre du Rectangle
+		/// \return double perimetre
+		///
+		////////////////////////////////////////////////////////////
 		inline double perimetre() const override { return 2 * (hauteur + largeur); }
 };
 

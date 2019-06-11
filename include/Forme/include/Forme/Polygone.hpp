@@ -6,18 +6,16 @@
 #include "Forme/Forme.hpp"
 #include "Forme/Point.hpp"
 
-namespace fm {
-
-/*Pourquoi fait on un hÈritage virtuel ?
-		Dans cette bibliothËque nous ne gÈrons pas tout ce qui touche aux interfaces. Or si une personne souhaite utiliser cette bibliothËque pour afficher ces formes il devra crÈer
-		des classes qui hÈrite de celle-ci. Cependant s'il reprend le shÈma de notre bibliothËque il peut souhaiter faire classe abstraite pour ses formes. Donc une classe d'un objet
-		affichable aurait comme hÈritage une classe forme (exemple rectangle), qui hÈrite elle mÍme de la classe abstraite Forme, et une classe abstraite (exemple FormeAffichable), qui
-		hÈrite elle aussi de la classe abstraite Forme.
-		On voit donc ici un probleme, si on souhaite atteindre un membre de Forme comment fait-on au vu de l'ambiguitÈ ?
-		Un solution est de passÈ par l'hÈritage virtuelle comme Áa la classe Forme sera la meme pour une classe de forme (exemple carrÈ) et pour la classe abstraite qui represente les formes
+/*Pourquoi fait on un h√©ritage virtuel ?
+		Dans cette biblioth√©que nous ne g√©rons pas tout ce qui touche aux interfaces. Or si une personne souhaite utiliser cette biblioth√©que pour afficher ces formes il devra cr√©er
+		des classes qui h√©rite de celle-ci. Cependant s'il reprend le sh√©ma de notre biblioth√©que il peut souhaiter faire classe abstraite pour ses formes. Donc une classe d'un objet
+		affichable aurait comme h√©ritage une classe forme (exemple rectangle), qui h√©rite elle m√©me de la classe abstraite Forme, et une classe abstraite (exemple FormeAffichable), qui
+		h√©rite elle aussi de la classe abstraite Forme.
+		On voit donc ici un probleme, si on souhaite atteindre un membre de Forme comment fait-on au vu de l'ambiguit√© ?
+		Un solution est de pass√© par l'h√©ritage virtuelle comme √©a la classe Forme sera la meme pour une classe de forme (exemple carr√©) et pour la classe abstraite qui represente les formes
 		affichable.
 
-		Sans l'heritage virtuel on aurait quelque chose comme Áa :	Forme   Forme								Alors qu'avec on a :		 Forme
+		Sans l'heritage virtuel on aurait quelque chose comme √©a :	Forme   Forme								Alors qu'avec on a :		 Forme
 																																	|			  |																						/  \
 																																Carre   FormeAffichable														Carre	 FormeAffichable
 																																		 \ /																							\	 /
@@ -25,29 +23,118 @@ namespace fm {
 
 */
 
+////////////////////////////////////////////////////////////
+/// \namespace fm
+/// \brief Namespace pour la biblioth√©que de forme
+///
+////////////////////////////////////////////////////////////
+namespace fm {
+
+////////////////////////////////////////////////////////////
+/// \class Polygone Polygone.hpp "Forme/Polygone.hpp"
+/// \brief Classe pour cr√©er des Polygones
+/// \authors DI NARDO Valentin, LENHARD Erwan
+/// \version 1.0
+/// \date 11 juin 2019
+///
+////////////////////////////////////////////////////////////
 class Polygone : virtual public Forme {
+	
+	////////////////////////////////////////////////////////////
+	/// \var std::vector<Point*> * tabPoint
+	/// \brief Vecteur qui contient les points du Polygone
+	///
+	////////////////////////////////////////////////////////////
 	std::vector<Point*> * tabPoint;
 
 	protected:
+		////////////////////////////////////////////////////////////
+		/// \brief Ecris les donn√©es n√©cessaire du Polygone
+		/// \param std::ostream & os, le flux d'√©criture
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
 		void ecrire(std::ostream & os) const override;
-		inline std::vector<Point*>* getTabPointPtr() const { return tabPoint; }
-		inline Point* getPointPtrAt(size_t i) const { return tabPoint->at(i); }
-		inline void setTabPoint(std::vector<Point*>* _tabPoint) { tabPoint = _tabPoint; }
+
+		////////////////////////////////////////////////////////////
+		/// \brief Setter - TabPoints
+		/// \param std::vector<Point*> * value, Nouveux pointeur sur un vecteur de Point*
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		inline void setTabPoint(std::vector<Point*> * value) { tabPoint = value; }
 
 	public:
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur du Polygone
+		/// \param uint couleur, la couleur du Polygone
+		/// \param int x, la position x de l'ancre
+		/// \param int y, position y de l'ancre
+		/// \param std::vector<Point*> * tabPoint, pointeur sur un vecteur de Point*
+		///
+		////////////////////////////////////////////////////////////
 		Polygone(uint couleur, int x, int y, std::vector<Point*>* tabPoint);
+
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur par copie du Polygone
+		/// \param const Polygone &ori, le Polygone √† copier
+		///
+		////////////////////////////////////////////////////////////
 		Polygone(const Polygone & ori);
+
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur u Polygone par flux de lecture
+		/// \param std::istream &is, le flux de lecture
+		///
+		////////////////////////////////////////////////////////////
 		Polygone(std::istream & is);
+
+		////////////////////////////////////////////////////////////
+		/// \brief Destructeur du Polygone
+		/// \warning Ne d√©truit pas les points qui le compose !
+		///
+		////////////////////////////////////////////////////////////
 		~Polygone() override;
 
-		//Getter - Setter
+		////////////////////////////////////////////////////////////
+		/// \brief Getter - R√©cup√®re un pointeur constant sur Point √† la 
+		///  position i dans le vecteur qui contient les points du Polygone
+		/// \return Point* point
+		///
+		////////////////////////////////////////////////////////////
 		inline const Point* getPointAt(size_t i) const { return tabPoint->at(i); }
+
+		////////////////////////////////////////////////////////////
+		/// \brief Setter - Change la position d'un Point dans le vecteur de Point* √† la position i
+		/// \param int x, la position en x du Point
+		/// \param int y, la position en y du Point
+		/// \param size_t i, la position dans le vecteur de Point*
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
 		inline void setPosPointAt(int x, int y, size_t i) { tabPoint->at(i)->setXY(x,y); }
-		inline size_t getTailleTab() const { return tabPoint->size(); }
+		
+		////////////////////////////////////////////////////////////
+		/// \brief Getter - R√©cup√®re le nombre de Point que compose le polygone (l'ancre n'est pas comprise)
+		/// \return size_t nb_points
+		///
+		////////////////////////////////////////////////////////////
+		inline size_t getNbPoints() const { return tabPoint->size(); }
 
-		bool pointInTab(Point * point) const;
+		////////////////////////////////////////////////////////////
+		/// \brief V√©rifie si un Point appartient au Polygone
+		/// \param const Point * point
+		/// \return true si le Point compose le Polygone
+		/// \return false si le Point ne compose pas le Polygone
+		///
+		////////////////////////////////////////////////////////////
+		bool pointInShape(const Point * point) const override;
 
-		//Longueur de tous les cotÈs
+		////////////////////////////////////////////////////////////
+		/// \brief La valeur du p√©rim√®tre du Polygone
+		/// \return double perimetre
+		///
+		////////////////////////////////////////////////////////////
 		double perimetre() const override;
 };
 

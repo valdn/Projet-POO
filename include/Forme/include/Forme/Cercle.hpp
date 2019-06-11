@@ -1,18 +1,18 @@
 #ifndef CERCLE_HPP
 #define CERLCE_HPP
 
-#include "Forme.hpp"
+#include "Forme/Forme.hpp"
 
-/*Pourquoi fait on un hÈritage virtuel ?
-		Dans cette bibliothËque nous ne gÈrons pas tout ce qui touche aux interfaces. Or si une personne souhaite utiliser cette bibliothËque pour afficher ces formes il devra crÈer
-		des classes qui hÈrite de celle-ci. Cependant s'il reprend le shÈma de notre bibliothËque il peut souhaiter faire classe abstraite pour ses formes. Donc une classe d'un objet
-		affichable aurait comme hÈritage une classe forme (exemple rectangle), qui hÈrite elle mÍme de la classe abstraite Forme, et une classe abstraite (exemple FormeAffichable), qui
-		hÈrite elle aussi de la classe abstraite Forme.
-		On voit donc ici un probleme, si on souhaite atteindre un membre de Forme comment fait-on au vu de l'ambiguitÈ ?
-		Un solution est de passÈ par l'hÈritage virtuelle comme Áa la classe Forme sera la meme pour une classe de forme (exemple carrÈ) et pour la classe abstraite qui represente les formes
+/*Pourquoi fait on un h√©ritage virtuel ?
+		Dans cette biblioth√©que nous ne g√©rons pas tout ce qui touche aux interfaces. Or si une personne souhaite utiliser cette biblioth√©que pour afficher ces formes il devra cr√©er
+		des classes qui h√©rite de celle-ci. Cependant s'il reprend le sh√©ma de notre biblioth√©que il peut souhaiter faire classe abstraite pour ses formes. Donc une classe d'un objet
+		affichable aurait comme h√©ritage une classe forme (exemple rectangle), qui h√©rite elle m√©me de la classe abstraite Forme, et une classe abstraite (exemple FormeAffichable), qui
+		h√©rite elle aussi de la classe abstraite Forme.
+		On voit donc ici un probleme, si on souhaite atteindre un membre de Forme comment fait-on au vu de l'ambiguit√© ?
+		Un solution est de pass√© par l'h√©ritage virtuelle comme √©a la classe Forme sera la meme pour une classe de forme (exemple carr√©) et pour la classe abstraite qui represente les formes
 		affichable.
 
-		Sans l'heritage virtuel on aurait quelque chose comme Áa :	Forme   Forme								Alors qu'avec on a :		 Forme
+		Sans l'heritage virtuel on aurait quelque chose comme √©a :	Forme   Forme								Alors qu'avec on a :		 Forme
 																																	|			  |																						/  \
 																																Carre   FormeAffichable														Carre	 FormeAffichable
 																																		 \ /																							\	 /
@@ -20,21 +20,90 @@
 
 */
 
+////////////////////////////////////////////////////////////
+/// \namespace fm
+/// \brief Namespace pour la biblioth√©que de forme
+///
+////////////////////////////////////////////////////////////
 namespace fm {
 
+////////////////////////////////////////////////////////////
+/// \class Cercle Cercle.hpp "Forme/Cercle.hpp"
+/// \brief Classe pour cr√©er des Cercles
+/// \authors DI NARDO Valentin, LENHARD Erwan
+/// \version 1.0
+/// \date 11 juin 2019
+///
+////////////////////////////////////////////////////////////
 class Cercle : virtual public Forme {
+	
+	////////////////////////////////////////////////////////////
+	/// \var uint rayon
+	/// \brief Taille du rayon du Cercle
+	///
+	////////////////////////////////////////////////////////////
 	uint rayon;
 
 	protected:
+		////////////////////////////////////////////////////////////
+		/// \brief Ecris les donn√©es n√©cessaire du Cercle
+		/// \param std::ostream & os, le flux d'√©criture
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
 		void ecrire(std::ostream & os) const override;
 
 	public:
-		Cercle(uint couleur, int x, int y, uint _rayon);
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur de Cercle
+		/// \param uint couleur, la couleur du Cercle
+		/// \param int x, la position x de l'ancre
+		/// \param int y, position y de l'ancre
+		/// \param uint rayon, la taille du rayon
+		///
+		////////////////////////////////////////////////////////////
+		Cercle(uint couleur, int x, int y, uint rayon);
+
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur par copie de Cercle
+		/// \param const Cercle &ori, le Cercle √† copier
+		///
+		////////////////////////////////////////////////////////////
 		Cercle(const Cercle & ori);
+
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur de Cercle par flux de lecture
+		/// \param std::istream &is, le flux de lecture
+		///
+		////////////////////////////////////////////////////////////
 		Cercle(std::istream & is);
+
+		////////////////////////////////////////////////////////////
+		/// \brief Destructeur de Cercle
+		///
+		////////////////////////////////////////////////////////////
 		~Cercle() override;
+
+		////////////////////////////////////////////////////////////
+		/// \brief Getter - rayon du Cercle
+		/// \return uint rayon
+		///
+		////////////////////////////////////////////////////////////
 		inline uint getRayon() const { return rayon; }
-		inline void setRayon(uint _rayon) { rayon = _rayon; }
+
+		////////////////////////////////////////////////////////////
+		/// \brief Setter - rayon
+		/// \param uint rayon, nouvelle valeur du rayon
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		inline void setRayon(uint value) { rayon = value; }
+
+		////////////////////////////////////////////////////////////
+		/// \brief La valeur du p√©rim√®tre du Cercle
+		/// \return double perimetre
+		///
+		////////////////////////////////////////////////////////////
 		inline double perimetre() const override { return 2 * M_PI * rayon ; }
 };
 

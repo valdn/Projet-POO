@@ -1,6 +1,8 @@
+// Enleve les warning pour l'héritage via la dominance
+#pragma warning( disable : 4250 )
+
 #ifndef CARRE_DRAWABLE_HPP
 #define CARRE_DRAWABLE_HPP
-
 
 #include "Forme/Carre.hpp"
 #include "FormeDrawable.hpp"

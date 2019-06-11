@@ -38,7 +38,7 @@ void Gestionnaire::ajouter(FormeD * forme, size_t num_calque) {
 		try {
 			tab_calque.at(num_calque)->ajouter(forme);
 		}
-		catch (std::out_of_range & e) {
+		catch (std::out_of_range) {
 			std::cerr << "Le calque " << num_calque << " n'existe pas !" << std::endl;
 		}
 	}
@@ -50,7 +50,7 @@ void Gestionnaire::ajouter(PointD * point, size_t num_calque) {
 		tab_point.push_back(point);
 		try {
 			tab_calque.at(num_calque)->ajouter(point);
-		} catch (std::out_of_range & e) {
+		} catch (std::out_of_range) {
 			std::cerr << "Le calque " << num_calque << " n'existe pas !" << std::endl;
 		}
 	}
