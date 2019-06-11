@@ -3,6 +3,26 @@
 #include "menuTGUI.hpp"
 #include "MyApplication.hpp"
 
+/* Documentation tag for Doxygen
+ */
+
+ /*! \mainpage PLEGAT Documentation
+  *
+  * \section intro_sec Introduction
+  *
+  * Documentation Projet POO.
+  *
+  *
+  * \subsection running Running the program
+  * Utiliser CMAKE pour lancer le programme.
+  *
+  * \section copyright Copyright and License
+  * Tous droits réservés à DI NARDO Valentin, LENHARD Erwan.
+  *
+  * <BR><BR>
+  *
+  */
+
 void viderForme(FormeD * shape) {
 	shape->setFillColor(sf::Color::Transparent);
 	shape->togglePleine();
