@@ -41,7 +41,7 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 - Cliquez sur "Show HTML output"
 
-- Vous avez aussi accès à la [documentation](https://www.projets.lerwox.com/ShapEditor/doc) en ligne : 
+- Vous avez aussi accès à la [documentation](https://www.projets.lerwox.com/ShapEditor/doc) en ligne
 
 
 # Utilisation --- Aide
@@ -144,6 +144,13 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 - Impossible de modifier la couleur des formes
 
+
+### Voir une scène de ShapEditor
+- Lancez l'application
+
+- Cliquez sur charger
+
+- Entrez le chemin vers le fichier exemple.shape qui est à la racine du projet
 
 # Copyright & License
 
