@@ -1,4 +1,4 @@
-// Enleve les warning pour l'héritage via la dominance
+// Enleve les warning pour l'hÃ©ritage via la dominance
 #pragma warning( disable : 4250 )
 
 #ifndef POLYGONE_DRAWABLE_HPP
@@ -11,7 +11,7 @@
 
 /**
 * \class PolygoneD PolygoneDrawable.hpp "PolygoneDrawable.hpp"
-* \brief Classe pour définir un Polygone graphiquement sur SFML
+* \brief Classe pour dÃ©finir un fm::Polygone graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019
@@ -24,7 +24,7 @@ class PolygoneD : public fm::Polygone, public FormeD {
 	std::vector<PointD*> tabPointD;
 
 	///\var std::vector<sf::Vector2f> tabDistance
-	///\brief Tableau de Vector2f des distances entre les différents PointD du PolygoneD
+	///\brief Tableau de Vector2f des distances entre les diffÃ©rents PointD du PolygoneD
 	std::vector<sf::Vector2f> tabDistance;
 
 	public:

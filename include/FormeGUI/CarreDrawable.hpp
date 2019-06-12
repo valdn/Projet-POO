@@ -1,4 +1,4 @@
-// Enleve les warning pour l'héritage via la dominance
+// Enleve les warning pour l'hÃ©ritage via la dominance
 #pragma warning( disable : 4250 )
 
 #ifndef CARRE_DRAWABLE_HPP
@@ -9,7 +9,7 @@
 
 /**
 * \class CarreD CarreDrawable.hpp "CarreDrawable.hpp"
-* \brief Classe pour définir un Carre graphiquement sur SFML
+* \brief Classe pour dÃ©finir un fm::Carre graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019
@@ -21,7 +21,7 @@ class CarreD : public fm::Carre, public FormeD {
 		/// \param couleur en sf::Color
 		/// \param position x de l'ancre
 		/// \param position y de l'ancre
-		/// \param coté du CarreD en uint
+		/// \param cotÃ© du CarreD en uint
 		CarreD(sf::Color couleur, int x, int y, uint _cote); 
 
 		/// \brief constructeur de copie de CarreD

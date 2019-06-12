@@ -5,7 +5,6 @@
 
 /// \todo Afficher les messages d'erreur sur le menu
 /// \todo Animation
-/// \todo documentation / commentaire / uniformiser le code
 /// \todo avoir des info sur la forme / le point sélectionné
 /// \todo Ajouter toutes les exceptions à la doc
 /// \todo faire correctement le point de resize de la forme

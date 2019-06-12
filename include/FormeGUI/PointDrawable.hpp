@@ -6,7 +6,7 @@
 
 /**
 * \class PointD PointDrawable.hpp "PointDrawable.hpp"
-* \brief Classe pour définir un Point graphiquement sur SFML
+* \brief Classe pour définir un fm::Point graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019
@@ -22,15 +22,15 @@ class PointD {
 	sf::Color couleur;
 
 	///\var fm::Point * point
-	///\brief D�finit un Point
+	///\brief Définit un Point
 	fm::Point * point;
 
 	///\var sf::CircleShape cercle
-	///\brief D�finit un Cercle
+	///\brief Définit un Cercle
 	sf::CircleShape cercle;
 
 	///\var bool partage
-	///\brief Utiliser pour d�finir si un point peut �tre partag� ou non.
+	///\brief Utiliser pour définir si un point peut étre partagé ou non.
 	bool partage;
 
 	public:
@@ -81,7 +81,7 @@ class PointD {
 		/// \return int
 		inline int getY() { return point->getY(); }
 		
-		/// \brief retourne si le PointD est partag� ou non
+		/// \brief retourne si le PointD est partagé ou non
 		/// \return bool
 		inline bool isPartaged() const { return partage; }
 
@@ -94,7 +94,7 @@ class PointD {
 		/// \return void
 		void update();
 
-		/// \brief Permet de dessiner les diff�rents PointD
+		/// \brief Permet de dessiner les différents PointD
 		/// \param window sf::RenderWindow fenetre d'affichage principale
 		/// \return void
 		void dessiner(sf::RenderWindow & window) const;
@@ -114,7 +114,7 @@ class PointD {
 		/// \return PointD
 		static PointD* getPointD(const fm::Point * point);
 
-		/// \brief Retourne a la position du PointD en param�tre
+		/// \brief Retourne a la position du PointD en paramètre
 		/// \param PointD *
 		/// \return size_t
 		static size_t getPointDIndex(PointD * point);

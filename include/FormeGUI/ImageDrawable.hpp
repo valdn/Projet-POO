@@ -1,4 +1,4 @@
-// Enleve les warning pour l'héritage via la dominance
+// Enleve les warning pour l'hÃ©ritage via la dominance
 #pragma warning( disable : 4250 )
 
 #ifndef IMAGE_DRAWABLE_HPP
@@ -10,7 +10,7 @@
 
 /**
 * \class ImageD ImageDrawable.hpp "ImageDrawable.hpp"
-* \brief Classe pour définir une Image graphiquement sur SFML
+* \brief Classe pour dÃ©finir une fm::Image graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019

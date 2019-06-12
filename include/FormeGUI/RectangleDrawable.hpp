@@ -1,4 +1,4 @@
-// Enleve les warning pour l'héritage via la dominance
+// Enleve les warning pour l'hÃ©ritage via la dominance
 #pragma warning( disable : 4250 )
 
 #ifndef RECTANGLE_DRAWABLE_HPP
@@ -10,7 +10,7 @@
 
 /**
 * \class RectangleD RectangleDrawable.hpp "RectangleDrawable.hpp"
-* \brief Classe pour définir un Rectangle graphiquement sur SFML
+* \brief Classe pour dÃ©finir un fm::Rectangle graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019

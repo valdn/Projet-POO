@@ -1,4 +1,4 @@
-// Enleve les warning pour l'héritage via la dominance
+// Enleve les warning pour l'hÃ©ritage via la dominance
 #pragma warning( disable : 4250 )
 
 #ifndef CERCLE_DRAWABLE_HPP
@@ -9,7 +9,7 @@
 
 /**
 * \class CercleD CercleDrawable.hpp "CercleDrawable.hpp"
-* \brief Classe pour définir un Cercle graphiquement sur SFML
+* \brief Classe pour dÃ©finir un fm::Cercle graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019

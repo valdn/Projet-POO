@@ -10,7 +10,7 @@
 
 /**
 * \class TriangleD TriangleDrawable.hpp "TriangleDrawable.hpp"
-* \brief Classe pour définir un Carre graphiquement sur SFML
+* \brief Classe pour définir un fm::Triangle graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019

@@ -213,6 +213,7 @@ private:
 	/// \brief Retourne la position du point dans une ComboBox
 	/// \param size_t
 	/// \return size_t
+	/// \throw std::runtime_error si aucun point n'est sélectionné
 	size_t getPointIndex(size_t index) const;
 };
 

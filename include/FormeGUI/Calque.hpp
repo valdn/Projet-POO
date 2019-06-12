@@ -11,7 +11,7 @@
 
 /**
 * \class Calque Calque.hpp "Calque.hpp"
-* \brief Classe pour définir les calques
+* \brief Classe pour dÃ©finir les Calque
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019
@@ -54,7 +54,7 @@ class Calque {
 		/// \return void
 		void delInTab(FormeD * forme);
 
-		/// \brief libérer la mémoire de la FormeD supprimer
+		/// \brief libÃ¨rer la mÃ©moire de la FormeD supprimer
 		/// \param FormeD*
 		/// \return void
 		void supprimer(FormeD * forme);
@@ -64,7 +64,7 @@ class Calque {
 		/// \return void
 		void delInTab(PointD * point);
 
-		/// \brief libérer la mémoire de la FormeD supprimer
+		/// \brief libÃ¨rer la mÃ©moire de la FormeD supprimer
 		/// \param PointD*
 		/// \return void
 		void supprimer(PointD * point);
@@ -86,18 +86,18 @@ class Calque {
 		/// \return void
 		void dessiner(sf::RenderWindow &window) const;
 
-		/// \brief Permet de savoir si la Forme en paramètre est dans le tableau
-		/// \param FormeD* Forme prise en paramètre
+		/// \brief Permet de savoir si la Forme en paramÃ¨tre est dans le tableau
+		/// \param FormeD* Forme prise en paramÃ¨tre
 		/// \return bool
 		bool isInTab(FormeD * shape) const;
 
-		/// \brief Permet de savoir si le Point en paramètre est dans le tableau
-		/// \param PointD* Point pris en paramètre
+		/// \brief Permet de savoir si le Point en paramÃ¨tre est dans le tableau
+		/// \param PointD* Point pris en paramÃ¨tre
 		/// \return bool
 		bool isInTab(PointD * point) const;
 
 		/// \brief Permet de savoir si le Point est dans la Forme
-		/// \param PointD* Point pris en paramètre
+		/// \param PointD* Point pris en paramÃ¨tre
 		/// \return bool
 		bool pointInShape(PointD * point) const;
 
@@ -128,12 +128,12 @@ class Calque {
 		inline void toggleActive() { active = !active; }
 
 	private:
-		/// \brief Permet de retourner la position de la Forme passée en paramètre
+		/// \brief Permet de retourner la position de la Forme passÃ©e en paramÃ¨tre
 		/// \param FormeD*
 		/// \return size_t
 		size_t getPosShape(FormeD * shape) const; 
 
-		/// \brief Permet de retourner la position de la Point passée en paramètre
+		/// \brief Permet de retourner la position de la Point passÃ©e en paramÃ¨tre
 		/// \param PointD*
 		/// \return size_t
 		size_t getPosPoint(PointD * point) const; 

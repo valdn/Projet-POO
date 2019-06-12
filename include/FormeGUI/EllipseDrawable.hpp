@@ -9,7 +9,7 @@
 
 /**
 * \class EllipseD EllipseDrawable.hpp "EllipseDrawable.hpp"
-* \brief Classe pour définir une Ellipse graphiquement sur SFML
+* \brief Classe pour définir une fm::Ellipse graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019

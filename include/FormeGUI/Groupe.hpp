@@ -8,7 +8,7 @@
 
 /**
 * \class Groupe Groupe.hpp "Groupe.hpp"
-* \brief Classe pour définir un Groupe
+* \brief Classe pour dÃ©finir un Groupe
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019
@@ -36,7 +36,7 @@ class Groupe {
 		/// \return void
 		void supprimer(FormeD* forme);
 
-		/// \brief Permet de déplacer les FormeD dans le même Groupe
+		/// \brief Permet de dÃ©placer les FormeD dans le mÃ©me Groupe
 		/// \param position x de la souris
 		/// \param position y de la souris
 		/// \return void
@@ -46,7 +46,7 @@ class Groupe {
 		/// \return void
 		void update() const;
 
-		/// \brief Permet de savoir si la FormeD passer en paramètre et dans le Groupe
+		/// \brief Permet de savoir si la FormeD passer en paramÃ¨tre et dans le Groupe
 		/// \param FormeD*
 		/// \return bool
 		bool inTab(FormeD* forme) const;
@@ -55,7 +55,7 @@ class Groupe {
 		/// \return std::size_t
 		inline size_t getNbFormes() const { return tab_forme->size(); }
 
-		/// \brief Retourne la FormeD du tableau de FormeD* en fonction de la position i demandée
+		/// \brief Retourne la FormeD du tableau de FormeD* en fonction de la position i demandÃ©e
 		/// \param  position en size_t 
 		/// \return FormeD*
 		inline FormeD* getFormeAt(size_t i) const { return tab_forme->at(i); }

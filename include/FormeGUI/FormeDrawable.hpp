@@ -7,7 +7,7 @@
 
 /**
 * \class FormeD FormeDrawable.hpp "FormeDrawable.hpp"
-* \brief Classe pour définir une Forme graphiquement sur SFML
+* \brief Classe pour dÃ©finir une fm::Forme graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019
@@ -24,7 +24,7 @@ class FormeD : public virtual fm::Forme, public sf::Shape {
 	PointD ancreD;
 
 	///\var uint trsp = 255;
-	/// \brief Sert à modifier la transparence d'une image
+	/// \brief Sert Ã  modifier la transparence d'une image
 	uint trsp = 255;
 
 	public:
@@ -57,7 +57,7 @@ class FormeD : public virtual fm::Forme, public sf::Shape {
 		/// \return const PointD
 		inline const PointD & getAncreD() const { return ancreD; }
 
-		/// \brief Permet de savoir si la souris est sur une FormeD, ne dépent pas de la classe FormeD mais des FormeD qui la compose.
+		/// \brief Permet de savoir si la souris est sur une FormeD, ne dÃ©pent pas de la classe FormeD mais des FormeD qui la compose.
 		/// \param position x de la souris
 		/// \param position y de la souris
 		/// \return bool
@@ -76,7 +76,7 @@ class FormeD : public virtual fm::Forme, public sf::Shape {
 		/// \return sf::Vector2f
 		sf::Vector2f getDistance(const fm::Point & p1, const fm::Point & p2);
 
-		/// \brief Permet de dessiner les différentes FormeD
+		/// \brief Permet de dessiner les diffÃ©rentes FormeD
 		/// \param window sf::RenderWindow fenetre d'affichage principale
 		/// \return void
 		virtual void dessiner(sf::RenderWindow & window) const = 0;
