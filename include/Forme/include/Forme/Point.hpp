@@ -146,7 +146,6 @@ class Point {
 
 		////////////////////////////////////////////////////////////
 		/// \brief Permet d'insérer un Point dans un flux std::istream
-		/// \warning N'écrit pas son id !
 		///
 		////////////////////////////////////////////////////////////
 		friend std::istream & operator>>(std::istream &is, Point & p);

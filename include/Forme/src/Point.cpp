@@ -49,10 +49,10 @@ std::ostream & operator<<(std::ostream &os, const Point & p) {
 }
 
 std::istream & operator>>(std::istream &is, Point & p) {
-	uint x, y;
-	is >> x;
-	is >> y;
-	p.setXY(x, y);
+	is >> p.x;
+	is >> p.y;
+	is >> p.id;
+
 	return is;
 }
 
