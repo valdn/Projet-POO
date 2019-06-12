@@ -19,7 +19,7 @@ void Menu::passEvent(sf::Event event) {
 	switch (event.type) {
 		//Fenetre fermé
 		case sf::Event::Closed:
-			close();
+			setVisible(false);
 			break;
 
 			//fenetre resize

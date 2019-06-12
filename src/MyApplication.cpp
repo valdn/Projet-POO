@@ -164,7 +164,7 @@ void MyApp::augmenterTrait(FormeD * shape) {
 		shape->setOutlineThickness(shape->getOutlineThickness() - 1);
 }
 
-void MyApp::dimTransparence(FormeD * shape) {
+void MyApp::augTransparence(FormeD * shape) {
 	if (shape->getTrsp() > 2) {
 		uint i = shape->getTrsp() - 2;
 		shape->setFillColor(sf::Color(255, 255, 255, i));
@@ -172,7 +172,7 @@ void MyApp::dimTransparence(FormeD * shape) {
 	}
 }
 
-void MyApp::augTransparence(FormeD * shape) {
+void MyApp::dimTransparence(FormeD * shape) {
 	if (shape->getTrsp() < 255) {
 		uint i = shape->getTrsp() + 2;
 		shape->setFillColor(sf::Color(255, 255, 255, i));
@@ -197,7 +197,7 @@ void MyApp::manageGroupe(FormeD * forme, size_t index) {
 		if (getGroupeAt(index)->inTab(forme))	//Si la forme appartient au groupe a l'index
 			getGroupeAt(index)->supprimer(forme);	//On la supprime
 		else
-			swapToGroup(getGroupe(forme), getGroupeAt(index));	//Sinon on ajoute toutes les formes du groupe de la forme au groupe à l'index 
+			swapToGroup(getGroupe(forme), getGroupeAt(index));	//Sinon on ajoute toutes les formes du groupe de la forme au groupe Ã  l'index 
 	}
 	else
 		getGroupeAt(index)->ajouter(forme);	//Sinon on ajoute la forme au groupe index

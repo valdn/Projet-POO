@@ -3,32 +3,9 @@
 #include "menuTGUI.hpp"
 #include "MyApplication.hpp"
 
-/* Documentation tag for Doxygen
- */
-
- /*! \mainpage PLEGAT Documentation
-  *
-  * \section intro_sec Introduction
-  *
-  * Documentation Projet POO.
-  *
-  *
-  * \subsection running Running the program
-  * Utiliser CMAKE pour lancer le programme.
-  *
-  * \section copyright Copyright and License
-  * Tous droits réservés à DI NARDO Valentin, LENHARD Erwan.
-  *
-  * <BR><BR>
-  *
-  */
-
-
 /// \todo Afficher les messages d'erreur sur le menu
 /// \todo Animation
 /// \todo documentation / commentaire / uniformiser le code
-/// \todo le README (fonctionnement de l'app) --- ??? rajouter un menu d'aide ???
-/// \todo faire en sorte qu'on puisse re-ouvrir la fenetre du menu
 /// \todo avoir des info sur la forme / le point sélectionné
 /// \todo Ajouter toutes les exceptions à la doc
 /// \todo faire correctement le point de resize de la forme
@@ -189,9 +166,9 @@ int main()
 					ImageD * img = dynamic_cast<ImageD*> (select_shape);
 					if (img != nullptr) {//permet de récupérer uniquement les images
 						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-							gestion.dimTransparence(select_shape);
-						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
 							gestion.augTransparence(select_shape);
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
+							gestion.dimTransparence(select_shape);
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 							dynamic_cast<ImageD*> (select_shape)->toggleActiveRatio();
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete))
@@ -207,34 +184,34 @@ int main()
 							gestion.diminuerTrait(select_shape);
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
 							gestion.augmenterTrait(select_shape);
-						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))	//Bouge la forme de 1 pixel en haut
 							gestion.move(select_shape, 0, -1);
-						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))	//Bouge la forme de 1 pixel en bas
 							gestion.move(select_shape, 0, 1);
-						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))	//Bouge la forme de 1 pixel à droite
 							gestion.move(select_shape, 1, 0);
-						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))	//Bouge la forme de 1 pixel à gauche
 							gestion.move(select_shape, -1, 0);
 					}
 
-					if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {	//Déplace la forme (et son groupe si elle en un) au layer souhaité
 						g = gestion.getGroupe(select_shape);
 						if (g != nullptr)	//Si la forme appartient a un groupe
 							gestion.groupeToLayer(g, menuW.getSelectedCalque());	//Déplace tout le groupe au layer souhaité
 						else 
 							gestion.shapeToLayer(select_shape, menuW.getSelectedCalque());	//Déplace la forme au layer souhaité
 					}
-					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))	//Ajoute la forme au groupe sélectionné
 						gestion.manageGroupe(select_shape, menuW.getSelectedGroupe());
 
-					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete)) {
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete)) {	//Supprime la forme et son groupe si elle en a un
 						gestion.manageGroupe(select_shape);
 						select_shape = nullptr;
 					}
 				}
 
 				if (select_point != nullptr) {
-					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete)) {
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete)) {	//Supprime le point
 						try {
 							gestion.supprimer(select_point);
 							select_point = nullptr;
@@ -243,13 +220,23 @@ int main()
 							std::cerr << e.what() << std::endl;
 						}
 					}
-					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {
-							gestion.pointToLayer(select_point, menuW.getSelectedCalque());	//Déplace le point au layer souhaité
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {	//Déplace le point au layer souhaité
+							gestion.pointToLayer(select_point, menuW.getSelectedCalque());	
 					}
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))	//Bouge la forme de 1 pixel en haut
+						gestion.move(select_point, 0, -1);
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))	//Bouge la forme de 1 pixel en bas
+						gestion.move(select_point, 0, 1);
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))	//Bouge la forme de 1 pixel à droite
+						gestion.move(select_point, 1, 0);
+					else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))	//Bouge la forme de 1 pixel à gauche
+						gestion.move(select_point, -1, 0);
 				}
 
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::C))	//Toggle l'affichage du calque sélectionné
 					gestion.getCalqueAt(menuW.getSelectedCalque())->toggleActive();
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::M))	//Réouvre le MenuTGUI
+					menuW.setVisible(true);
 					
 
 				break;
