@@ -1,20 +1,28 @@
 #include "CercleDrawable.hpp"
 
+void CercleD::ecrire(std::ostream & os) const {
+	os << "CercleD ";
+	FormeD::ecrire(os);
+	os << getRayon();
+}
+
 CercleD::CercleD(sf::Color couleur, int x, int y, uint rayon) 
 	: Forme(couleur.toInteger(), x, y), 
 		Cercle(couleur.toInteger(), x, y, rayon),
 		FormeD(couleur, x, y) 
 {
 	setFillColor(sf::Color(getCouleur()));
-	setOutlineThickness(-1);
+	setOutlineThickness(getBorder());
 	setOutlineColor(sf::Color(getCouleur()));
 	recalculate();
 }
 
 CercleD::CercleD(const CercleD & ori) : CercleD(sf::Color(ori.getCouleur()), ori.getAncre().getX(), ori.getAncre().getX(), ori.getRayon()) {}
 
-CercleD::CercleD(std::istream & is) : Forme(is), Cercle(is), FormeD(is) {
-	setFillColor(sf::Color(getCouleur()));
+CercleD::CercleD(std::istream & is) : Forme(is), FormeD(is), Cercle(is) {
+	if (isPleine()) setFillColor(sf::Color(getCouleur()));
+	else setFillColor(sf::Color::Transparent);
+	setOutlineThickness(getBorder());
 	setOutlineColor(sf::Color(getCouleur()));
 	recalculate();
 }

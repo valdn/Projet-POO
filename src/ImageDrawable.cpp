@@ -1,5 +1,11 @@
 #include "ImageDrawable.hpp"
 
+void ImageD::ecrire(std::ostream & os) const {
+	os << "ImageD ";
+	FormeD::ecrire(os);
+	os << p1->getId() << ' ' << getImg() << ' ' << transparence;
+}
+
 ImageD::ImageD(std::string img, int x1, int y1, PointD* _p1)
 	: Forme(sf::Color::White.toInteger(), x1, y1),
 		Image(img, x1, y1, _p1->getPtrPoint()), 
@@ -20,18 +26,22 @@ ImageD::ImageD(std::string img, int x1, int y1, PointD* _p1)
 
 ImageD::ImageD(const ImageD & ori) : ImageD(ori.Image::getImg(), ori.Image::getAncre().getX(), ori.Image::getAncre().getY(), ori.p1) {}
 
-ImageD::ImageD(std::istream & is) : Forme(is), Image(is), FormeD(is) {
+ImageD::ImageD(std::istream & is) : Forme(is), FormeD(is), Image(is) {
 	p1 = PointD::getPointD(getP1());
-
 	p1->setColor(sf::Color::Blue);
-	setFillColor(sf::Color::White);
+
+	is >> transparence;
+	setTransparence(transparence);
+
 	sf::Texture * texture = new sf::Texture();
 	if (!texture->loadFromFile(getImg())) std::cerr << "Texture introuvable" << std::endl;
 	texture->setSmooth(true);
 	setTexture(texture);
+
 	setTaille(texture->getSize().x, texture->getSize().y);
 	p1->setPos(getAncre().getX() + getLargeur(), getAncre().getY() + getHauteur());
 	dist1 = getDistance(getAncre(), p1->getPoint());
+
 	recalculate();
 }
 
@@ -57,6 +67,12 @@ void ImageD::recalculate() {
 	dist1 = getDistance(getAncre(), p1->getPoint());
 	setTaille(dist1.x, dist1.y);
 	Shape::update();
+}
+
+void ImageD::setTransparence(uint value) {
+	if (value > 255) transparence = 255;
+	else transparence = value;
+	setFillColor(sf::Color(255, 255, 255, transparence));
 }
 
 std::size_t ImageD::getPointCount() const {

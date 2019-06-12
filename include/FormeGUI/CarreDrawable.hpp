@@ -15,7 +15,17 @@
 * \date 11 juin 2019
 */
 
-class CarreD : public fm::Carre, public FormeD {
+class CarreD : public FormeD, public fm::Carre {
+
+	protected:
+		////////////////////////////////////////////////////////////
+		/// \brief Ecris les données nécessaire du CarreD
+		/// \param std::ostream & os, le flux d'écriture
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		void ecrire(std::ostream & os) const override final;
+
 	public:
 		/// \brief constructeur de CarreD
 		/// \param couleur en sf::Color

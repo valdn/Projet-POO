@@ -165,9 +165,9 @@ int main()
 					ImageD * img = dynamic_cast<ImageD*> (select_shape);
 					if (img != nullptr) {//permet de récupérer uniquement les images
 						if (sf::Keyboard::isKeyPressed(sf::Keyboard::Subtract) || sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
-							gestion.augTransparence(select_shape);
+							gestion.augTransparence(img);
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
-							gestion.dimTransparence(select_shape);
+							gestion.dimTransparence(img);
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
 							dynamic_cast<ImageD*> (select_shape)->toggleActiveRatio();
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete))

@@ -17,7 +17,7 @@
 * \date 11 juin 2019
 */
 
-class PolygoneD : public fm::Polygone, public FormeD {
+class PolygoneD : public FormeD, public fm::Polygone {
 
 	///\var std::vector<PointD*> * tabPointD
 	///\brief Tableau de PointD qui vont composer le PolygoneD
@@ -26,6 +26,15 @@ class PolygoneD : public fm::Polygone, public FormeD {
 	///\var std::vector<sf::Vector2f> tabDistance
 	///\brief Tableau de Vector2f des distances entre les différents PointD du PolygoneD
 	std::vector<sf::Vector2f> tabDistance;
+
+	protected:
+		////////////////////////////////////////////////////////////
+		/// \brief Ecris les données nécessaire du PolygoneD
+		/// \param std::ostream & os, le flux d'écriture
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		void ecrire(std::ostream & os) const override;
 
 	public:
 		/// \brief constructeur de PolygoneD

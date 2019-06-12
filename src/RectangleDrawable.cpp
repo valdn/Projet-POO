@@ -1,20 +1,28 @@
 #include "RectangleDrawable.hpp"
 
+void RectangleD::ecrire(std::ostream & os) const {
+	os << "RectangleD ";
+	FormeD::ecrire(os);
+	os << getLargeur() << ' ' << getHauteur();
+}
+
 RectangleD::RectangleD(sf::Color couleur, int x, int y, uint largeur, uint hauteur)
 	: Forme(couleur.toInteger(), x, y),
 		Rectangle(couleur.toInteger(), x, y, largeur, hauteur),
 		FormeD(couleur, x, y)
 {
 	setFillColor(sf::Color(getCouleur()));
-	setOutlineThickness(-1);
+	setOutlineThickness(getBorder());
 	setOutlineColor(sf::Color(getCouleur()));
 	recalculate();
 }
 
 RectangleD::RectangleD(const RectangleD & ori) : RectangleD(sf::Color(ori.Rectangle::getCouleur()), ori.Rectangle::getAncre().getX(), ori.Rectangle::getAncre().getX(), ori.getLargeur(), ori.getHauteur()) {}
 
-RectangleD::RectangleD(std::istream & is) : Forme(is), Rectangle(is), FormeD(is) {
-	setFillColor(sf::Color(getCouleur()));
+RectangleD::RectangleD(std::istream & is) : Forme(is), FormeD(is), Rectangle(is) {
+	if (isPleine()) setFillColor(sf::Color(getCouleur()));
+	else setFillColor(sf::Color::Transparent);
+	setOutlineThickness(getBorder());
 	setOutlineColor(sf::Color(getCouleur()));
 	recalculate();
 }

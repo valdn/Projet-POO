@@ -15,7 +15,17 @@
 * \date 11 juin 2019
 */
 
-class CercleD : public fm::Cercle, public FormeD {
+class CercleD : public FormeD, public fm::Cercle {
+
+	protected:
+		////////////////////////////////////////////////////////////
+		/// \brief Ecris les données nécessaire du CercleD
+		/// \param std::ostream & os, le flux d'écriture
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		void ecrire(std::ostream & os) const override final;
+
 	public:
 		/// \brief constructeur de CercleD
 		/// \param couleur en sf::Color

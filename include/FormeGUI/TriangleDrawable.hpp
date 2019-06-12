@@ -16,7 +16,7 @@
 * \date 11 juin 2019
 */
 
-class TriangleD : public fm::Triangle, public FormeD {
+class TriangleD : public FormeD, public fm::Triangle {
 
 	///\var PointD* p1, *p2
 	///\brief PointD qui vont composer le TriangleD
@@ -25,6 +25,15 @@ class TriangleD : public fm::Triangle, public FormeD {
 	///\var sf::Vector2f dist1, dist2
 	///\brief distances entre les PointD et l'ancre du TriangleD 
 	sf::Vector2f dist1, dist2;
+
+	protected:
+		////////////////////////////////////////////////////////////
+		/// \brief Ecris les données nécessaire du TriangleD
+		/// \param std::ostream & os, le flux d'écriture
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		void ecrire(std::ostream & os) const override;
 
 	public:
 		/// \brief constructeur de CarreD

@@ -160,23 +160,19 @@ void MyApp::diminuerTrait(FormeD * shape) {
 }
 
 void MyApp::augmenterTrait(FormeD * shape) {
-	if (shape->getOutlineThickness() >= -10)
+	if (shape->getOutlineThickness() > -10)
 		shape->setOutlineThickness(shape->getOutlineThickness() - 1);
 }
 
-void MyApp::augTransparence(FormeD * shape) {
-	if (shape->getTrsp() > 2) {
-		uint i = shape->getTrsp() - 2;
-		shape->setFillColor(sf::Color(255, 255, 255, i));
-		shape->setTrsp(i);
+void MyApp::augTransparence(ImageD * img) {
+	if (img->getTransparence() > 2) {
+		img->setTransparence(img->getTransparence() - 2);
 	}
 }
 
-void MyApp::dimTransparence(FormeD * shape) {
-	if (shape->getTrsp() < 255) {
-		uint i = shape->getTrsp() + 2;
-		shape->setFillColor(sf::Color(255, 255, 255, i));
-		shape->setTrsp(i);
+void MyApp::dimTransparence(ImageD * img) {
+	if (img->getTransparence() < 255) {
+		img->setTransparence(img->getTransparence() + 2);
 	}
 }
 

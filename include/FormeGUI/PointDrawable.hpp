@@ -104,6 +104,13 @@ class PointD {
 		/// \return bool
 		bool isOver(int x, int y) const;
 
+		////////////////////////////////////////////////////////////
+		/// \brief Getter - l'id du fm::Point de point*
+		/// \return size_t id
+		///
+		////////////////////////////////////////////////////////////
+		inline size_t getId() const { return point->getId(); }
+
 		/// \brief Permet de charger un fichier de PointD
 		/// \param std::istream
 		/// \return PointD	

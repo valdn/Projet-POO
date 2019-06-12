@@ -1,5 +1,11 @@
 ﻿#include "TriangleDrawable.hpp"
 
+void TriangleD::ecrire(std::ostream & os) const {
+	os << "TriangleD ";
+	FormeD::ecrire(os);
+	os << p1->getId() << ' ' << p2->getId();
+}
+
 TriangleD::TriangleD(sf::Color couleur, int x1, int y1, PointD * _p1, PointD * _p2)
 	: Forme(couleur.toInteger(), x1, y1),
 		Triangle(couleur.toInteger(), x1, y1, _p1->getPtrPoint(), _p2->getPtrPoint()),
@@ -7,7 +13,7 @@ TriangleD::TriangleD(sf::Color couleur, int x1, int y1, PointD * _p1, PointD * _
 		p1(_p1), p2(_p2)
 {
 	setFillColor(sf::Color(getCouleur()));
-	setOutlineThickness(-1);
+	setOutlineThickness(getBorder());
 	setOutlineColor(sf::Color(getCouleur()));
 	dist1 = getDistance(getAncre(), p1->getPoint());
 	dist2 = getDistance(getAncre(), p2->getPoint());
@@ -16,12 +22,13 @@ TriangleD::TriangleD(sf::Color couleur, int x1, int y1, PointD * _p1, PointD * _
 
 TriangleD::TriangleD(const TriangleD & ori) : TriangleD(sf::Color(ori.getCouleur()), getAncre().getX(), getAncre().getY(), ori.p1, ori.p2) {}
 
-TriangleD::TriangleD(std::istream & is) : Forme(is), Triangle(is), FormeD(is) {
+TriangleD::TriangleD(std::istream & is) : Forme(is), FormeD(is), Triangle(is) {
 	p1 = PointD::getPointD(getP1());
 	p2 = PointD::getPointD(getP2());
 
-	setFillColor(sf::Color(getCouleur()));
-	setOutlineThickness(-1);
+	if (isPleine()) setFillColor(sf::Color(getCouleur()));
+	else setFillColor(sf::Color::Transparent);
+	setOutlineThickness(getBorder());
 	setOutlineColor(sf::Color(getCouleur()));
 	dist1 = getDistance(getAncre(), p1->getPoint());
 	dist2 = getDistance(getAncre(), p2->getPoint());

@@ -1,21 +1,28 @@
 ﻿#include "CarreDrawable.hpp"
 
-CarreD::CarreD(sf::Color couleur, int x, int y, uint cote) 
+void CarreD::ecrire(std::ostream & os) const {
+	os << "CarreD ";
+	FormeD::ecrire(os);
+	os << getCote();
+}
+
+CarreD::CarreD(sf::Color couleur, int x, int y, uint cote)
 	: Forme(couleur.toInteger(), x, y), 
 		Carre(couleur.toInteger(), x, y, cote),
 		FormeD(couleur, x, y) 
 {
 	setFillColor(sf::Color(getCouleur()));
-	setOutlineThickness(-1);
+	setOutlineThickness(getBorder());
 	setOutlineColor(sf::Color(getCouleur()));
 	recalculate();
 }
 
 CarreD::CarreD(const CarreD & ori) : CarreD(sf::Color(ori.getCouleur()), ori.getAncre().getX(), ori.getAncre().getX(), ori.getCote()) {}
 
-CarreD::CarreD(std::istream & is) : Forme(is), Carre(is), FormeD(is) {
-	setFillColor(sf::Color(getCouleur()));
-	setOutlineThickness(-1);
+CarreD::CarreD(std::istream & is) : Forme(is), FormeD(is), Carre(is) {
+	if (isPleine()) setFillColor(sf::Color(getCouleur()));
+	else setFillColor(sf::Color::Transparent);
+	setOutlineThickness(getBorder());
 	setOutlineColor(sf::Color(getCouleur()));
 	recalculate();
 }

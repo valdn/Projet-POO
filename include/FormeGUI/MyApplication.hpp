@@ -184,19 +184,19 @@ public:
 
 	////////////////////////////////////////////////////////////
 	/// \brief Diminue la transparence d'une ImageD
-	/// \param FormeD * forme, l'imageD
+	/// \param ImageD * img
 	/// \return void
 	///
 	////////////////////////////////////////////////////////////
-	void dimTransparence(FormeD * shape);
+	void dimTransparence(ImageD * img);
 
 	////////////////////////////////////////////////////////////
 	/// \brief Augmente la transparence d'une ImageD
-	/// \param FormeD * forme, l'imageD
+	/// \param ImageD * img
 	/// \return void
 	///
 	////////////////////////////////////////////////////////////
-	void augTransparence(FormeD * shape);
+	void augTransparence(ImageD * img);
 
 	////////////////////////////////////////////////////////////
 	/// \brief Déplace une FormeD* sur la scène

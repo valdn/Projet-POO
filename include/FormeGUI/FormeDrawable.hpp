@@ -23,9 +23,21 @@ class FormeD : public virtual fm::Forme, public sf::Shape {
 	/// \brief Un PointD qui va servir d'ancre
 	PointD ancreD;
 
-	///\var uint trsp = 255;
-	/// \brief Sert à modifier la transparence d'une image
-	uint trsp = 255;
+	////////////////////////////////////////////////////////////
+	/// \var int border
+	/// \brief Taille de la bordure (négative si bordure intérieur)
+	///
+	////////////////////////////////////////////////////////////
+	int border;
+
+	protected:
+		////////////////////////////////////////////////////////////
+		/// \brief Ecris les données nécessaire de FormeD
+		/// \param std::ostream & os, le flux d'écriture
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		void ecrire(std::ostream & os) const override;
 
 	public:
 		/// \brief constructeur de FormeD
@@ -86,15 +98,14 @@ class FormeD : public virtual fm::Forme, public sf::Shape {
 		/// \return FormeD		
 		static FormeD* charger(std::istream & is);
 
-		/// \brief Permet de retourner la valeur de transparence de l'ImageD
-		/// \param trsp
+		/// \brief Permet de retourner la taille de la bordure
 		/// \return int
-		inline int getTrsp() const { return trsp; }
+		inline int getBorder() const { return border; }
 
-		/// \brief Permet de changer la valeur de transparence de l'ImageD
+		/// \brief Permet de changer la taille de la bordure
 		/// \param int
 		/// \return void
-		inline void setTrsp(int i) { trsp = i; }
+		inline void setBorder(int value) { border = value; }
 };
 
 #endif FORME_DRAWABLE_HPP 

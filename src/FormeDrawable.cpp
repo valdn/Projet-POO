@@ -7,11 +7,19 @@
 #include "PolygoneDrawable.hpp"
 #include "ImageDrawable.hpp"
 
-FormeD::FormeD(sf::Color couleur, int x, int y) : Forme(couleur.toInteger(),x,y), pleine(true), ancreD(getAncrePtr(), sf::Color::Magenta) {}
+void FormeD::ecrire(std::ostream & os) const {
+	Forme::ecrire(os);
+	os << pleine << ' ' << getOutlineThickness() << ' ';
+}
+
+FormeD::FormeD(sf::Color couleur, int x, int y) : Forme(couleur.toInteger(),x,y), pleine(true), border(-1), ancreD(getAncrePtr(), sf::Color::Magenta) {}
 
 FormeD::FormeD(const FormeD & ori) : FormeD(sf::Color(ori.getCouleur()), ori.getAncre().getX(), ori.getAncre().getY()) {}
 
-FormeD::FormeD(std::istream & is) : Forme(is), ancreD(getAncrePtr(), sf::Color::Magenta) {}
+FormeD::FormeD(std::istream & is) : Forme(is), ancreD(getAncrePtr(), sf::Color::Magenta) {
+	is >> pleine;
+	is >> border;
+}
 
 FormeD::~FormeD() {}
 
@@ -26,13 +34,13 @@ sf::Vector2f FormeD::getDistance(const fm::Point & p1, const fm::Point & p2) {
 FormeD * FormeD::charger(std::istream & is) {
 	std::string type;
 	is >> type;
-	if (type == "Rectangle") return new RectangleD(is);
-	else if (type == "Carre") return new CarreD(is);
-	else if (type == "Ellipse") return new EllipseD(is);
-	else if (type == "Cercle") return new CercleD(is);
-	else if (type == "Triangle") return new TriangleD(is);
-	else if (type == "Polygone") return new PolygoneD(is);
-	else if (type == "Image") return new ImageD(is);
+	if (type == "RectangleD") return new RectangleD(is);
+	else if (type == "CarreD") return new CarreD(is);
+	else if (type == "EllipseD") return new EllipseD(is);
+	else if (type == "CercleD") return new CercleD(is);
+	else if (type == "TriangleD") return new TriangleD(is);
+	else if (type == "PolygoneD") return new PolygoneD(is);
+	else if (type == "ImageD") return new ImageD(is);
 
 	throw std::range_error("La forme \"" + type + "\" n'existe pas");
 }

@@ -15,7 +15,17 @@
 * \date 11 juin 2019
 */
 
-class EllipseD : public fm::Ellipse, public FormeD {
+class EllipseD : public FormeD, public fm::Ellipse {
+
+	protected:
+		////////////////////////////////////////////////////////////
+		/// \brief Ecris les données nécessaire du CarreD
+		/// \param std::ostream & os, le flux d'écriture
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
+		void ecrire(std::ostream & os) const override final;
+
 	public:
 		/// \brief constructeur de EllipseD
 		/// \param couleur en sf::Color

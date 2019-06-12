@@ -1,5 +1,13 @@
 ﻿#include "PolygoneDrawable.hpp"
 
+void PolygoneD::ecrire(std::ostream & os) const {
+	os << "PolygoneD ";
+	FormeD::ecrire(os);
+	os << tabPointD.size();
+	for (size_t i = 0; i < tabPointD.size(); ++i)
+		os << ' ' << tabPointD[i]->getId();
+}
+
 PolygoneD::PolygoneD(sf::Color couleur, int x1, int y1, std::vector<PointD*> & _tabPointD)
 	: Forme(couleur.toInteger(), x1, y1),
 		Polygone(couleur.toInteger(), x1, y1, nullptr),
@@ -17,22 +25,23 @@ PolygoneD::PolygoneD(sf::Color couleur, int x1, int y1, std::vector<PointD*> & _
 	setTabPoint(tabPoint);
 
 	setFillColor(sf::Color(getCouleur()));
-	setOutlineThickness(-1);
+	setOutlineThickness(getBorder());
 	setOutlineColor(sf::Color(getCouleur()));
 	recalculate();
 }
 
 //PolygoneD::PolygoneD(const PolygoneD & ori) : PolygoneD(sf::Color(ori.getCouleur()), getAncre().getX(), getAncre().getY(), ori.tabPointD) {}
 
-PolygoneD::PolygoneD(std::istream & is) : Forme(is), Polygone(is), FormeD(is) {
+PolygoneD::PolygoneD(std::istream & is) : Forme(is), FormeD(is), Polygone(is) {
 
 	for (size_t i = 0; i < getNbPoints(); ++i) {
 		tabPointD.push_back(PointD::getPointD(getPointAt(i)));
 		tabDistance.push_back(getDistance(getAncre(), tabPointD[i]->getPoint()));
 	}
 
-	setFillColor(sf::Color(getCouleur()));
-	setOutlineThickness(-1);
+	if (isPleine()) setFillColor(sf::Color(getCouleur()));
+	else setFillColor(sf::Color::Transparent);
+	setOutlineThickness(getBorder());
 	setOutlineColor(sf::Color(getCouleur()));
 	recalculate();
 }
