@@ -4,7 +4,6 @@ Menu::Menu(MyApp * _myApp, sf::VideoMode mode, const sf::String & title, sf::Uin
 	: sf::RenderWindow(mode, title, style, settings), myApp(_myApp)
 {
 	gui = new tgui::Gui(*this);
-
 	initialiseDisplay();
 }
 
@@ -777,7 +776,7 @@ void Menu::getValues(int * single) const {
 }
 
 bool Menu::isInTabPoint(const PointD * point) const {
-	for (size_t i = 0; tab_point.size(); ++i) {
+	for (size_t i = 0; i < tab_point.size(); ++i) {
 		if (tab_point[i] == point) return true;
 	}
 	return false;
