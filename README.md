@@ -146,11 +146,13 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 
 ### Voir une scène de ShapEditor
+- Copier exemple.shape et image.png vers /bin/release ou /bin/debug (en fonction du type de build)
+
 - Lancez l'application
 
 - Cliquez sur charger
 
-- Entrez le chemin vers le fichier exemple.shape qui est à la racine du projet
+- Entrez exemple.shape
 
 # Copyright & License
 
