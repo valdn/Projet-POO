@@ -1,11 +1,6 @@
-
 # Projet - P.O.O. --- ShapEditor {#mainpage}
 
-  
-
 Le but de ce projet est de créer une application graphique d'édition de forme en c++. Celle-ci doit pouvoir lire un fichier de texte décrivant un ensemble de **formes géométriques** et leurs propriétés (épaisseur de trait, couleur, etc.), qui les trace toutes dans une même fenêtre et qui permet de les **éditer**, c’est-à-dire d’en modifier les propriétés.
-
-  
 
 # Premiers pas
 
@@ -17,7 +12,6 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 -  ***Doxygen*** pour générer la documentation
 
-  
 
 ## Installation
 
@@ -27,7 +21,6 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 -  **Configurer** votre projet puis **générez** le.
 
-  
 
 ### Compiler le projet:
 
@@ -37,7 +30,6 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 - Enfin lancez **shapeditor.exe** qui apparait dans */bin/debug* ou dans */bin/release* (selon le type de build).
 
-  
 
 ### Générer la documentation :
 
@@ -51,7 +43,6 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 - Vous avez aussi accès à la [documentation](https://www.projets.lerwox.com/ShapEditor/doc) en ligne : 
 
-  
 
 # Utilisation --- Aide
 
@@ -63,7 +54,6 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 - Clique gauche enfoncé plus mouvement de la souris bouge l'objet sélectionné.
 
-  
 
 ### Clavier
 
@@ -100,7 +90,6 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 - Bouton **flèche bas** : Déplace de 1 vers le bas la forme
 
-  
 
 #### Si un point est sélectionné :
 
@@ -118,7 +107,6 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 - Bouton **flèche bas** : Déplace de 1 vers le bas le point
 
-  
 
 #### Si aucun objet n'est sélectionné
 
@@ -126,7 +114,6 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 - Bouton **C** : Bascule l'affichage du *calque* sélectionné (dans le menu)
 
-  
 
 ## Fenêtre Menu
 
@@ -146,7 +133,17 @@ Le but de ce projet est de créer une application graphique d'édition de forme 
 
 - Chaque interface est suffisamment explicite, pour qu'il n'y est pas à les détailler plus précisément.
 
-  
+
+### Fonctionnalité non présentes sur l'interface :
+
+- Impossible de sélectionner un polygone autrement que par son ancre
+
+- Impossible redimensionner : rectangle, carré, ellipse, cercle
+
+- impossible de modifier les points partagé : triangle & polygone
+
+- Impossible de modifier la couleur des formes
+
 
 # Copyright & License
 
