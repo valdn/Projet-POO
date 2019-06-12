@@ -11,7 +11,7 @@ CarreD::CarreD(sf::Color couleur, int x, int y, uint cote)
 	recalculate();
 }
 
-CarreD::CarreD(const Carre & ori) : CarreD(sf::Color(ori.getCouleur()), ori.getAncre().getX(), ori.getAncre().getX(), ori.getCote()) {}
+CarreD::CarreD(const CarreD & ori) : CarreD(sf::Color(ori.getCouleur()), ori.getAncre().getX(), ori.getAncre().getX(), ori.getCote()) {}
 
 CarreD::CarreD(std::istream & is) : Forme(is), Carre(is), FormeD(is) {
 	setFillColor(sf::Color(getCouleur()));

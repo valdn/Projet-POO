@@ -15,7 +15,7 @@
 */
 
 class Groupe {
-	///\var std::vector<FormeD*> * tab_forme;
+	///\var std::vector<FormeD*> * tab_forme
 	///\brief Tableau de FormeD*
 	std::vector<FormeD*> * tab_forme;
 

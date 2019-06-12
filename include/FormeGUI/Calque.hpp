@@ -20,7 +20,7 @@ class Calque {
 
 
 	///\var bool active
-	///\brief Booleen pour savoir si le calque est actif ou pas
+	///\brief Booleen pour savoir si le Calque est actif ou pas
 	bool active;
 
 	///\var std::vector<FormeD*> * tab_forme
@@ -32,11 +32,11 @@ class Calque {
 	std::vector<PointD*> * tab_point;
 
 	public:
-		/// \brief constructeur de Forme
+		/// \brief constructeur de Calque
 		/// \param bool active vrai
 		Calque(bool active = true);
 
-		/// \brief destructeur de Forme
+		/// \brief destructeur de Calque
 		~Calque();
 
 		/// \brief ajouter une Forme au tableau de FormeD*
@@ -69,7 +69,7 @@ class Calque {
 		/// \return void
 		void supprimer(PointD * point);
 
-		/// \brief Permet de savoir si la souris est sur une forme du Calque
+		/// \brief Permet de savoir si la souris est sur une FormeD du Calque
 		/// \param position x de la souris
 		/// \param position y de la souris
 		/// \return FormeD*
@@ -81,7 +81,7 @@ class Calque {
 		/// \return PointD*
 		PointD * isOverPoint(int x, int y) const;
 
-		/// \brief Permet de dessiner toutes les Formes contenues dans le Calque
+		/// \brief Permet de dessiner toutes les FormeD contenues dans le Calque
 		/// \param window sf::RenderWindow fenetre d'affichage principale
 		/// \return void
 		void dessiner(sf::RenderWindow &window) const;

@@ -295,6 +295,13 @@ void Menu::initialiseDisplay() {
 	createShapeButton->setVisible(false);
 	gui->add(createShapeButton, "createShapeButton");
 
+	pointPol = tgui::TextBox::create();
+	pointPol->setPosition("5%", "createShapeButton.bottom + 30");
+	pointPol->setSize("90%", "80");
+	pointPol->setText("");
+	pointPol->setVisible(false);
+	gui->add(pointPol, "pointPol");
+
 	initialiseConnect();
 }
 
@@ -451,7 +458,11 @@ void Menu::displayTriValueConstructor(std::string type) {
 
 		createShapeButton->setVisible(true);
 		createShapeButton->setPosition("closeAddShapeButton.right + 40%", "closeAddShapeButton.top");
+		
+		pointPol->setVisible(true);
+		
 		createShapeButton->connect("pressed", &Menu::createPolygone, this);
+
 	}
 }
 
@@ -510,6 +521,9 @@ void Menu::hiddingAddShape() {
 	posXEb->setText("");
 	posYEb->setVisible(false);
 	posYEb->setText("");
+
+	pointPol->setVisible(false);
+	pointPol->setText("");
 
 	for (size_t i = 0; i < tab_cb.size(); ++i) {	//Supprime toutes les ComboBox de points
 		gui->remove(tab_cb[i]);
@@ -660,24 +674,26 @@ void Menu::createTriangle() {
 
 	size_t ip1, ip2;
 
+	getXYValues(&x, &y);
+
 	try {
 		ip1 = getPointIndex(0);
 		ip2 = getPointIndex(1);
+
+		if (x != NULL && y != NULL && ip1 != ip2) {
+			myApp->addTriangle(color, x, y, ip1, ip2, getSelectedCalque());
+		}
+		if (ip1 == ip2)
+			std::cerr << "On ne peut pas selectionner 2 fois le même point" << std::endl;
 	}
 	catch (std::runtime_error & e) {
 		std::cerr << e.what() << std::endl;
-	}
-
-	getXYValues(&x, &y);
-
-	if (x != NULL && y != NULL) {
-		myApp->addTriangle(color, x, y, ip1, ip2, getSelectedCalque());
 	}
 }
 
 size_t Menu::getPointIndex(size_t index) const {
 	if (tab_cb[index]->getSelectedItemIndex() >= 0) return tab_cb[index]->getSelectedItemIndex();
-	else throw std::runtime_error("Aucun point séléctionné");
+	else throw std::runtime_error("Aucun point selectionné");
 }
 
 void Menu::createPolygone() {
@@ -690,13 +706,22 @@ void Menu::createPolygone() {
 	if (x != NULL && y != NULL && tab_point.size()>=3) {
 		myApp->addPolygone(color, x, y, tab_point, getSelectedCalque());
 	}
+	if (tab_point.size() < 3)
+		std::cerr << "Il faut au moins 3 points en plus de l'ancre pour créer un Polygone" << std::endl;
 	tab_point.clear();
 }
 
 void Menu::createTabPoint() {
-	std::cout << tab_cb[0]->getSelectedItemIndex() << std::endl;
-	size_t ip1 = tab_cb[0]->getSelectedItemIndex();
-	tab_point.push_back(myApp->getPointAt(ip1));
+	try {
+		 size_t ip1 = tab_cb[0]->getSelectedItemIndex();
+		 if (!isInTabPoint(myApp->getPointAt(ip1))) {
+			 tab_point.push_back(myApp->getPointAt(ip1));
+			 pointPol->addText(tab_cb[0]->getSelectedItem() + "\n");
+		 }
+	}
+	catch (std::out_of_range & e) {
+		std::cerr << e.what() << std::endl;
+	}
 }
 
 void Menu::getXYValues(int * x, int * y) const {
@@ -749,6 +774,13 @@ void Menu::getValues(int * single) const {
 		singleEb->getRenderer()->setBorderColor(sf::Color::Red);
 		singleEb->setFocused(true);
 	}
+}
+
+bool Menu::isInTabPoint(const PointD * point) const {
+	for (size_t i = 0; tab_point.size(); ++i) {
+		if (tab_point[i] == point) return true;
+	}
+	return false;
 }
 
 sf::Color Menu::getCouleur() const {

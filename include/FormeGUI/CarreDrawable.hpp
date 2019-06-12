@@ -24,7 +24,7 @@ class CarreD : public fm::Carre, public FormeD {
 
 		/// \brief constructeur de copie de CarreD
 		/// \param Carre en const
-		CarreD(const Carre & ori);
+		CarreD(const CarreD & ori);
 
 		/// \brief constructeur de CarreD par flux de lecture
 		/// \param std::istream
