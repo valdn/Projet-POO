@@ -6,7 +6,7 @@
 
 /**
 * \class PointD PointDrawable.hpp "PointDrawable.hpp"
-* \brief Classe pour définir un Point graphiquement sur SFML
+* \brief Classe pour dÃ©finir un Point graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019
@@ -22,15 +22,15 @@ class PointD {
 	sf::Color couleur;
 
 	///\var fm::Point * point
-	///\brief Définit un Point
+	///\brief Dï¿½finit un Point
 	fm::Point * point;
 
 	///\var sf::CircleShape cercle
-	///\brief Définit un Cercle
+	///\brief Dï¿½finit un Cercle
 	sf::CircleShape cercle;
 
 	///\var bool partage
-	///\brief Utiliser pour définir si un point peut être partagé ou non.
+	///\brief Utiliser pour dï¿½finir si un point peut ï¿½tre partagï¿½ ou non.
 	bool partage;
 
 	public:
@@ -81,7 +81,7 @@ class PointD {
 		/// \return int
 		inline int getY() { return point->getY(); }
 		
-		/// \brief retourne si le PointD est partagé ou non
+		/// \brief retourne si le PointD est partagï¿½ ou non
 		/// \return bool
 		inline bool isPartaged() const { return partage; }
 
@@ -94,7 +94,7 @@ class PointD {
 		/// \return void
 		void update();
 
-		/// \brief Permet de dessiner les différents PointD
+		/// \brief Permet de dessiner les diffï¿½rents PointD
 		/// \param window sf::RenderWindow fenetre d'affichage principale
 		/// \return void
 		void dessiner(sf::RenderWindow & window) const;
@@ -112,14 +112,14 @@ class PointD {
 		/// \brief Retourne le Point en PointD
 		/// \param Point *
 		/// \return PointD
-		static PointD* getPointD(fm::Point * point);
+		static PointD* getPointD(const fm::Point * point);
 
-		/// \brief Retourne a position du PointD en paramètre
+		/// \brief Retourne a la position du PointD en paramï¿½tre
 		/// \param PointD *
 		/// \return size_t
 		static size_t getPointDIndex(PointD * point);
 
-		/// \brief Permet d'insérer un PointD dans un flux std::ostream
+		/// \brief Permet d'insÃ©rer un PointD dans un flux std::ostream
 		/// \param std::ostream
 		/// \param Point & p
 		///return std::ostream

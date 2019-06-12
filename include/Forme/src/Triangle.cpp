@@ -10,7 +10,7 @@ void Triangle::ecrire(std::ostream &os) const {
 
 Triangle::Triangle(uint couleur, int x, int y, Point * _p1, Point * _p2) : Forme(couleur, x, y), p1(_p1), p2(_p2) {}
 
-Triangle::Triangle(const Triangle & ori) : Triangle(ori.getCouleur(), ori.getAncre().getX(), ori.getAncre().getY(), &Point(ori.getP1()), &Point(ori.getP2())) {}
+Triangle::Triangle(const Triangle & ori) : Triangle(ori.getCouleur(), ori.getAncre().getX(), ori.getAncre().getY(), ori.p1, ori.p2) {}
 
 Triangle::Triangle(std::istream &is) : Forme(is) {
 	size_t id_p1, id_p2;
@@ -23,8 +23,8 @@ Triangle::Triangle(std::istream &is) : Forme(is) {
 
 Triangle::~Triangle() {}
 
-bool Triangle::pointInTab(Point * point) const {
-	if (point == p1 || point == p2) return true;
+bool Triangle::pointInShape(const Point * point) const {
+	if (Forme::pointInShape(point) || point == p1 || point == p2) return true;
 	else return false;
 }
 

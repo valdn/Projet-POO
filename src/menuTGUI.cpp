@@ -563,7 +563,7 @@ void Menu::saveFile() {
 	std::string path = singleEb->getText();
 
 	if (!path.empty()) {
-		myApp->sauvegarder(path+".shape");
+		myApp->sauvegarder(path);
 	}
 }
 

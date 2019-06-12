@@ -45,8 +45,8 @@ std::size_t CarreD::getPointCount() const {
 }
 
 sf::Vector2f CarreD::getPoint(std::size_t index) const {
-	float x = getAncre().getX();
-	float y = getAncre().getY();
+	float x = float(getAncre().getX());
+	float y = float(getAncre().getY());
 	float cote = float(getCote());
 
 	switch (index) {

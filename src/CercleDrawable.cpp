@@ -22,7 +22,7 @@ CercleD::CercleD(std::istream & is) : Forme(is), Cercle(is), FormeD(is) {
 CercleD::~CercleD() {}
 
 bool CercleD::isOver(int _x, int _y) const {
-	//retourne vrai si la distance entre le centre du cerlce et la souris est inf�rieur au rayon
+	//retourne vrai si la distance entre le centre du cerlce et la souris est inférieur au rayon
 	return (getAncreD().isOver(_x, _y) || ((std::pow((double)_x - (getAncre().getX() + (int)getRayon()), 2) + std::pow((double)_y - (getAncre().getY() + (int)getRayon()), 2)) <= std::pow((int)getRayon(),2)));
 }
 

@@ -1,3 +1,6 @@
+// Enleve les warning pour l'h√©ritage via la dominance
+#pragma warning( disable : 4250 )
+
 #ifndef TRIANGLE_DRAWABLE_HPP
 #define TRIANGLE_DRAWABLE_HPP
 
@@ -7,7 +10,7 @@
 
 /**
 * \class TriangleD TriangleDrawable.hpp "TriangleDrawable.hpp"
-* \brief Classe pour dÈfinir un Carre graphiquement sur SFML
+* \brief Classe pour d√©finir un Carre graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019
@@ -63,9 +66,9 @@ class TriangleD : public fm::Triangle, public FormeD {
 		void recalculate() override;
 
 		/// \brief Donne l'aire du triangle pour faire son isOver
-		/// \param sf::Vector2f p1 coordonnÈes du premier PointD
-		/// \param sf::Vector2f p2 coordonnÈes du deuxieme PointD
-		/// \param sf::Vector2f posSouris coordonnÈes de la position de la souris
+		/// \param sf::Vector2f p1 coordonn√©es du premier PointD
+		/// \param sf::Vector2f p2 coordonn√©es du deuxieme PointD
+		/// \param sf::Vector2f posSouris coordonn√©es de la position de la souris
 		/// \return float
 		float getArea(sf::Vector2f p1, sf::Vector2f p2, sf::Vector2f posSouris) const;
 

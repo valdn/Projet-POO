@@ -1,13 +1,15 @@
+// Enleve les warning pour l'héritage via la dominance
+#pragma warning( disable : 4250 )
+
 #ifndef ELLIPSE_DRAWABLE_HPP
 #define ELLIPSE_DRAWABLE_HPP
-
 
 #include "Forme/Ellipse.hpp"
 #include "FormeDrawable.hpp"
 
 /**
 * \class EllipseD EllipseDrawable.hpp "EllipseDrawable.hpp"
-* \brief Classe pour d�finir une Ellipse graphiquement sur SFML
+* \brief Classe pour définir une Ellipse graphiquement sur SFML
 * \authors DI NARDO Valentin, LENHARD Erwan
 * \version 1.0
 * \date 11 juin 2019

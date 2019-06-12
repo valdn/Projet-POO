@@ -26,8 +26,8 @@ PolygoneD::PolygoneD(sf::Color couleur, int x1, int y1, std::vector<PointD*> & _
 
 PolygoneD::PolygoneD(std::istream & is) : Forme(is), Polygone(is), FormeD(is) {
 
-	for (size_t i = 0; i < getTailleTab(); ++i) {
-		tabPointD.push_back(PointD::getPointD(getPointPtrAt(i)));
+	for (size_t i = 0; i < getNbPoints(); ++i) {
+		tabPointD.push_back(PointD::getPointD(getPointAt(i)));
 		tabDistance.push_back(getDistance(getAncre(), tabPointD[i]->getPoint()));
 	}
 

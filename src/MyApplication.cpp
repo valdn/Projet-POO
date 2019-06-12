@@ -7,50 +7,112 @@ MyApp::MyApp() : Gestionnaire() {}
 MyApp::~MyApp() {}
 
 void MyApp::addPoint(int x, int y, size_t calque) {
-	ajouter(new PointD(x, y), calque);
+	try {
+		ajouter(new PointD(x, y), calque);
+	}
+	catch (std::runtime_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
+	catch (std::out_of_range & e) {
+		std::cerr << e.what() << std::endl;
+	}
 }
 
 void MyApp::addRectangle(sf::Color color, int x, int y, uint largeur, uint hauteur, size_t calque) {
-	ajouter(new RectangleD(color, x, y, largeur, hauteur), calque);
+	try {
+		ajouter(new RectangleD(color, x, y, largeur, hauteur), calque);
+	}
+	catch (std::runtime_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
+	catch (std::out_of_range & e) {
+		std::cerr << e.what() << std::endl;
+	}
 }
 
-void MyApp::addCarre(sf::Color color, int x, int y, uint cote, size_t calque)
-{
-	ajouter(new CarreD(color, x, y, cote), calque);
+void MyApp::addCarre(sf::Color color, int x, int y, uint cote, size_t calque) {
+	try {
+		ajouter(new CarreD(color, x, y, cote), calque);
+	}
+	catch (std::runtime_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
+	catch (std::out_of_range & e) {
+		std::cerr << e.what() << std::endl;
+	}
 }
 
-void MyApp::addCercle(sf::Color color, int x, int y, uint rayon, size_t calque)
-{
-	ajouter(new CercleD(color, x, y, rayon), calque);
+void MyApp::addCercle(sf::Color color, int x, int y, uint rayon, size_t calque) {
+	try {
+		ajouter(new CercleD(color, x, y, rayon), calque);
+	}
+	catch (std::runtime_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
+	catch (std::out_of_range & e) {
+		std::cerr << e.what() << std::endl;
+	}
 }
 
-void MyApp::addEllipse(sf::Color color, int x, int y, uint largeur, uint hauteur, size_t calque)
-{
-	ajouter(new EllipseD(color, x, y, largeur, hauteur), calque);
+void MyApp::addEllipse(sf::Color color, int x, int y, uint largeur, uint hauteur, size_t calque) {
+	try {
+		ajouter(new EllipseD(color, x, y, largeur, hauteur), calque);
+	}
+	catch (std::runtime_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
+	catch (std::out_of_range & e) {
+		std::cerr << e.what() << std::endl;
+	}
 }
 
-void MyApp::addImage(std::string path, int x, int y, size_t calque)
-{
-	ajouter(new PointD(0,0, false), calque);
-	ajouter(new ImageD(path, x, y, getLastPoint()) , calque);
-
+void MyApp::addImage(std::string path, int x, int y, size_t calque) {
+	try {
+		ajouter(new PointD(0, 0, false), calque);
+		ajouter(new ImageD(path, x, y, getLastPoint()), calque);
+	}
+	catch (std::runtime_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
+	catch (std::out_of_range & e) {
+		std::cerr << e.what() << std::endl;
+	}
 }
 
-void MyApp::addTriangle(sf::Color color, int x, int y, size_t ip1, size_t ip2, size_t calque)
-{
-	PointD* p1 = getPointAt(ip1);
-	PointD* p2 = getPointAt(ip2);
-	ajouter(new TriangleD(color, x, y, p1, p2), calque);
+void MyApp::addTriangle(sf::Color color, int x, int y, size_t ip1, size_t ip2, size_t calque) {
+	try {
+		PointD* p1 = getPointAt(ip1);
+		PointD* p2 = getPointAt(ip2);
+		ajouter(new TriangleD(color, x, y, p1, p2), calque);
+	}
+	catch (std::runtime_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
+	catch (std::out_of_range & e) {
+		std::cerr << e.what() << std::endl;
+	}
 }
 
-void MyApp::addPolygone(sf::Color color, int x, int y, std::vector<PointD*> & tabPoint, size_t calque)
-{
-	ajouter(new PolygoneD(color, x, y, tabPoint), calque);
+void MyApp::addPolygone(sf::Color color, int x, int y, std::vector<PointD*> & tabPoint, size_t calque) {
+	try {
+		ajouter(new PolygoneD(color, x, y, tabPoint), calque);
+	}
+	catch (std::runtime_error & e) {
+		std::cerr << e.what() << std::endl;
+	}
+	catch (std::out_of_range & e) {
+		std::cerr << e.what() << std::endl;
+	}
 }
 
 void MyApp::sauvegarder(std::string path) {
+	std::regex pattern{ ".shape$" }; // on recherche le motif ".shape$" i.e. se termine par ".shape"
+	std::string target{ path };
+	bool result = std::regex_search(target, pattern);
+	if (!result) path = path + +".shape";
+
 	std::filebuf fb;	//Creer un buffer
-	fb.open(path, std::ios::out);	//Ouvre le fichier en ecriture
+	fb.open(path, std::ios::out);	//Ouvre le fichier en ecriture et rajoute l'extension .shape
 	std::ostream os(&fb);	//Creer un ostream avec ce buffer
 
 	Gestionnaire::sauver(os);		//Sauvegarde les points
@@ -59,7 +121,7 @@ void MyApp::sauvegarder(std::string path) {
 }
 
 void MyApp::charger(std::string path) {
-	std::regex pattern{ ".shape" }; // on recherche le motif ".shape"
+	std::regex pattern{ ".shape$" }; // on recherche le motif ".shape$" i.e. se termine par ".shape"
 	std::string target{ path };
 	bool result = std::regex_search(target, pattern);
 	if (result) {
@@ -135,7 +197,7 @@ void MyApp::manageGroupe(FormeD * forme, size_t index) {
 		if (getGroupeAt(index)->inTab(forme))	//Si la forme appartient au groupe a l'index
 			getGroupeAt(index)->supprimer(forme);	//On la supprime
 		else
-			addToGroup(getGroupe(forme), getGroupeAt(index));	//Sinon on ajoute toutes les formes du groupe de la forme au groupe à l'index 
+			swapToGroup(getGroupe(forme), getGroupeAt(index));	//Sinon on ajoute toutes les formes du groupe de la forme au groupe à l'index 
 	}
 	else
 		getGroupeAt(index)->ajouter(forme);	//Sinon on ajoute la forme au groupe index

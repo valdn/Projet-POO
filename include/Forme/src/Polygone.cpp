@@ -12,7 +12,7 @@ void Polygone::ecrire(std::ostream &os) const {
 
 Polygone::Polygone(uint couleur, int x, int y, std::vector<Point*>* _tabPoint) : Forme(couleur, x, y), tabPoint(_tabPoint) {}
 
-Polygone::Polygone(const Polygone & ori) : Polygone(ori.getCouleur(), ori.getAncre().getX(), ori.getAncre().getY(), ori.getTabPointPtr()) {}
+Polygone::Polygone(const Polygone & ori) : Polygone(ori.getCouleur(), ori.getAncre().getX(), ori.getAncre().getY(), ori.tabPoint ) {}
 
 Polygone::Polygone(std::istream &is) : Forme(is) {
 	tabPoint = new std::vector<Point*>();
@@ -30,7 +30,9 @@ Polygone::~Polygone() {
 	delete tabPoint;
 }
 
-bool Polygone::pointInTab(Point * point) const {
+bool Polygone::pointInShape(const Point * point) const {
+	if (Forme::pointInShape(point)) return true;
+
 	for (size_t i = 0; i < tabPoint->size(); ++i) {
 		if ((*tabPoint)[i] == point) return true;
 	}

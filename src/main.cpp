@@ -23,16 +23,15 @@
   *
   */
 
-/*TODO
 
-- Afficher les messages d'erreur sur le menu
-- Animation
-- documentation / commentaire / uniformiser le code
-- le README (fonctionnement de l'app) --- ??? rajouter un menu d'aide ???
-- faire en sorte qu'on puisse re-ouvrir la fenetre du menu
-- avoir des info sur la forme / le point sélectionné
-
-*/
+/// \todo Afficher les messages d'erreur sur le menu
+/// \todo Animation
+/// \todo documentation / commentaire / uniformiser le code
+/// \todo le README (fonctionnement de l'app) --- ??? rajouter un menu d'aide ???
+/// \todo faire en sorte qu'on puisse re-ouvrir la fenetre du menu
+/// \todo avoir des info sur la forme / le point sélectionné
+/// \todo Ajouter toutes les exceptions à la doc
+/// \todo faire correctement le point de resize de la forme
 
 int main()
 {
@@ -49,6 +48,7 @@ int main()
 	PointD * select_point = nullptr;
 	PointD * select_point_move = nullptr;
 	Groupe * g = nullptr;
+	ImageD * img = nullptr;
 
 	uint dist_x, dist_y = 0;	//Sert pour la distance entre l'ancre et la souris lors du clic sur une forme
 	bool mouseIn = true; //Savoir si la souris est dans la fenetre ou non
@@ -135,15 +135,16 @@ int main()
 							dist_y = y - select_shape->getAncre().getY();	//Distance en y entre l'ancre de la forme et de la souris
 						}
 					}
-					else //Si jamais un point est séléctionner alors on désélectionne la forme 
+					else { //Si jamais un point est séléctionner alors on désélectionne la forme 
 						select_shape = nullptr;
+						img = gestion.getImageByPoint(select_point_move);
+					}
 				}
 				break;
 
 				//Mouvement souris
 			case sf::Event::MouseMoved:
 				if ((select_point_move != nullptr) && (mouseIn)) {
-					ImageD * img = gestion.getImageByPoint(select_point_move);
 					if (img != nullptr && img->getActiveRatio()) {	//Si le point appartient à une image
 						select_point_move->setPos(event.mouseMove.x, select_point->getY() + event.mouseMove.x - select_point->getX());
 					}
@@ -174,6 +175,7 @@ int main()
 				if (event.mouseButton.button == sf::Mouse::Left) {
 					select_shape_move = nullptr;	//Quand on relache le boutton de la souris on déselectionne la forme
 					select_point_move = nullptr;
+					img = nullptr;
 				}
 				break;
 
@@ -191,7 +193,7 @@ int main()
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Add) || sf::Keyboard::isKeyPressed(sf::Keyboard::Equal))
 							gestion.augTransparence(select_shape);
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::F))
-							dynamic_cast<ImageD*> (select_shape)->ToggleActiveRatio();
+							dynamic_cast<ImageD*> (select_shape)->toggleActiveRatio();
 						else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Delete))
 							img->getPtrPointD()->setColor(sf::Color::Black);
 					}

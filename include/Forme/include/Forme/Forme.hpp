@@ -1,14 +1,11 @@
 #ifndef FORME_HPP
 #define FORME_HPP
 
-/**
-* \file Forme.hpp
-* \authors DI NARDO Valentin, LENHARD Erwan
-* \version 1.0
-* \date 11 juin 2019
-*/
-
-///\def M_PI 3.14159265358979323846
+////////////////////////////////////////////////////////////
+/// \def M_PI 3.14159265358979323846
+/// \breif Définition d'une vlaue de Pi
+///
+////////////////////////////////////////////////////////////
 #ifndef M_PI
 	#define M_PI 3.14159265358979323846
 #endif
@@ -19,66 +16,152 @@
 
 #include "Point.hpp"
 
-///\namespace fm
+////////////////////////////////////////////////////////////
+/// \namespace fm
+/// \brief Namespace pour la bibliothéque de forme
+///
+////////////////////////////////////////////////////////////
 namespace fm {
 
-
-///\class Forme Forme.hpp "Forme/Forme.hpp"
-///\brief classe abstraite de base pour definir des formes
+////////////////////////////////////////////////////////////
+/// \class Forme Forme.hpp "Forme/Forme.hpp"
+/// \brief Classe pour créer des Formes
+/// \authors DI NARDO Valentin, LENHARD Erwan
+/// \version 1.0
+/// \date 11 juin 2019
+///
+////////////////////////////////////////////////////////////
 class Forme {
+
+	////////////////////////////////////////////////////////////
+	/// \var uint couleur
+	/// \brief Couleur de la Forme
+	///
+	////////////////////////////////////////////////////////////
 	uint couleur;
+
+	////////////////////////////////////////////////////////////
+	/// \var Point ancre
+	/// \brief Point qui représente l'ancre de la Forme
+	///
+	////////////////////////////////////////////////////////////
 	Point ancre;
 
 	protected:
 
-		/// \brief ecris les donn�es n�cessaire de la forme
-		/// \param &os std::ostream
+		////////////////////////////////////////////////////////////
+		/// \brief Ecris les données nécessaire de la Forme
+		/// \param &os std::ostream, le flux d'écriture
 		/// \return void
+		///
+		////////////////////////////////////////////////////////////
 		virtual void ecrire(std::ostream & os) const;
 
-		/// \brief donne acc�s a un pointeur sur l'ancre
-		/// \return Point*
+		////////////////////////////////////////////////////////////
+		/// \brief Donne accés a un pointeur sur l'ancre
+		/// \return Point* point
+		///
+		////////////////////////////////////////////////////////////
 		inline Point * getAncrePtr() { return &ancre; }
 
 	public:
-		/// \brief constructeur de forme
-		/// \param couleur en uint
-		/// \param position x de l'ancre
-		/// \param position y de l'ancre
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur de Forme
+		/// \param uint couleur, la couleur de la Forme
+		/// \param int x, la position x de l'ancre
+		/// \param int y, position y de l'ancre
+		///
+		////////////////////////////////////////////////////////////
 		Forme(uint couleur, int x, int y);
 
-		/// \brief constructeur par copie de forme
-		/// \param &ori une Forme constante
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur par copie de Forme
+		/// \param const Forme &ori, la Forme à copier
+		///
+		////////////////////////////////////////////////////////////
 		Forme(const Forme &ori);
 
-		/// \brief constructeur de forme
-		/// \param &is un std::istream
+		////////////////////////////////////////////////////////////
+		/// \brief Constructeur de Forme par flux de lecture
+		/// \param std::istream &is, le flux de lecture
+		///
+		////////////////////////////////////////////////////////////
 		Forme(std::istream &is);
 
-		/// \brief destructeur de forme
+		////////////////////////////////////////////////////////////
+		/// \brief destructeur de Forme
+		///
+		////////////////////////////////////////////////////////////
 		virtual ~Forme();
 
-		/// \brief getter - couleur
+		////////////////////////////////////////////////////////////
+		/// \brief Getter - couleur
 		/// \return uint couleur
+		///
+		////////////////////////////////////////////////////////////
 		inline uint getCouleur() const {return couleur;}
 
-		/// \brief setter - couleur
+		////////////////////////////////////////////////////////////
+		/// \brief Setter - couleur
 		/// \param uint couleur
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
 		inline void setCouleur(uint _couleur) {couleur = _couleur;}
 
-		/// \brief getter - ancre
-		/// \return const Point&
+		////////////////////////////////////////////////////////////
+		/// \brief Getter - Point de l'ancre
+		/// \return const Point& point
+		///
+		////////////////////////////////////////////////////////////
 		inline const Point & getAncre() const {return ancre;}
 
-		/// \brief setter - ancre
-		/// \param int x, position x de l'ancre
-		/// \param int y, position y de l'ancre
+		////////////////////////////////////////////////////////////
+		/// \brief Setter - ancre
+		/// \param int x, nouvelle position x de l'ancre
+		/// \param int y, nouvelle position y de l'ancre
+		/// \return void
+		///
+		////////////////////////////////////////////////////////////
 		inline void setAncre(int x, int y) {ancre.setXY(x,y);}
 
+		////////////////////////////////////////////////////////////
+		/// \brief méthode virtuelle pure qui donne la valeur du périmètre
+		/// \return double perimetre
 		///
-		virtual double perimetre() const = 0;	//Vituelle pure
+		////////////////////////////////////////////////////////////
+		virtual double perimetre() const = 0;	
+
+		////////////////////////////////////////////////////////////
+		/// \brief Vérifie si un Point appartient au Polygone
+		/// \param const Point * point
+		/// \return true si le Point compose la Forme
+		/// \return false si le Point ne compose pas la Forme
+		///
+		////////////////////////////////////////////////////////////
+		virtual bool pointInShape(const Point * point) const;
+
+		////////////////////////////////////////////////////////////
+		/// \brief Méthode qui donne la longueur entre deux Point
+		/// \param const Point p1, le premier point
+		/// \param const Point p2, le deuxieme point
+		/// \return double longueur
+		///
+		////////////////////////////////////////////////////////////
 		double getLonSeg(const Point p1, const Point p2) const;
+
+		////////////////////////////////////////////////////////////
+		/// \brief Permet d'insérer un Point dans un flux std::ostream
+		///
+		////////////////////////////////////////////////////////////
 		friend std::ostream & operator<<(std::ostream &os, const Forme &forme);
+
+		////////////////////////////////////////////////////////////
+		/// \brief Charge une Forme en fonction d'un std::istream
+		/// \param std::istream, le flux de lecture
+		/// \return Forme* forme
+		///
+		////////////////////////////////////////////////////////////
 		static Forme * charger(std::istream &is);
 };
 

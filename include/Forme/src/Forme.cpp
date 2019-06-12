@@ -23,6 +23,11 @@ Forme::Forme(std::istream &is) : ancre(is) {
 
 Forme::~Forme() {}
 
+bool Forme::pointInShape(const Point * point) const {
+	if (point == &ancre) return true;
+	else return false;
+}
+
 double Forme::getLonSeg(const Point p1, const Point p2) const {
 	return std::sqrt(std::pow(p2.getX() - p1.getX(), 2) + std::pow(p2.getY() - p1.getY(), 2));
 }

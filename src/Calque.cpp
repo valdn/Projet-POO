@@ -84,18 +84,7 @@ bool Calque::isInTab(PointD * point) const {
 
 bool Calque::pointInShape(PointD * point) const {
 	for (size_t i = 0; i < tab_forme->size(); ++i) {
-		PolygoneD * poly = dynamic_cast<PolygoneD*> ((*tab_forme)[i]);
-		if (poly != nullptr && poly->pointInTab(point->getPtrPoint())) return true;
-
-		else {
-			TriangleD * tri = dynamic_cast<TriangleD*> ((*tab_forme)[i]);
-			if (tri != nullptr && tri->pointInTab(point->getPtrPoint())) return true;
-
-			else {
-				ImageD * img = dynamic_cast<ImageD*> ((*tab_forme)[i]);
-				if (img != nullptr && img->getPointD() == point) return true;
-			}
-		}
+		if ((*tab_forme)[i]->pointInShape(point->getPtrPoint())) return true;
 	}
 	return false;
 }
